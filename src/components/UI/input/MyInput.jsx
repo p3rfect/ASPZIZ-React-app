@@ -4,31 +4,32 @@ const MyInput = ({title, passValue, type, ...props}) => {
     const [val, setVal] = useState('');
     const [pass, setPass] = useState(type);
 
-    const setValue = ({val}) => {
+    const setValue = (val) => {
         passValue(val)
         setVal(val)
+        console.log(val);
     }
     const [toggled, setToggled] = useState(false)
 
     const toggle = () => {
         if (toggled){
             setToggled(false)
-            setPass("text")
+            setPass("password")
         }
         else{
             setToggled(true)
-            setPass("password")
+            setPass("text")
         }
     }
 
     return (
         <div style={{marginTop: "30px", marginBottom: "0px"}}>
             <h3 style={{fontSize: '30px', paddingBottom: "10px", margin: 0}}>{title}</h3>
-            <input type={pass} {...props} className={classes.MyInpt} value={val} onChange={setValue}/>
+            <input type={pass} {...props} className={classes.MyInpt} value={val} onChange={e => setValue(e.target.value)}/>
             {type === "password"
                 ?  (toggled
-                    ? <a href="#" className={classes.PasswordControl} onClick={toggle}></a>
-                    : <a href="#" className={classes.PasswordControl + ' ' + classes.view} onClick={toggle}></a>)
+                    ? <a href="#" className={classes.PasswordControl + ' ' + classes.view} onClick={toggle}></a>
+                    : <a href="#" className={classes.PasswordControl} onClick={toggle}></a>)
                 : null
             }
         </div>

@@ -59,10 +59,10 @@ function App() {
         <h1 style={{fontSize: "100px", marginTop: "170px", marginBottom: "0px", color: "teal", outlineWidth: "100px solid #666"}}>БГУИР</h1>
         <h2 style={{margin: "0px", color: "teal", fontSize: "30px"}}>Приемная кампания</h2>
         <MyForm list={[
-            <MyInput type="text" title="Логин" passValue={setEmail}/>,
-            <MyInput type="password" title="Пароль" passValue={setPassword}/>,
-            <MyButton onClick={login} value="Войти" style={{width: "40%"}}></MyButton>,
-            <p onClick={redirectToReg} style={{cursor: "pointer", color: "blue",}}>Нет аккаунта? Зарегистрироваться</p>
+            <MyInput type="text" title="Логин" passValue={setEmail} style={{placeholder: "Адрес эл.почты"}} key={1}/>,
+            <MyInput type="password" title="Пароль" passValue={setPassword} key={2}/>,
+            <MyButton onClick={login} value="Войти" style={{width: "40%"}} key={3}></MyButton>,
+            <p onClick={redirectToReg} style={{cursor: "pointer", color: "blue",}} key={4}>Нет аккаунта? Зарегистрироваться</p>
         ]} style={{border: "4px solid", borderRadius: "10px",
             paddingBottom: "50px", width: "40%", marginLeft: "30%", marginTop: "50px"}}>
         </MyForm>
