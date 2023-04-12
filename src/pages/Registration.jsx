@@ -3,35 +3,29 @@ import MyForm from "../components/UI/form/MyForm";
 import MyInput from "../components/UI/input/MyInput";
 import MyButton from "../components/UI/button/MyButton";
 import {Link, useNavigate} from "react-router-dom";
-import {getTokenAsync} from "../jwt";
 
 const Registration = () => {
     let email = '', password = '';
     const route = useNavigate()
 
     const register = async () => {
-        try {
-            const formData = new FormData();
-            formData.append("grant_type", "password");
-            formData.append("email", email);
-            formData.append("password", password);
+        const formData = new FormData();
+        formData.append("grant_type", "password");
+        formData.append("email", email);
+        formData.append("password", password);
 
-            const response = await fetch("https://localhost:44387/register", {
-                method: "POST",
-                headers: {"Accept": "application/json"},
-                body: formData,
-                mode: "cors"
-            });
-            const data = await response.json()
+        const response = await fetch("https://localhost:44387/register", {
+            method: "POST",
+            headers: {"Accept": "application/json"},
+            body: formData,
+            mode: "cors"
+        });
+        const data = await response.json()
 
-            if (response.ok) {
-                route("/submitting")
-            } else {
-                throw new Error("Error: " + response.status + data.errorText)
-            }
-        } catch (e){
-            console.log(e);
-            route("/error")
+        if (response.ok) {
+            route("/submitting")
+        } else {
+            throw new Error("Error: " + response.status + data.errorText)
         }
     }
 

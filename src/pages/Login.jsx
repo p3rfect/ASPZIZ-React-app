@@ -6,7 +6,7 @@ import {Link, useNavigate} from "react-router-dom";
 import {getTokenAsync} from "../jwt.js"
 function Login() {
 
-    let email = '', password = '', tokenKey;
+    let email = '', password = '';
     const route = useNavigate()
     const login = async () => {
         try{
