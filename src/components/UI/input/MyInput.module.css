@@ -1,0 +1,9 @@
+.MyInpt{
+    /*padding: 5px 10px;*/
+    border-radius: 7px;
+    border-color: black;
+    width: 500px;
+    height: 50px;
+    font-size: 30px;
+    /*align-content: center;*/
+}
