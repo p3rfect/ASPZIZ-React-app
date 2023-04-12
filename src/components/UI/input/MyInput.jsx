@@ -26,7 +26,9 @@ const MyInput = ({title, passValue, type, ...props}) => {
             <h3 style={{fontSize: '30px', paddingBottom: "10px", margin: 0}}>{title}</h3>
             <input type={pass} {...props} className={classes.MyInpt} value={val} onChange={setValue}/>
             {type === "password"
-                ?  <a href="#" className={classes.PasswordControl} onClick={toggle}></a>
+                ?  (toggled
+                    ? <a href="#" className={classes.PasswordControl} onClick={toggle}></a>
+                    : <a href="#" className={classes.PasswordControl + ' ' + classes.view} onClick={toggle}></a>)
                 : null
             }
         </div>
