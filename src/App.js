@@ -50,14 +50,21 @@ function App() {
       password = newValue
   }
 
+  const redirectToReg = () => {
+
+  }
+
   return (
-    <div style={{textAlign: "center", verticalAlign: "middle"}}>
-      <h1 style={{fontSize: "100px", marginTop: "170px", marginBottom: "0px", color: "teal", outlineWidth: "100px solid #666"}}>БГУИР</h1>
+    <div style={{textAlign: "center", verticalAlign: "center", alignContent: "center"}}>
+        <h1 style={{fontSize: "100px", marginTop: "170px", marginBottom: "0px", color: "teal", outlineWidth: "100px solid #666"}}>БГУИР</h1>
         <h2 style={{margin: "0px", color: "teal", fontSize: "30px"}}>Приемная кампания</h2>
-        <MyForm>
-            <MyInput type="text" title="Логин" passValue={setEmail}/>
-            <MyInput type="text" title="Пароль" passValue={setPassword}/>
-            <MyButton onClick={login} value="Войти"></MyButton>
+        <MyForm list={[
+            <MyInput type="text" title="Логин" passValue={setEmail}/>,
+            <MyInput type="password" title="Пароль" passValue={setPassword}/>,
+            <MyButton onClick={login} value="Войти" style={{width: "40%"}}></MyButton>,
+            <p onClick={redirectToReg} style={{cursor: "pointer", color: "blue",}}>Нет аккаунта? Зарегистрироваться</p>
+        ]} style={{border: "4px solid", borderRadius: "10px",
+            paddingBottom: "50px", width: "40%", marginLeft: "30%", marginTop: "50px"}}>
         </MyForm>
     </div>
   );

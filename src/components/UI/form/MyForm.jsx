@@ -1,9 +1,10 @@
 import React from 'react';
 
-const MyForm = () => {
+const MyForm = ({list, ...props}) => {
+    console.log(props)
     return (
-        <div>
-
+        <div {...props}>
+            {list}
         </div>
     );
 };
