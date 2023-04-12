@@ -7,7 +7,6 @@ const MyInput = ({title, passValue, type, ...props}) => {
     const setValue = (val) => {
         passValue(val)
         setVal(val)
-        console.log(val);
     }
     const [toggled, setToggled] = useState(false)
 
