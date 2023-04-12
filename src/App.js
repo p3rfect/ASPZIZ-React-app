@@ -1,5 +1,7 @@
 import React from 'react';
 import MyInput from "./components/UI/input/MyInput";
+import MyButton from "./components/UI/button/MyButton";
+import MyForm from "./components/UI/form/MyForm";
 function App() {
 
     let email = '', password = '', tokenKey;
@@ -52,11 +54,11 @@ function App() {
     <div style={{textAlign: "center", verticalAlign: "middle"}}>
       <h1 style={{fontSize: "100px", marginTop: "170px", marginBottom: "0px", color: "teal", outlineWidth: "100px solid #666"}}>БГУИР</h1>
         <h2 style={{margin: "0px", color: "teal", fontSize: "30px"}}>Приемная кампания</h2>
-        <div>
+        <MyForm>
             <MyInput type="text" title="Логин" passValue={setEmail}/>
             <MyInput type="text" title="Пароль" passValue={setPassword}/>
-            <button onClick={login} style={{width: "200px", height: "50px", marginTop: "50px"}}>Login</button>
-        </div>
+            <MyButton onClick={login} value="Войти"></MyButton>
+        </MyForm>
     </div>
   );
 }

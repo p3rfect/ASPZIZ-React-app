@@ -1,11 +1,11 @@
 import React from 'react';
 
-const MyButton = () => {
+const MyForm = () => {
     return (
         <div>
-            
+
         </div>
     );
 };
 
-export default MyButton;
+export default MyForm;
