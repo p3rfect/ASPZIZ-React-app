@@ -25,8 +25,7 @@ const Registration = () => {
             const data = await response.json()
 
             if (response.ok) {
-                await getTokenAsync(email, password)
-                route("/info")
+                route("/submitting")
             } else {
                 throw new Error("Error: " + response.status + data.errorText)
             }

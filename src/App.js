@@ -4,14 +4,16 @@ import Login from "./pages/Login";
 import Registration from "./pages/Registration.jsx"
 import UserInfo from "./pages/UserInfo";
 import NotFound from "./pages/NotFound";
+import Submitting from "./pages/Submitting";
 function App() {
   return (
     <BrowserRouter>
         <Routes>
             <Route path="/" element={<Login/>}/>
-            <Route path="registration" element={<Registration/>}/>
-            <Route path="info" element={<UserInfo/>}/>
-            <Route path="error" element={<NotFound/>}/>
+            <Route path="/registration" element={<Registration/>}/>
+            <Route path="/info" element={<UserInfo/>}/>
+            <Route path="/submitting" element={<Submitting/>}/>
+            <Route path="/error" element={<NotFound/>}/>
             <Route path="*" element={<NotFound/>}/>
         </Routes>
     </BrowserRouter>
