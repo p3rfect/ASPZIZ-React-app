@@ -20,9 +20,9 @@ function App() {
           // отправляет запрос и получаем ответ
           const response = await fetch("https://localhost:44387/token", {
               method: "POST",
-              headers: {"Accept": "application/json", "Access-Control-Allow-Origin": "https://localhost:3000"},
+              headers: {"Accept": "application/json"},
               body: formData,
-              // mode: "no-cors"
+              mode: "cors"
           });
           // получаем данные
           const data = await response.json();
