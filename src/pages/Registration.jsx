@@ -38,14 +38,15 @@ const Registration = () => {
 
     return (
         <div style={{textAlign: "center", verticalAlign: "center", alignContent: "center"}}>
-            <h1 style={{fontSize: "100px", marginTop: "170px", marginBottom: "0px", color: "black", outlineWidth: "100px solid #666"}}>РЕГИСТРАЦИЯ</h1>
+            <h1 style={{fontSize: "100px", marginBottom: "0px"}}>БГУИР</h1>
+            <h2 style={{margin: "0", fontSize: "30px"}}>Приемная кампания</h2>
             <MyForm list={[
+                <h1>РЕГИСТРАЦИЯ</h1>,
                 <MyInput type="text" title="Логин" passValue={setEmail} placeholder="Адрес эл.почты" key={1}/>,
                 <MyInput type="password" title="Пароль" passValue={setPassword} placeholder="Пароль" key={2}/>,
                 <MyButton onClick={register} value="Зарегистрироваться" style={{width: "40%"}} key={3}></MyButton>,
                 <Link to="/" style={{cursor: "pointer", color: "darkmagenta", textDecoration: "none"}} key={4}>Уже есть аккаунт? Войти</Link>
-            ]} style={{border: "4px solid", borderRadius: "10px",
-                paddingBottom: "50px", width: "40%", marginLeft: "30%", marginTop: "50px"}}>
+            ]}>
             </MyForm>
         </div>
     );
