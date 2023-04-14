@@ -28,7 +28,6 @@ function Login() {
     return (
         <div style={{textAlign: "center", alignContent: "center"}}>
             <h1 style={{fontSize: "100px", marginBottom: "0px"}}>БГУИР</h1>
-            <h2 style={{margin: "0", fontSize: "30px"}}>Приемная кампания</h2>
             <MyForm list={[
                 <h1>АВТОРИЗАЦИЯ</h1>,
                 <MyInput type="text" title="Логин" passValue={setEmail} placeholder="Адрес эл.почты" key={1}/>,
