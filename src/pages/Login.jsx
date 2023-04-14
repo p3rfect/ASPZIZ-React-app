@@ -3,7 +3,7 @@ import MyInput from "../components/UI/input/MyInput";
 import MyButton from "../components/UI/button/MyButton";
 import MyForm from "../components/UI/form/MyForm";
 import {Link, useNavigate} from "react-router-dom";
-import {getTokenAsync} from "../jwt.js"
+import {getTokenAsync} from "../services/AuthService"
 function Login() {
 
     let email = '', password = '';
@@ -32,9 +32,9 @@ function Login() {
                 <h1>АВТОРИЗАЦИЯ</h1>,
                 <MyInput type="text" title="Логин" passValue={setEmail} placeholder="Адрес эл.почты" key={1}/>,
                 <MyInput type="password" title="Пароль" passValue={setPassword} placeholder="Пароль" key={2}/>,
-                <MyButton onClick={login} value="Войти" style={{width: "40%"}} key={3}></MyButton>,
+                <MyButton onClick={login} value="Войти" key={3}></MyButton>,
                 <Link to="/registration" style={{cursor: "pointer", color: "darkmagenta", textDecoration: "none"}} key={4}>Нет аккаунта? Зарегистрироваться</Link>
-            ]}>
+            ]} loginForm={true}>
             </MyForm>
         </div>
     );

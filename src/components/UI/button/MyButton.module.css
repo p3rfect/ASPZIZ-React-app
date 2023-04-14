@@ -6,7 +6,7 @@
 }
 
 .MyBtn{
-    width: 200px;
+    width: 40%;
     height: 50px;
     margin-top: 50px;
     cursor: pointer;
@@ -26,6 +26,6 @@
 
 .MyBtn:hover{
     background: rgba(0,0,0,0);
-    color: black;
-    box-shadow: inset 0 0 0 3px black;
+    color: rgb(58, 84, 127);
+    box-shadow: inset 0 0 0 3px rgb(58, 84, 127);
 }

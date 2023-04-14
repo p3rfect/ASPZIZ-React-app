@@ -1,3 +1,5 @@
+import React from "react";
+
 export async function getTokenAsync(email, password) {
     // получаем данные формы и фомируем объект для отправки
     const formData = new FormData();
@@ -31,3 +33,24 @@ export async function getTokenAsync(email, password) {
         throw new Error("Error: " + response.status + data.errorText)
     }
 }
+
+export const register = async (email, password) => {
+    const formData = new FormData();
+    formData.append("grant_type", "password");
+    formData.append("email", email);
+    formData.append("password", password);
+
+    const response = await fetch("https://localhost:44387/register", {
+        method: "POST",
+        headers: {"Accept": "application/json"},
+        body: formData,
+        mode: "cors"
+    });
+    const data = await response.json()
+
+    if (response.ok) {
+        throw new Error("Error: " + response.status + data.errorText)
+    }
+}
+
+export const isNotAuthed = () => sessionStorage.getItem("tokenKey") === null

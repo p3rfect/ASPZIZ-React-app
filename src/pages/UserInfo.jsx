@@ -1,10 +1,9 @@
 import React from 'react';
 import {Navigate} from "react-router-dom";
+import {isNotAuthed} from "../services/AuthService"
 
 const UserInfo = () => {
-    if (sessionStorage.getItem("tokenKey") === null){
-        return <Navigate to="/"/>
-    }
+    if (isNotAuthed()) return <Navigate to="/"/>
 
     return (
         <div>
