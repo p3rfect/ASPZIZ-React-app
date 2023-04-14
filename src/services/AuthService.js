@@ -21,12 +21,7 @@ export async function getTokenAsync(email, password) {
     if (response.ok === true) {
 
         // изменяем содержимое и видимость блоков на странице
-        // document.getElementById("userName").innerText = data.email;
-        // document.getElementById("userInfo").style.display = "block";
-        // document.getElementById("loginForm").style.display = "none";
-        // сохраняем в хранилище sessionStorage токен доступа
         sessionStorage.setItem("tokenKey", data.access_token);
-        // console.log(data.access_token, "!!!!!!");
 
     } else {
         // если произошла ошибка, из errorText получаем текст ошибки
@@ -48,7 +43,7 @@ export const register = async (email, password) => {
     });
     const data = await response.json()
 
-    if (response.ok) {
+    if (!response.ok) {
         throw new Error("Error: " + response.status + data.errorText)
     }
 }
