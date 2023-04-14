@@ -22,7 +22,7 @@ const MyInput = ({title, passValue, type, ...props}) => {
     }
 
     return (
-        <div style={{marginTop: "30px", marginBottom: "0px"}}>
+        <div style={{paddingTop: "30px", marginBottom: "0px"}}>
             <h3 style={{fontSize: '30px', paddingBottom: "10px", margin: 0}}>{title}</h3>
             <input type={pass} {...props} className={classes.MyInpt} value={val} onChange={e => setValue(e.target.value)}/>
             {type === "password"

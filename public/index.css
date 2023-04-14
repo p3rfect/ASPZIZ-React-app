@@ -1,0 +1,11 @@
+body, html{
+    height: 100%;
+    margin: 0;
+    background-color: #e9edf3;
+    color: #2c2e30;
+    font-family: "Lora","Arial",serif;
+    font-variant: normal;
+    font-feature-settings: normal;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}

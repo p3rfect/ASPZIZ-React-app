@@ -1,11 +1,11 @@
 .MyInpt{
     /*padding: 5px 10px;*/
     border-radius: 7px;
-    border-color: black;
+    border: 2px solid lightgray;
     width: 80%;
     height: 50px;
-    font-size: 30px;
-    position: sticky;
+    font-size: 20px;
+    /*position: sticky;*/
     /*position: static;*/
     /*align-content: center;*/
 }

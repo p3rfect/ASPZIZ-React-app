@@ -1,14 +1,10 @@
 import React from 'react';
-import {useNavigate} from "react-router-dom";
-import {useEffect} from "react";
+import {Navigate} from "react-router-dom";
 
 const UserInfo = () => {
-    const route = useNavigate()
-    useEffect( () => {
     if (sessionStorage.getItem("tokenKey") === null){
-        route("/")
+        return <Navigate to="/"/>
     }
-    })
 
     return (
         <div>

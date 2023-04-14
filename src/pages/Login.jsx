@@ -26,16 +26,15 @@ function Login() {
     }
 
     return (
-        <div style={{textAlign: "center", verticalAlign: "center", alignContent: "center"}}>
-            <h1 style={{fontSize: "100px", marginTop: "170px", marginBottom: "0px", color: "black", outlineWidth: "100px solid #666"}}>БГУИР</h1>
-            <h2 style={{margin: "0px", color: "black", fontSize: "30px"}}>Приемная кампания</h2>
+        <div style={{textAlign: "center", alignContent: "center"}}>
+            <h1 style={{fontSize: "100px", marginBottom: "0px"}}>БГУИР</h1>
+            <h2 style={{margin: "0", fontSize: "30px"}}>Приемная кампания</h2>
             <MyForm list={[
                 <MyInput type="text" title="Логин" passValue={setEmail} placeholder="Адрес эл.почты" key={1}/>,
                 <MyInput type="password" title="Пароль" passValue={setPassword} placeholder="Пароль" key={2}/>,
                 <MyButton onClick={login} value="Войти" style={{width: "40%"}} key={3}></MyButton>,
                 <Link to="/registration" style={{cursor: "pointer", color: "darkmagenta", textDecoration: "none"}} key={4}>Нет аккаунта? Зарегистрироваться</Link>
-            ]} style={{border: "4px solid", borderRadius: "10px",
-                paddingBottom: "50px", width: "40%", marginLeft: "30%", marginTop: "50px"}}>
+            ]}>
             </MyForm>
         </div>
     );
