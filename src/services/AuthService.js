@@ -1,5 +1,3 @@
-import React from "react";
-
 export async function getTokenAsync(email, password) {
     // получаем данные формы и фомируем объект для отправки
     const formData = new FormData();
