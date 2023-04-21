@@ -1,5 +1,5 @@
 import React from 'react';
-import {BrowserRouter, Route, Routes} from "react-router-dom";
+import {HashRouter, Route, Routes} from "react-router-dom";
 import Login from "./pages/Login";
 import Registration from "./pages/Registration.jsx"
 import UserInfo from "./pages/UserInfo";
@@ -13,7 +13,7 @@ import '@fontsource/roboto/700.css';
 
 function App() {
   return (
-    <BrowserRouter>
+      <HashRouter>
         <Routes>
             <Route path="/" element={<Login/>}/>
             <Route path="/registration" element={<Registration/>}/>
@@ -22,7 +22,7 @@ function App() {
             <Route path="/error" element={<NotFound/>}/>
             <Route path="*" element={<NotFound/>}/>
         </Routes>
-    </BrowserRouter>
+      </HashRouter>
   );
 }
 

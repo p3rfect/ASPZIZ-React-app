@@ -46,8 +46,8 @@ function Login() {
             <MyAlert showAlert={showNotFoundError} setShowAlert={setShowNotFoundError} title="Ошибка"
                      text = "Неверные адрес эл. почты или пароль"/>
             <MyForm list={[
-                <h2 style={{fontSize: "40px", margin: "0 0 20px 0"}}>Вход</h2>,
-                <FormControl sx={{ m: 1, width: "80%" }} variant="outlined">
+                <h2 style={{fontSize: "40px", margin: "0 0 20px 0"}} key="h2">Вход</h2>,
+                <FormControl sx={{ m: 1, width: "80%" }} variant="outlined" key="email-form">
                     <InputLabel htmlFor="outlined-email">Адрес эл. почты</InputLabel>
                     <OutlinedInput
                         id="outlined-login-input"
@@ -56,7 +56,7 @@ function Login() {
                         onChange={e => {setEmail(e.target.value)}}
                     />
                 </FormControl>,
-                <FormControl sx={{ m: 1, width: "80%" }} variant="outlined">
+                <FormControl sx={{ m: 1, width: "80%" }} variant="outlined" key="password-form">
                     <InputLabel htmlFor="outlined-adornment-password">Пароль</InputLabel>
                     <OutlinedInput
                         id="outlined-password-input"
@@ -78,8 +78,8 @@ function Login() {
                         onChange={e => {setPassword(e.target.value)}}
                     />
                 </FormControl>,
-                <Button variant="outlined" style={{marginTop: "25px", width: "30%"}} onClick={login}>Войти</Button>,
-                <Button variant="text" onClick={redirectToReg} style={{marginTop: "15px", marginBottom: "0"}}>Зарегистрироваться</Button>]}
+                <Button variant="outlined" style={{marginTop: "25px", width: "30%"}} onClick={login} key="login-button">Войти</Button>,
+                <Button variant="text" onClick={redirectToReg} style={{marginTop: "15px", marginBottom: "0"}} key="redir-button">Зарегистрироваться</Button>]}
                 authForm={true}
                 style={{paddingBottom: "15px"}}/>
         </div>

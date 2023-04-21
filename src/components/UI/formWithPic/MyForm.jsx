@@ -2,7 +2,6 @@ import React from 'react';
 import classes from "./MyForm.module.css";
 
 const MyForm = ({list, authForm, ...props}) => {
-    console.log(props)
     return (
         <div {...props} className={classes.MyForm}>
             {authForm

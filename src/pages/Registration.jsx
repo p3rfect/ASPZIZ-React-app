@@ -58,8 +58,8 @@ const Registration = () => {
                      text={"Данный пользователь уже существует"}/>
             <UnknownError setShowAlert={setShowUnknownError} showAlert={showUnknownError}/>
             <MyForm list={[
-                <h2 style={{fontSize: "40px", margin: "0 0 20px 0"}}>Регистрация</h2>,
-                <FormControl sx={{ m: 1, width: "80%" }} variant="outlined">
+                <h2 style={{fontSize: "40px", margin: "0 0 20px 0"}} key="h2">Регистрация</h2>,
+                <FormControl sx={{ m: 1, width: "80%" }} variant="outlined" key="email-form">
                     <InputLabel htmlFor="outlined-email">Адрес эл. почты</InputLabel>
                     <OutlinedInput
                         id="outlined-login-input"
@@ -68,7 +68,7 @@ const Registration = () => {
                         onChange={e => {setEmail(e.target.value)}}
                     />
                 </FormControl>,
-                <FormControl sx={{ m: 1, width: "80%" }} variant="outlined">
+                <FormControl sx={{ m: 1, width: "80%" }} variant="outlined" key="password-form">
                     <InputLabel htmlFor="outlined-adornment-password">Пароль</InputLabel>
                     <OutlinedInput
                         id="outlined-password-input"
@@ -90,7 +90,7 @@ const Registration = () => {
                         }
                     />
                 </FormControl>,
-                <FormControl sx={{ m: 1, width: "80%" }} variant="outlined">
+                <FormControl sx={{ m: 1, width: "80%" }} variant="outlined" key="confirm-password-form">
                     <InputLabel htmlFor="outlined-adornment-password">Повторите пароль</InputLabel>
                     <OutlinedInput
                         id="outlined-password-input"
@@ -100,8 +100,8 @@ const Registration = () => {
                         onChange={e => {setRepeatedPassword(e.target.value)}}
                     />
                 </FormControl>,
-                <Button variant="outlined" style={{marginTop: "25px", width: "50%"}} onClick={registerUser}>Зарегистрироваться</Button>,
-                <Button variant="text" onClick={redirectToLogin} style={{marginTop: "15px", marginBottom: "0"}}>Войти</Button>]}
+                <Button variant="outlined" style={{marginTop: "25px", width: "50%"}} onClick={registerUser} key="reg-button">Зарегистрироваться</Button>,
+                <Button variant="text" onClick={redirectToLogin} style={{marginTop: "15px", marginBottom: "0"}} key="redir-button">Войти</Button>]}
                 authForm={true}
                 style={{paddingBottom: "15px"}}/>
         </div>
