@@ -16,7 +16,6 @@ const MyForm = ({list, authForm, ...props}) => {
             <div className={classes.FieldsContainer}>
                 {list.map(e => {
                     let x = e
-                    console.log(e.type)
                     if (e.tag === "TextField") x.className = classes.InputItem
                     return x;
                 })}
