@@ -1,0 +1,10 @@
+body, html{
+    height: 90%;
+    margin: 0;
+    background-color: #e9edf3;
+    color: #2c2e30;
+    font-family: "Lora","Arial",serif;
+    font-variant: normal;
+    font-feature-settings: normal;
+    min-width: 300px;
+}
