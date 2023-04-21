@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useCallback, useEffect} from 'react';
 import MyForm from "../components/UI/formWithPic/MyForm";
 import {useNavigate} from "react-router-dom";
 import {register} from "../services/AuthService";
@@ -38,6 +38,21 @@ const Registration = () => {
             setShowPasswordAlert(true)
         }
     }
+
+    const registerUserCallback = useCallback(registerUser, [email, password, route, repeatedPassword])
+
+    useEffect(() => {
+        const listener = async event => {
+            if (event.code === "Enter" || event.code === "NumpadEnter"){
+                event.preventDefault()
+                await registerUserCallback()
+            }
+        }
+        document.addEventListener("keydown", listener)
+        return () => {
+            document.removeEventListener("keydown", listener)
+        }
+    }, [registerUserCallback])
 
     const redirectToLogin = () => {
         route("/")

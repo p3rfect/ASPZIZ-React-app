@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import MyForm from "../components/UI/formWithPic/MyForm";
 import {useNavigate} from "react-router-dom";
 import {getTokenAsync} from "../services/AuthService"
@@ -28,6 +28,21 @@ function Login() {
             }
         }
     }
+
+    const loginCallback = useCallback(login, [email, password, route])
+
+    useEffect(() => {
+        const listener = async event => {
+            if (event.code === "Enter" || event.code === "NumpadEnter"){
+                event.preventDefault()
+                await loginCallback()
+            }
+        }
+        document.addEventListener("keydown", listener)
+        return () => {
+            document.removeEventListener("keydown", listener)
+        }
+    }, [loginCallback])
 
     const redirectToReg = () => {
         route("/registration")
