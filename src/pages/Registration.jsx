@@ -50,7 +50,7 @@ const Registration = () => {
     };
 
     return (
-        <div style={{textAlign: "center", alignContent: "center"}}>
+        <div style={{textAlign: "center", alignContent: "center", minWidth: "300px"}}>
             <h1 style={{fontSize: "100px", marginBottom: "0px"}}>БГУИР</h1>
             <MyAlert setShowAlert={setShowPasswordAlert} showAlert={showPasswordAlert} title={"Ошибка"}
                      text={"Введенные пароли не совпадают"}/>
