@@ -1,11 +1,11 @@
 import React from 'react';
 import classes from "./MyForm.module.css";
 
-const MyForm = ({list, loginForm, ...props}) => {
+const MyForm = ({list, authForm, ...props}) => {
     console.log(props)
     return (
         <div {...props} className={classes.MyForm}>
-            {loginForm
+            {authForm
             ?
                 <div className={classes.PicContainer}>
                     <svg className={classes.Pic} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
@@ -14,7 +14,14 @@ const MyForm = ({list, loginForm, ...props}) => {
                 </div>
             : null
             }
-            {list}
+            <div className={classes.FieldsContainer}>
+                {list.map(e => {
+                    let x = e
+                    console.log(e.type)
+                    if (e.tag === "TextField") x.className = classes.InputItem
+                    return x;
+                })}
+            </div>
         </div>
     );
 };

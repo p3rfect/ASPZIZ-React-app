@@ -33,3 +33,18 @@
     border: 6px solid #fff;
     background-color: rgb(58, 84, 127);
 }
+
+.FieldsContainer{
+    margin: 20px 50px 20px 50px;
+    display: flex;
+    /*flex-direction: column;*/
+    /*justify-content: center;*/
+    align-items: center;
+    flex-flow: column;
+    /*width: 100%;*/
+    /*vertical-align: center;*/
+}
+
+.InputItem{
+    flex-grow: 1;
+}

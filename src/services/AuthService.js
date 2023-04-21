@@ -25,7 +25,7 @@ export async function getTokenAsync(email, password) {
 
     } else {
         // если произошла ошибка, из errorText получаем текст ошибки
-        throw new Error("Error: " + response.status + data.errorText)
+        throw new Error(data.errorText)
     }
 }
 
@@ -44,7 +44,7 @@ export const register = async (email, password) => {
     const data = await response.json()
 
     if (!response.ok) {
-        throw new Error("Error: " + response.status + data.errorText)
+        throw new Error(data.errorText)
     }
 }
 
