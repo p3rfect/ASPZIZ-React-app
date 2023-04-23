@@ -3,7 +3,7 @@ body, html{
     margin: 0;
     background-color: #e9edf3;
     color: #2c2e30;
-    font-family: "Lora","Arial",serif;
-    font-variant: normal;
-    font-feature-settings: normal;
+    font-family: ff-meta-correspondence-web-p, sans-serif;
+    font-style: normal;
+    font-weight: 400;
 }

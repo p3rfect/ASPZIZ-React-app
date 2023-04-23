@@ -55,7 +55,7 @@ function Login() {
     };
 
     return (
-        <div style={{textAlign: "center", alignContent: "center"}}>
+        <div style={{textAlign: "center", alignContent: "center", marginTop: "80px"}}>
             <h1 style={{fontSize: "100px", marginBottom: "0px"}}>БГУИР</h1>
             <UnknownError showAlert={showUnknownError} setShowAlert={setShowUnknownError}/>
             <MyAlert showAlert={showNotFoundError} setShowAlert={setShowNotFoundError} title="Ошибка"
