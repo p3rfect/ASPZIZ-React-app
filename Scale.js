@@ -1,6 +1,6 @@
 const forcedOriginalScale = () => {
-    const App = document.getElementsByName("html");
-    App.style.zoom = 1 / devicePixelRatio;
+    const App = document.getElementsByTagName("html")
+    App[0].style.zoom = 1 / devicePixelRatio;
 }
 
 document.addEventListener("DOMContentLoaded", forcedOriginalScale)
