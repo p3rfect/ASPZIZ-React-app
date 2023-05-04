@@ -55,7 +55,7 @@ function Login() {
             if (!/^([a-z0-9_-]+\.)*[a-z0-9_-]+@[a-z0-9_-]+(\.[a-z0-9_-]+)*\.[a-z]{2,6}$/i.test(values.email)) {
                 errors.email = 'Введите действительный адрес эл. почты';
             }
-            if (values.password.length >= 8 && !/[\w*-_+!]{8,}/.test(values.password)){
+            if (values.password.length >= 8 && /[^\w_*+!]/.test(values.password)){
                 errors.password = 'Пароль может содержать только строчные и заглавные латинские буквы, цифры и спец. символы (_-*+!)'
             }
             return errors
