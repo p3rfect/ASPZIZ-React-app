@@ -1,13 +1,15 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import MyForm from "../components/UI/formWithPic/MyForm";
 import {useNavigate} from "react-router-dom";
-import {getTokenAsync} from "../services/AuthService"
 import Button from '@mui/material/Button';
 import {VisibilityOff, Visibility} from "@mui/icons-material";
 import {InputAdornment, FormControl, InputLabel, OutlinedInput} from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import UnknownError from "../components/UI/UnknownError/UnknownError";
 import MyAlert from "../components/UI/MyAlert/MyAlert";
+import {setUser} from '../features/user/userSlice.js'
+import {useDispatch} from "react-redux";
+import {login as LoginRequest} from '../services/AuthService.js';
 function Login() {
 
     const [email, setEmail] = useState('')
@@ -16,9 +18,11 @@ function Login() {
     const route = useNavigate()
     const [showUnknownError, setShowUnknownError] = useState(false)
     const [showNotFoundError, setShowNotFoundError] = useState(false)
+    const dispatch = useDispatch()
     const login = async () => {
         try{
-            await getTokenAsync(email, password)
+            const response = await LoginRequest(email, password)
+            dispatch(setUser({email: email, role: response.data.role}))
             route("/info")
         } catch(e){
             if (e.message === "Invalid user name or password"){
