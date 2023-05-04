@@ -1,7 +1,7 @@
 body, html{
     height: 90%;
     margin: 0;
-    background-color: #e9edf3;
+    background: linear-gradient(#f4faff,#f4faff),radial-gradient(circle at 0 0,#fff,#fff);
     color: #2c2e30;
     font-family: ff-meta-correspondence-web-p, sans-serif;
     font-style: normal;
