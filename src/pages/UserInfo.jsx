@@ -1,10 +1,12 @@
 import React from 'react';
 import {Navigate} from "react-router-dom";
-import {isNotAuthed} from "../services/AuthService"
 import {test} from '../services/AuthService.js';
+import {useDispatch} from "react-redux";
+import {getIsAuth} from "../features/user/userSlice";
 
 const UserInfo = () => {
-    if (isNotAuthed()) return <Navigate to="/"/>
+    const dispatch = useDispatch()
+    if (!dispatch(getIsAuth())) return <Navigate to="/"/>
 
     const testb = () => {
         test("Nikita");

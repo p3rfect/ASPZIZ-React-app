@@ -40,5 +40,3 @@ export const test = async (email) => {
     //     throw new Error(data.errorText)
     // }
 }
-
-export const isNotAuthed = () => sessionStorage.getItem("tokenKey") === null

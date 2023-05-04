@@ -23,6 +23,7 @@ function Login() {
         try{
             const response = await LoginRequest(email, password)
             dispatch(setUser({email: email, role: response.data.role}))
+
             route("/info")
         } catch(e){
             if (e.message === "Invalid user name or password"){
