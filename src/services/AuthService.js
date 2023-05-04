@@ -52,7 +52,7 @@ export const test = async (email) => {
 
     const response = await fetch("https://localhost:44387/test", {
         method: "GET",
-        headers: { "Accept": "application/json", "Authorization": "Bearer " + sessionStorage.tokenKey},
+        headers: {"Accept": "application/json", "Authorization": "Bearer " + sessionStorage.tokenKey},
         mode: "cors"
     });
     const data = await response.json()
