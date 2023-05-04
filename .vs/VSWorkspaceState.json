@@ -1,8 +1,10 @@
 {
   "ExpandedNodes": [
     "",
-    "\\src"
+    "\\src",
+    "\\src\\pages",
+    "\\src\\services"
   ],
-  "SelectedNode": "\\src\\App.js",
+  "SelectedNode": "\\src\\services\\AuthService.js",
   "PreviewInSolutionExplorer": false
 }
