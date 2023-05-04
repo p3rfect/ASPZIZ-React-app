@@ -46,4 +46,22 @@ export const register = async (email, password) => {
     }
 }
 
+export const test = async (email) => {
+    const formData = new FormData();
+    formData.append("email", email);
+
+    const response = await fetch("https://localhost:44387/test", {
+        method: "GET",
+        headers: {"Accept": "application/json", "Authorization": "Bearer " + sessionStorage.tokenKey},
+        mode: "cors"
+    });
+    const data = await response.json()
+
+    console.log(data)
+
+    // if (!response.ok) {
+    //     throw new Error(data.errorText)
+    // }
+}
+
 export const isNotAuthed = () => sessionStorage.getItem("tokenKey") === null
