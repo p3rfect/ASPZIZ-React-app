@@ -1,7 +1,7 @@
 import React from 'react';
 import classes from "./MyForm.module.css";
 
-const MyForm = ({list, authForm, ...props}) => {
+const MyForm = ({list, authForm, handleSubmit, ...props}) => {
     return (
         <div {...props} className={classes.MyForm}>
             {authForm
@@ -13,13 +13,15 @@ const MyForm = ({list, authForm, ...props}) => {
                 </div>
             : null
             }
-            <div className={classes.FieldsContainer}>
-                {list.map(e => {
-                    let x = e
-                    if (e.tag === "TextField") x.className = classes.InputItem
-                    return x;
-                })}
-            </div>
+            <form onSubmit={handleSubmit}>
+                <div className={classes.FieldsContainer}>
+                    {list.map(e => {
+                        let x = e
+                        if (e.tag === "TextField") x.className = classes.InputItem
+                        return x;
+                    })}
+                </div>
+            </form>
         </div>
     );
 };
