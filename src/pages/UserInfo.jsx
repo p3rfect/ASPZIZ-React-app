@@ -10,6 +10,7 @@ const UserInfo = () => {
     return (
         <div>
             <Header page="info"/>
+            {/*    next element should be with marginTop: "60px" because of the positioning of the header element*/}
         </div>
     );
 };
