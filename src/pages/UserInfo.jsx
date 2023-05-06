@@ -1,20 +1,15 @@
 import React from 'react';
 import {Navigate} from "react-router-dom";
-import {test} from '../services/AuthService.js';
-import {useDispatch} from "react-redux";
-import {getIsAuth} from "../features/user/userSlice";
+import {useSelector} from "react-redux";
+import Header from '../components/UI/Header/Header'
 
 const UserInfo = () => {
-    const dispatch = useDispatch()
-    if (!dispatch(getIsAuth())) return <Navigate to="/"/>
-
-    const testb = () => {
-        test("Nikita");
-    }
+    const auth = useSelector((state) => state.user.isAuth)
+    if (!auth) return <Navigate to="/"/>
 
     return (
         <div>
-            <a onClick={testb}>asdasdasda</a>
+            <Header page="info"/>
         </div>
     );
 };

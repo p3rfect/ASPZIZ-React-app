@@ -13,9 +13,13 @@ export const userSlice = createSlice({
             state.email = action.payload.email
             state.isAuth = true
         },
-        getIsAuth: (state) => state.isAuth
+        logout: (state) => {
+            state.role = ''
+            state.email = ''
+            state.isAuth = false
+        }
     }
 })
 
-export const {setUser, getIsAuth} = userSlice.actions
+export const {setUser, getIsAuth, logout} = userSlice.actions
 export default userSlice.reducer
