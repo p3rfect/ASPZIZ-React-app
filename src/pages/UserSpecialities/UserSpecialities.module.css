@@ -1,0 +1,35 @@
+.Configuration{
+    margin-top: 100px;
+    background-color: white;
+    width: 70%;
+    height: 200px;
+    padding-top: 20px;
+    margin-left: 15%;
+    border-radius: 10px;
+    box-shadow: 10px 10px 20px 10px rgba(0, 0, 0, .05);
+    display: flex;
+    flex-direction: column;
+}
+
+.ConfigurationName{
+    margin-left: 30%;
+    margin-bottom: 20px;
+    font-family: ff-meta-correspondence-web-p, sans-serif;
+    font-style: normal;
+    font-weight: 400;
+}
+
+.SelectorWrap{
+    display: flex;
+    margin-left: 15%;
+    width: 100%;
+}
+
+.ConfigurationFormControl{
+    width: 20%;
+    margin-left: 5%;
+}
+
+.ConfigurationFormControl:first-child{
+    margin-left: 0;
+}

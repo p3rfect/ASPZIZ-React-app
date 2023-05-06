@@ -10,7 +10,7 @@ import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 import UserExams from "./pages/UserExams";
-import UserSpecialities from "./pages/UserSpecialities";
+import UserSpecialities from "./pages/UserSpecialities/UserSpecialities";
 
 function App() {
   return (
