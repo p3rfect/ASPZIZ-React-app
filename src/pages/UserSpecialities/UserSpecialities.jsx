@@ -43,7 +43,7 @@ const UserSpecialities = () => {
             <div className={classes.Configuration}>
                 <Typography variant="h3" className={classes.ConfigurationName}>Выбор типа заявления</Typography>
                 <div className={classes.SelectorWrap}>
-                    <FormControl className={classes.ConfigurationFormControl} injectFirst>
+                    <FormControl className={classes.ConfigurationFormControl}>
                         <InputLabel id="form-select-label">Форма обучения</InputLabel>
                         <Select
                             labelId="form-select-label"

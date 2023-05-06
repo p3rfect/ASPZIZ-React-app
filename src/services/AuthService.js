@@ -6,7 +6,9 @@ export const login = async (email, password) => {
         formData.append("grant_type", "password")
         formData.append("email", email)
         formData.append("password", password)
-        return await $api.post('/token', formData)
+        const response = await $api.post('/token', formData)
+        localStorage.setItem('accessToken', response.data.access_token)
+        return response
     } catch (e) {
         throw new Error(e.response.data.errorText)
     }

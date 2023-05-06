@@ -17,6 +17,7 @@ export const userSlice = createSlice({
             state.role = ''
             state.email = ''
             state.isAuth = false
+            localStorage.removeItem('accessToken')
         }
     }
 })
