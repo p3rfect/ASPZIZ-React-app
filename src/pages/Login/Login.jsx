@@ -1,17 +1,18 @@
 import React, {useEffect, useState} from 'react';
-import MyForm from "../components/UI/formWithPic/MyForm";
+import MyForm from "../../components/UI/formWithPic/MyForm";
 import {useNavigate} from "react-router-dom";
 import Button from '@mui/material/Button';
 import {VisibilityOff, Visibility} from "@mui/icons-material";
 import {InputAdornment, FormControl, InputLabel, OutlinedInput, FormHelperText} from "@mui/material";
 import IconButton from "@mui/material/IconButton";
-import UnknownError from "../components/UI/UnknownError/UnknownError";
-import MyAlert from "../components/UI/MyAlert/MyAlert";
-import {setUser} from '../features/user/userSlice.js'
+import UnknownError from "../../components/UI/UnknownError/UnknownError";
+import MyAlert from "../../components/UI/MyAlert/MyAlert";
+import {setUser} from '../../features/user/userSlice.js'
 import {useDispatch} from "react-redux";
-import {login as LoginRequest} from '../services/AuthService.js';
+import {login as LoginRequest} from '../../services/AuthService.js';
 import {useFormik} from "formik";
 import * as yup from 'yup';
+import classes from './Login.module.css'
 
 const validationSchema = yup.object({
     email: yup
@@ -93,13 +94,13 @@ function Login() {
     };
 
     return (
-        <div style={{textAlign: "center", alignContent: "center", marginTop: "80px"}}>
-            <h1 style={{fontSize: "100px", marginBottom: "0px"}}>БГУИР</h1>
+        <div className={classes.Container}>
+            <h1 className={classes.UniName}>БГУИР</h1>
             <UnknownError showAlert={showUnknownError} setShowAlert={setShowUnknownError}/>
             <MyAlert showAlert={showNotFoundError} setShowAlert={setShowNotFoundError} title="Ошибка"
                      text = "Неверные адрес эл. почты или пароль"/>
             <MyForm list={[
-                <h2 style={{fontSize: "40px", margin: "0 0 20px 0"}} key="h2">Вход</h2>,
+                <h2 className={classes.FormName} key="h2">Вход</h2>,
                 <FormControl sx={{ m: 1, width: "80%" }} variant="outlined" key="email-form">
                     <InputLabel htmlFor="outlined-email" style={formik.touched.email && formik.errors.email ? {color: "red"} : {}}>Адрес эл. почты</InputLabel>
                     <OutlinedInput
@@ -111,7 +112,7 @@ function Login() {
                     />
                     <FormHelperText style={{color: "red"}}>{formik.touched.email && formik.errors.email}</FormHelperText>
                 </FormControl>,
-                <FormControl sx={{ m: 1, width: "80%" }} variant="outlined" key="password-form">
+                <FormControl className={classes.FormControl} variant="outlined" key="password-form">
                     <InputLabel htmlFor="outlined-adornment-password" style={formik.touched.password && formik.errors.password ? {color: "red"} : {}}>Пароль</InputLabel>
                     <OutlinedInput
                         id="password"
@@ -135,8 +136,8 @@ function Login() {
                     />
                     <FormHelperText style={{color: "red"}}>{formik.touched.password && formik.errors.password}</FormHelperText>
                 </FormControl>,
-                <Button variant="outlined" style={{marginTop: "25px", width: "30%"}} type="submit" key="login-button">Войти</Button>,
-                <Button variant="text" onClick={redirectToReg} style={{marginTop: "15px", marginBottom: "0"}} key="redir-button">Зарегистрироваться</Button>]}
+                <Button variant="outlined" className={classes.SubmitButton} type="submit" key="login-button">Войти</Button>,
+                <Button variant="text" onClick={redirectToReg} className={classes.RedirButton} key="redir-button">Зарегистрироваться</Button>]}
                 authForm={true}
                 style={{paddingBottom: "15px"}}
                 handleSubmit={formik.handleSubmit}/>

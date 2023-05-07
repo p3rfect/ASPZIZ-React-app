@@ -1,16 +1,17 @@
 import React, {useEffect} from 'react';
-import MyForm from "../components/UI/formWithPic/MyForm";
+import MyForm from "../../components/UI/formWithPic/MyForm";
 import {useNavigate} from "react-router-dom";
-import {register} from "../services/AuthService";
+import {register} from "../../services/AuthService";
 import {FormControl, FormHelperText, InputAdornment, InputLabel, OutlinedInput} from "@mui/material";
 import {useState} from "react";
 import Button from "@mui/material/Button";
-import MyAlert from "../components/UI/MyAlert/MyAlert";
-import UnknownError from "../components/UI/UnknownError/UnknownError";
+import MyAlert from "../../components/UI/MyAlert/MyAlert";
+import UnknownError from "../../components/UI/UnknownError/UnknownError";
 import IconButton from "@mui/material/IconButton";
 import {Visibility, VisibilityOff} from "@mui/icons-material";
 import * as yup from "yup";
 import {useFormik} from "formik";
+import classes from './Registration.module.css'
 
 const validationSchema = yup.object({
     email: yup
@@ -98,16 +99,16 @@ const Registration = () => {
     };
 
     return (
-        <div style={{textAlign: "center", alignContent: "center", marginTop: "80px"}}>
-            <h1 style={{fontSize: "100px", marginBottom: "0px"}}>БГУИР</h1>
+        <div className={classes.Container}>
+            <h1 className={classes.UniName}>БГУИР</h1>
             <MyAlert setShowAlert={setShowPasswordAlert} showAlert={showPasswordAlert} title={"Ошибка"}
                      text={"Введенные пароли не совпадают"}/>
             <MyAlert setShowAlert={setShowUserExistAlert} showAlert={showUserExistAlert} title={"Ошибка"}
                      text={"Данный пользователь уже существует"}/>
             <UnknownError setShowAlert={setShowUnknownError} showAlert={showUnknownError}/>
             <MyForm list={[
-                <h2 style={{fontSize: "40px", margin: "0 0 20px 0"}} key="h2">Регистрация</h2>,
-                <FormControl sx={{ m: 1, width: "80%" }} variant="outlined" key="email-form">
+                <h2 className={classes.FormName} key="h2">Регистрация</h2>,
+                <FormControl className={classes.FormControl} variant="outlined" key="email-form">
                     <InputLabel htmlFor="outlined-email" style={formik.touched.email && formik.errors.email ? {color: "red"} : {}}>
                         Адрес эл. почты
                     </InputLabel>
@@ -122,7 +123,7 @@ const Registration = () => {
                         {formik.touched.email && formik.errors.email}
                     </FormHelperText>
                 </FormControl>,
-                <FormControl sx={{ m: 1, width: "80%" }} variant="outlined" key="password-form">
+                <FormControl className={classes.FormControl} variant="outlined" key="password-form">
                     <InputLabel htmlFor="outlined-adornment-password"
                                 style={formik.touched.password && formik.errors.password ? {color: "red"} : {}}>
                         Пароль
@@ -151,7 +152,7 @@ const Registration = () => {
                         {formik.touched.password && formik.errors.password}
                     </FormHelperText>
                 </FormControl>,
-                <FormControl sx={{ m: 1, width: "80%" }} variant="outlined" key="confirm-password-form">
+                <FormControl className={classes.FormControl} variant="outlined" key="confirm-password-form">
                     <InputLabel htmlFor="outlined-adornment-password"
                                 style={formik.touched.repeatedPassword && formik.errors.repeatedPassword ? {color: "red"} : {}}>
                         Повторите пароль
@@ -166,8 +167,8 @@ const Registration = () => {
                     />
                     <FormHelperText style={{color: "red"}}>{formik.touched.repeatedPassword && formik.errors.repeatedPassword}</FormHelperText>
                 </FormControl>,
-                <Button variant="outlined" style={{marginTop: "25px", width: "50%"}} type="submit" key="reg-button">Зарегистрироваться</Button>,
-                <Button variant="text" onClick={redirectToLogin} style={{marginTop: "15px", marginBottom: "0"}} key="redir-button">Войти</Button>]}
+                <Button variant="outlined" className={classes.SubmitButton} type="submit" key="reg-button">Зарегистрироваться</Button>,
+                <Button variant="text" onClick={redirectToLogin} className={classes.RedirButton} key="redir-button">Войти</Button>]}
                 authForm={true}
                 style={{paddingBottom: "15px"}}/>
         </div>

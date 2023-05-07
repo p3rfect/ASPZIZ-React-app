@@ -1,0 +1,30 @@
+.Container{
+    text-align: center;
+    align-content: center;
+    margin-top: 80px;
+}
+
+.UniName{
+    font-size: 100px;
+    margin-bottom: 0;
+}
+
+.FormName{
+    font-size: 40px;
+    margin: 0 0 20px 0;
+}
+
+.FormControl{
+    width: 80%;
+    margin: 8px;
+}
+
+.SubmitButton{
+    margin-top: 25px;
+    width: 30%;
+}
+
+.RedirButton{
+    margin-top: 15px;
+    margin-bottom: 0;
+}

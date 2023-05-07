@@ -1,18 +1,18 @@
 import React from 'react';
-import {Navigate} from "react-router-dom";
+import Header from "../../components/UI/Header/Header";
 import {useSelector} from "react-redux";
-import Header from '../components/UI/Header/Header'
+import {Navigate} from "react-router-dom";
 
-const UserInfo = () => {
+const UserExams = () => {
     const auth = useSelector((state) => state.user.isAuth)
     if (!auth) return <Navigate to="/"/>
 
     return (
         <div>
-            <Header page="info"/>
+            <Header page="exams"/>
             {/*    next element should be with marginTop: "60px" because of the positioning of the header element*/}
         </div>
     );
 };
 
-export default UserInfo;
+export default UserExams;
