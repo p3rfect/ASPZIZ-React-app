@@ -6,13 +6,6 @@ import {setSpecialtiesList} from "../../features/specialties/specialitiesSlice";
 import {FormControl, InputLabel, MenuItem, Typography} from "@mui/material";
 import Select from '@mui/material/Select';
 import classes from './UserSpecialities.module.css'
-import createCache from '@emotion/cache';
-import {CacheProvider} from "@emotion/react";
-
-const cache = createCache({
-    key: 'css',
-    prepend: true,
-});
 
 const UserSpecialities = () => {
     const auth = useSelector((state) => state.user.isAuth)
@@ -36,7 +29,6 @@ const UserSpecialities = () => {
 
 
     return (
-        <CacheProvider value={cache}>
         <div>
             <Header page="applic"/>
             {/*    next element should be with marginTop: "100px" because of the positioning of the header element*/}
@@ -86,7 +78,6 @@ const UserSpecialities = () => {
                 </div>
             </div>
         </div>
-        </CacheProvider>
     );
 };
 
