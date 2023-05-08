@@ -167,7 +167,7 @@ const Registration = () => {
                     />
                     <FormHelperText style={{color: "red"}}>{formik.touched.repeatedPassword && formik.errors.repeatedPassword}</FormHelperText>
                 </FormControl>,
-                <Button variant="outlined" className={classes.SubmitButton} type="submit" key="reg-button">Зарегистрироваться</Button>,
+                <Button variant="outlined" className={classes.SubmitButton} type="submit" key="reg-button" onClick={formik.handleSubmit}>Зарегистрироваться</Button>,
                 <Button variant="text" onClick={redirectToLogin} className={classes.RedirButton} key="redir-button">Войти</Button>]}
                 authForm={true}
                 style={{paddingBottom: "15px"}}/>

@@ -1,22 +1,21 @@
 import React, {useEffect, useState} from 'react';
 import Header from "../../components/UI/Header/Header";
-import {useDispatch, useSelector} from "react-redux";
-import {Navigate} from "react-router-dom";
+import {useDispatch} from "react-redux";
 import {setSpecialtiesList} from "../../features/specialties/specialitiesSlice";
 import {FormControl, InputLabel, MenuItem, Typography} from "@mui/material";
 import Select from '@mui/material/Select';
 import classes from './UserSpecialities.module.css'
 
 const UserSpecialities = () => {
-    const auth = useSelector((state) => state.user.isAuth)
     const dispatch = useDispatch()
     useEffect(() => {
         dispatch(setSpecialtiesList())
-    }, [dispatch])
+    })
     // const specialitiesList = useSelector((state) => state.specialities.specialitiesList)
     const [form, setForm] = useState('')
     const [time, setTime] = useState('')
     const [payment, setPayment] = useState('')
+    // const route = useNavigate()
     const handleFormStateChange = (e) => {
         setForm(e)
         if (e === 'Дистанционная') {
@@ -24,9 +23,6 @@ const UserSpecialities = () => {
             setPayment('Платная')
         }
     }
-
-    if (!auth) return <Navigate to="/"/>
-
 
     return (
         <div>

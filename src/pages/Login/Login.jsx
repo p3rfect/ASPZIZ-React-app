@@ -136,7 +136,7 @@ function Login() {
                     />
                     <FormHelperText style={{color: "red"}}>{formik.touched.password && formik.errors.password}</FormHelperText>
                 </FormControl>,
-                <Button variant="outlined" className={classes.SubmitButton} type="submit" key="login-button">Войти</Button>,
+                <Button variant="outlined" className={classes.SubmitButton} onClick={formik.handleSubmit} type="submit" key="login-button">Войти</Button>,
                 <Button variant="text" onClick={redirectToReg} className={classes.RedirButton} key="redir-button">Зарегистрироваться</Button>]}
                 authForm={true}
                 style={{paddingBottom: "15px"}}

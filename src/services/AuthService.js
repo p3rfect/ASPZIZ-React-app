@@ -6,7 +6,7 @@ export const login = async (email, password) => {
         formData.append("grant_type", "password")
         formData.append("email", email)
         formData.append("password", password)
-        const response = await $api.post('/token', formData)
+        const response = await $api.post('/token/getnew', formData)
         localStorage.setItem('accessToken', response.data.access_token)
         return response
     } catch (e) {
@@ -25,20 +25,12 @@ export const register = async (email, password) => {
     }
 }
 
-export const test = async (email) => {
-    const formData = new FormData();
-    formData.append("email", email);
 
-    const response = await fetch("https://localhost:44387/test", {
-        method: "GET",
-        headers: {"Accept": "application/json"},
-        mode: "cors"
-    });
-    const data = await response.json()
-
-    console.log(data)
-
-    // if (!response.ok) {
-    //     throw new Error(data.errorText)
-    // }
+export const checkAuth = async () => {
+    try{
+        const response = await $api.get('/token/isvalid')
+        if (response.status === 200) return true;
+    } catch (e) {
+        return false;
+    }
 }
