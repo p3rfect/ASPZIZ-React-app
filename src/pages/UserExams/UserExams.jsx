@@ -73,7 +73,7 @@ const UserExams = () => {
     const handleSubmit = async () => {
         try {
             if (validateExams()) {
-                await postUserExams(exams)
+                await postUserExams(exams, email)
             }
         } catch (e) {
             console.log(e)

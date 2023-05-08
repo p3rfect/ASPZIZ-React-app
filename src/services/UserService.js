@@ -1,28 +1,31 @@
 import $api from '../http/index.js'
 
-export const postUserExams = async (exams) => {
+export const postUserExams = async (exams, email) => {
     try {
-        const formData = new FormData()
+        const formData = {}
         exams.forEach(exam => {
             if (exam.name === 'Русский язык' || exam.name === 'Белорусский язык') {
-                formData.append('IsRussian', (exam.name === 'Русский язык' ? 'true' : 'false'))
-                formData.append('LanguageExam', exam.type)
-                formData.append('LanguageScore', exam.points)
-                formData.append('LanguageMark', exam.schoolPoints)
+                formData.IsRussian = (exam.name === 'Русский язык')
+                formData.LanguageExam = exam.type
+                formData.LanguageScore = Number(exam.points)
+                formData.LanguageMark = Number(exam.schoolPoints)
             }
             else if (exam.name === 'Математика') {
-                formData.append('MathExam', exam.type)
-                formData.append('MathScore', exam.points)
-                formData.append('MathMark', exam.schoolPoints)
+                formData.MathExam = exam.type
+                formData.MathScore = Number(exam.points)
+                formData.MathMark = Number(exam.schoolPoints)
             }
             else if (exam.name === 'Физика' || exam.name === 'Английский язык'){
-                formData.append('IsPhysics', (exam.name === 'Физика' ? 'true' : 'false'))
-                formData.append('PhysicsExam', exam.type)
-                formData.append('PhysicsScore', exam.points)
-                formData.append('PhysicsMark', exam.schoolPoints)
+                formData.IsPhysics = (exam.name === 'Физика')
+                formData.PhysicsExam = exam.type
+                formData.PhysicsScore = Number(exam.points)
+                formData.PhysicsMark = Number(exam.schoolPoints)
             }
         })
-        await $api.post('/user/exams/update', formData)
+        const formData1 = new FormData()
+        formData1.append('examsJsonStr', JSON.stringify(formData))
+        formData1.append('email', email)
+        await $api.post('/user/exams/update', formData1)
     } catch (e) {
         throw new Error(e.response.data.errorText)
     }
