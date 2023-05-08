@@ -4,17 +4,43 @@ import {FormControl, InputLabel, MenuItem, TextField, Typography, Button, FormHe
 import Select from "@mui/material/Select";
 import classes from './UserExams.module.css'
 import SendIcon from '@mui/icons-material/Send';
+import MyAlert from "../../components/UI/MyAlert/MyAlert";
+import {getUserExams, postUserExams} from "../../services/UserService";
+import UnknownError from "../../components/UI/UnknownError/UnknownError";
+import {useSelector} from "react-redux";
 
 const UserExams = () => {
-    const examsTypes = ['ЦТ', 'Олимпиада']
-    const examsNames = ['Физика', 'Математика', 'Русский', 'Белорусский', 'Английский']
+    const examsTypes = ['ЦТ', 'ЕГЭ', 'Олимпиада']
+    const examsNames = ['Физика', 'Математика', 'Русский язык', 'Белорусский язык', 'Английский язык']
+    const email = useSelector((state) => state.user.email)
     const [exams, setExams] = useState([
         {id: 1, name: '', type: '', points: '', schoolPoints: ''},
         {id: 2, name: '', type: '', points: '', schoolPoints: ''},
-        {id: 3, name: '', type: '', points: '', schoolPoints: ''},
+        {id: 3, name: '', type: '', points: '', schoolPoints: ''}
     ])
     const examsTypesElements = examsTypes.map(type => <MenuItem key={type} value={type}>{type}</MenuItem>)
     const examsNamesElements = examsNames.map(name => <MenuItem key={name} value={name}>{name}</MenuItem>)
+
+    // const getExams = async () => {
+    //     try{
+    //         setExams([...(await getUserExams(email))])
+    //     } catch (e) {
+    //         console.log(e)
+    //         setShowUnknownError(true)
+    //     }
+    // }
+
+    useEffect(() => {
+        const getExams = async () => {
+            try{
+                setExams([...(await getUserExams(email))])
+            } catch (e) {
+                console.log(e)
+                setShowUnknownError(true)
+            }
+        }
+        getExams()
+    }, [])
 
     useEffect(() => {
         const newExams = exams.map((exam) => {
@@ -24,8 +50,48 @@ const UserExams = () => {
         setExams([...newExams])
     }, [exams])
 
+    const validateExams = () => {
+        if (exams.filter(exam =>
+            (exam.type === '' || exam.name === '' || exam.points === '' || exam.schoolPoints === '')).length > 0){
+            setShowNotFullfilledAlert(true)
+            return false
+        }
+        let rusFound = false, secondFound = false, mathFound = false, belFound = false
+        exams.forEach(exam => {
+            if (exam.name === 'Русский язык') rusFound = true
+            if (exam.name === 'Белорусский язык') belFound = true
+            if (exam.name === 'Физика' || exam.name === 'Английский язык') secondFound = true
+            if (exam.name === 'Математика') mathFound = true
+        })
+        if (!((rusFound || belFound) && mathFound && secondFound)){
+            setShowProfileAlert(true)
+            return false
+        }
+        return true
+    }
+
+    const handleSubmit = async () => {
+        try {
+            if (validateExams()) {
+                await postUserExams(exams)
+            }
+        } catch (e) {
+            console.log(e)
+            setShowUnknownError(true)
+        }
+    }
+
+    const [showNotFullfilledAlert, setShowNotFullfilledAlert] = useState(false)
+    const [showProfileAlert, setShowProfileAlert] = useState(false)
+    const [showUnknownError, setShowUnknownError] = useState(false)
+
     return (
         <div className={classes.Container}>
+            <MyAlert showAlert={showNotFullfilledAlert} setShowAlert={setShowNotFullfilledAlert} title={'Ошибка'}
+                     text={'Пожалуйста, перед отправкой заполните форму целиком.'}/>
+            <MyAlert showAlert={showProfileAlert} setShowAlert={setShowProfileAlert} title={'Ошибка'}
+                     text={'Такого профиля не существует!'}/>
+            <UnknownError showAlert={showUnknownError} setShowAlert={setShowUnknownError}></UnknownError>
             <Header page="exams"/>
             {/*    next element should be with marginTop: "60px" because of the positioning of the header element*/}
             <Typography variant="h2" className={classes.Title}>Ввод экзаменов</Typography>
@@ -75,14 +141,14 @@ const UserExams = () => {
                             label="Балл в аттестате"
                             value={exams[index].schoolPoints}
                             onChange={e => {exams[index].schoolPoints = e.target.value; setExams([...exams])}}
-                            error={/\D/.test(exams[index].schoolPoints) || Number(exams[index].schoolPoints) < 0 || Number(exams[index].schoolPoints) > 100}
-                            helperText={/\D/.test(exams[index].schoolPoints) || Number(exams[index].schoolPoints) < 0 || Number(exams[index].schoolPoints) > 100 ?
-                                "Балл должен быть числом от 0 до 100" : " "}
+                            error={/\D/.test(exams[index].schoolPoints) || Number(exams[index].schoolPoints) < 0 || Number(exams[index].schoolPoints) > 10}
+                            helperText={/\D/.test(exams[index].schoolPoints) || Number(exams[index].schoolPoints) < 0 || Number(exams[index].schoolPoints) > 10 ?
+                                "Балл должен быть числом от 0 до 10" : " "}
                         />
                     </div>
                 )}
             </div>
-            <Button className={classes.SubmitButton} variant="outlined" endIcon={<SendIcon/>}>Сохранить</Button>
+            <Button className={classes.SubmitButton} variant="outlined" endIcon={<SendIcon/>} onClick={handleSubmit}>Сохранить</Button>
         </div>
     );
 };
