@@ -5,17 +5,25 @@ import {setSpecialtiesList} from "../../features/specialties/specialitiesSlice";
 import {FormControl, InputLabel, MenuItem, Typography} from "@mui/material";
 import Select from '@mui/material/Select';
 import classes from './UserSpecialities.module.css'
+import {useNavigate} from "react-router-dom";
+import {useSelector} from "react-redux";
+import {getUserExams} from "../../services/UserService";
+import MyAlert from "../../components/UI/MyAlert/MyAlert";
+import UnknownError from "../../components/UI/UnknownError/UnknownError";
 
 const UserSpecialities = () => {
     const dispatch = useDispatch()
     useEffect(() => {
         dispatch(setSpecialtiesList())
-    })
+    }, [])
     // const specialitiesList = useSelector((state) => state.specialities.specialitiesList)
+    const email = useSelector((state) => state.user.email)
     const [form, setForm] = useState('')
     const [time, setTime] = useState('')
     const [payment, setPayment] = useState('')
-    // const route = useNavigate()
+    const [isPhysicsUser, setIsPhysicsUser] = useState(false)
+    const route = useNavigate()
+    // const EmptySpeciality = {faculty: '', name: '', code: ''}
     const handleFormStateChange = (e) => {
         setForm(e)
         if (e === 'Дистанционная') {
@@ -24,10 +32,40 @@ const UserSpecialities = () => {
         }
     }
 
+    useEffect(() => {
+        const checkUserExams = async () => {
+            try {
+                const result = await getUserExams(email)
+                if (result[0].name === ''){
+                    setShowRedirectAlert(true)
+                }
+                else if (result.filter(exam => exam.name === 'Физика').length > 0){
+                    setIsPhysicsUser(true)
+                    console.log(isPhysicsUser)
+                }
+            } catch (e) {
+                console.log(e)
+                setShowUnknownAlert(true)
+            }
+        }
+        checkUserExams()
+    }, [])
+
+    const [showUnknownAlert, setShowUnknownAlert] = useState(false)
+    const [showRedirectAlert, setShowRedirectAlert] = useState(false)
+
+    const handleCloseRedirectAlert = () => {
+        setShowRedirectAlert(false)
+        route('/exams')
+    }
+
     return (
         <div>
             <Header page="applic"/>
             {/*    next element should be with marginTop: "100px" because of the positioning of the header element*/}
+            <UnknownError showAlert={showUnknownAlert} setShowAlert={setShowUnknownAlert}></UnknownError>
+            <MyAlert showAlert={showRedirectAlert} setShowAlert={setShowRedirectAlert} title={'Ошибка'}
+                    text={'Сначала внесите информацию об экзаменах!'} propHandleCloseAlert={handleCloseRedirectAlert}/>
             <div className={classes.Configuration}>
                 <Typography variant="h3" className={classes.ConfigurationName}>Выбор типа заявления</Typography>
                 <div className={classes.SelectorWrap}>

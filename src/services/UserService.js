@@ -50,6 +50,7 @@ export const getUserExams = async (email) => {
                     schoolPoints: String(response.data.PhysicsMark)}
         return exams
     } catch (e) {
+        console.log(e)
         throw new Error(e.response.data.errorText)
     }
 }

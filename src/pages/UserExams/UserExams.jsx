@@ -21,15 +21,6 @@ const UserExams = () => {
     const examsTypesElements = examsTypes.map(type => <MenuItem key={type} value={type}>{type}</MenuItem>)
     const examsNamesElements = examsNames.map(name => <MenuItem key={name} value={name}>{name}</MenuItem>)
 
-    // const getExams = async () => {
-    //     try{
-    //         setExams([...(await getUserExams(email))])
-    //     } catch (e) {
-    //         console.log(e)
-    //         setShowUnknownError(true)
-    //     }
-    // }
-
     useEffect(() => {
         const getExams = async () => {
             try{
@@ -56,6 +47,23 @@ const UserExams = () => {
             setShowNotFullfilledAlert(true)
             return false
         }
+        if (exams.filter(exam =>
+            (/\D/.test(exam.points) || Number(exam.points) < 0 || Number(exam.points) > 100 ||
+                /\D/.test(exam.schoolPoints) || Number(exam.schoolPoints) < 0 || Number(exam.schoolPoints) > 10)
+        ).length > 0){
+            setShowFillingError(true)
+            return false
+        }
+        let isRepeated = false
+        exams.forEach((exam1, index1) => {
+            exams.forEach((exam2, index2) => {
+                if (index1 !== index2 && exam1.name === exam2.name) isRepeated = true
+            })
+        })
+        if (isRepeated){
+            setShowRepeatAlert(true)
+            return false;
+        }
         let rusFound = false, secondFound = false, mathFound = false, belFound = false
         exams.forEach(exam => {
             if (exam.name === 'Русский язык') rusFound = true
@@ -74,6 +82,7 @@ const UserExams = () => {
         try {
             if (validateExams()) {
                 await postUserExams(exams, email)
+                setShowSuccessAlert(true)
             }
         } catch (e) {
             console.log(e)
@@ -84,6 +93,9 @@ const UserExams = () => {
     const [showNotFullfilledAlert, setShowNotFullfilledAlert] = useState(false)
     const [showProfileAlert, setShowProfileAlert] = useState(false)
     const [showUnknownError, setShowUnknownError] = useState(false)
+    const [showSuccessAlert, setShowSuccessAlert] = useState(false)
+    const [showRepeatAlert, setShowRepeatAlert] = useState(false)
+    const [showFillingError, setShowFillingError] = useState(false)
 
     return (
         <div className={classes.Container}>
@@ -91,6 +103,12 @@ const UserExams = () => {
                      text={'Пожалуйста, перед отправкой заполните форму целиком.'}/>
             <MyAlert showAlert={showProfileAlert} setShowAlert={setShowProfileAlert} title={'Ошибка'}
                      text={'Такого профиля не существует!'}/>
+            <MyAlert showAlert={showSuccessAlert} setShowAlert={setShowSuccessAlert} title={'Успех'}
+                     text={'Успешно сохранено'}/>
+            <MyAlert showAlert={showRepeatAlert} setShowAlert={setShowRepeatAlert} title={'Ошибка'}
+                     text={'Вы ввели два одинаковых экзамена, не делайте так, пожалуйста!'}/>
+            <MyAlert showAlert={showFillingError} setShowAlert={setShowFillingError} title={'Ошибка'}
+                     text={'Некорректные баллы'}/>
             <UnknownError showAlert={showUnknownError} setShowAlert={setShowUnknownError}></UnknownError>
             <Header page="exams"/>
             {/*    next element should be with marginTop: "60px" because of the positioning of the header element*/}
