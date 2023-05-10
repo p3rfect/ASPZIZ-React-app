@@ -1,5 +1,4 @@
 import {createSlice} from "@reduxjs/toolkit";
-import {getAllSpecialities} from "../../services/UniService";
 
 export const specialitiesSlice = createSlice({
     name: 'specialities',
@@ -7,9 +6,8 @@ export const specialitiesSlice = createSlice({
         specialitiesList: []
     },
     reducers: {
-        setSpecialtiesList: async (state) => {
-            console.log(await getAllSpecialities())
-            state.specialitiesList = [{name: "asdasdasd"}]
+        setSpecialtiesList: (state, action) => {
+            state.specialitiesList = action.payload.list
         }
     }
 })

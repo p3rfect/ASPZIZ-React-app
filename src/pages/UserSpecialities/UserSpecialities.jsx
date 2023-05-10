@@ -2,28 +2,79 @@ import React, {useEffect, useState} from 'react';
 import Header from "../../components/UI/Header/Header";
 import {useDispatch} from "react-redux";
 import {setSpecialtiesList} from "../../features/specialties/specialitiesSlice";
-import {FormControl, InputLabel, MenuItem, Typography} from "@mui/material";
+import {FormControl, InputLabel, MenuItem, Typography, Button} from "@mui/material";
 import Select from '@mui/material/Select';
 import classes from './UserSpecialities.module.css'
 import {useNavigate} from "react-router-dom";
 import {useSelector} from "react-redux";
-import {getUserExams} from "../../services/UserService";
+// import {getUserExams} from "../../services/UserService";
 import MyAlert from "../../components/UI/MyAlert/MyAlert";
 import UnknownError from "../../components/UI/UnknownError/UnknownError";
+import {getAllSpecialities} from "../../services/UniService";
+import DeleteIcon from '@mui/icons-material/Delete'
+import AddIcon from '@mui/icons-material/Add';
+import SendIcon from '@mui/icons-material/Send';
 
 const UserSpecialities = () => {
-    const dispatch = useDispatch()
+    // const [isPhysicsUser, setIsPhysicsUser] = useState(true)
     useEffect(() => {
-        dispatch(setSpecialtiesList())
+        const fetchAllSpecialities = async () =>
+        {
+            dispatch(setSpecialtiesList({list: await getAllSpecialities()}))
+        }
+        fetchAllSpecialities()
     }, [])
-    // const specialitiesList = useSelector((state) => state.specialities.specialitiesList)
-    const email = useSelector((state) => state.user.email)
+
+    let specialitiesList = useSelector((state) => state.specialities.specialitiesList)
+
+    // useEffect(() => {
+    //     const checkUserExams = async () => {
+    //         try {
+    //             const result = await getUserExams(email)
+    //             if (result[0].name === ''){
+    //                 setShowRedirectAlert(true)
+    //             }
+    //             else if (result.filter(exam => exam.name === 'Физика').length > 0){
+    //                 setIsPhysicsUser(true)
+    //             }
+    //         } catch (e) {
+    //             console.log(e)
+    //             setShowUnknownAlert(true)
+    //         }
+    //     }
+    //     checkUserExams()
+    // }, [])
+
+    useEffect(() => {
+        specialitiesList = specialitiesList.map(({faculty, specialities}) => (
+            {faculty: faculty, specialities: specialities.filter(({isPhysics}) => isPhysics === isPhysicsUser)}
+        ))
+    }, [isPhysicsUser])
+
+    const dispatch = useDispatch()
+    const facultyElements = specialitiesList.map(({faculty}, index) =>
+        <MenuItem key={`faculty-item-${index}`} value={faculty}>{faculty}</MenuItem>
+    )
+
+    const specialitiesNamesElements = specialitiesList.map(({faculty, specialities}, fIndex) =>
+        ({faculty: faculty,
+            specialities: specialities
+                .map(({code, name}, sIndex) => (
+                    <MenuItem key={`faculty-${fIndex}-speciality-${sIndex}`} value={`(${code}) ${name}`}>{`(${code}) ${name}`}</MenuItem>
+                ))
+        })
+    )
+
+    // const email = useSelector((state) => state.user.email)
     const [form, setForm] = useState('')
     const [time, setTime] = useState('')
     const [payment, setPayment] = useState('')
-    const [isPhysicsUser, setIsPhysicsUser] = useState(false)
     const route = useNavigate()
-    // const EmptySpeciality = {faculty: '', name: '', code: ''}
+    const [userSpecialities, setUserSpecialities] = useState([
+        {faculty: '', name: '', id: 0}
+    ])
+    const [key, setKey] = useState(1)
+
     const handleFormStateChange = (e) => {
         setForm(e)
         if (e === 'Дистанционная') {
@@ -32,31 +83,26 @@ const UserSpecialities = () => {
         }
     }
 
-    useEffect(() => {
-        const checkUserExams = async () => {
-            try {
-                const result = await getUserExams(email)
-                if (result[0].name === ''){
-                    setShowRedirectAlert(true)
-                }
-                else if (result.filter(exam => exam.name === 'Физика').length > 0){
-                    setIsPhysicsUser(true)
-                    console.log(isPhysicsUser)
-                }
-            } catch (e) {
-                console.log(e)
-                setShowUnknownAlert(true)
-            }
-        }
-        checkUserExams()
-    }, [])
-
     const [showUnknownAlert, setShowUnknownAlert] = useState(false)
     const [showRedirectAlert, setShowRedirectAlert] = useState(false)
 
     const handleCloseRedirectAlert = () => {
         setShowRedirectAlert(false)
         route('/exams')
+    }
+
+    const handleAddSpeciality = () => {
+        setUserSpecialities([...userSpecialities, {faculty: '', name: '', id: key}])
+        setKey(key + 1)
+    }
+
+    const handleDeleteSpeciality = (index) => {
+        userSpecialities.splice(index, 1)
+        setUserSpecialities([...userSpecialities])
+    }
+
+    const handleSpecialitiesChange = () => {
+        setUserSpecialities([...userSpecialities])
     }
 
     return (
@@ -111,6 +157,51 @@ const UserSpecialities = () => {
                     </FormControl>
                 </div>
             </div>
+            {form !== '' && time !== '' && payment !== '' ?
+                <div className={classes.SpecialitiesWrap}>
+                    {userSpecialities.map((spec, index) => (
+                        <div key={`speciality-${spec.id}`} className={classes.SpecialityItem}>
+                            <FormControl className={classes.SpecialityFaculty}>
+                                <InputLabel id={`speciality-faculty-${spec.id}-label`}>Факультет</InputLabel>
+                                <Select
+                                    labelId={`speciality-faculty-${spec.id}-label`}
+                                    id={`speciality-faculty-select-${spec.id}`}
+                                    value={spec.faculty}
+                                    onChange={e => {
+                                        spec.name = (spec.faculty !== e.target.value ? '' : spec.name);
+                                        spec.faculty = e.target.value;
+                                        handleSpecialitiesChange()}
+                                    }
+                                    label="Факультет"
+                                >
+                                    {facultyElements}
+                                </Select>
+                            </FormControl>
+                            <FormControl disabled={spec.faculty === ''} className={classes.SpecialityName}>
+                                <InputLabel id={`speciality-name-${spec.id}`}>Специальность</InputLabel>
+                                <Select
+                                    labelId={`speciality-name-${spec.id}`}
+                                    id={`speciality-name-select-${spec.id}`}
+                                    value={spec.name}
+                                    onChange={e => {
+                                        spec.name = e.target.value
+                                        handleSpecialitiesChange()}
+                                    }
+                                    label="Специальность"
+                                >
+                                    {spec.faculty !== ''
+                                        ? specialitiesNamesElements.find((e) => e.faculty === spec.faculty).specialities
+                                        : null}
+                                </Select>
+                            </FormControl>
+                            <Button onClick={() => handleDeleteSpeciality(index)} className={classes.SpecialityDeleteButton} startIcon={<DeleteIcon />}>Удалить специальность</Button>
+                        </div>
+                    ))}
+                    <Button onClick={handleAddSpeciality} className={classes.ActionButton} endIcon={<AddIcon/>}>Добавить специальность</Button>
+                    <Button className={classes.ActionButton} endIcon={<SendIcon/>}>Сохранить</Button>
+                </div>
+                : null
+            }
         </div>
     );
 };
