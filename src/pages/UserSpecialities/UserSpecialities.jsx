@@ -45,11 +45,11 @@ const UserSpecialities = () => {
     //     checkUserExams()
     // }, [])
 
-    useEffect(() => {
-        specialitiesList = specialitiesList.map(({faculty, specialities}) => (
-            {faculty: faculty, specialities: specialities.filter(({isPhysics}) => isPhysics === isPhysicsUser)}
-        ))
-    }, [isPhysicsUser])
+    // useEffect(() => {
+    //     specialitiesList = specialitiesList.map(({faculty, specialities}) => (
+    //         {faculty: faculty, specialities: specialities.filter(({isPhysics}) => isPhysics === isPhysicsUser)}
+    //     ))
+    // }, [isPhysicsUser])
 
     const dispatch = useDispatch()
     const facultyElements = specialitiesList.map(({faculty}, index) =>
