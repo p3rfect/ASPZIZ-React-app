@@ -197,8 +197,8 @@ const UserSpecialities = () => {
                             <Button onClick={() => handleDeleteSpeciality(index)} className={classes.SpecialityDeleteButton} startIcon={<DeleteIcon />}>Удалить специальность</Button>
                         </div>
                     ))}
-                    <Button onClick={handleAddSpeciality} className={classes.ActionButton} endIcon={<AddIcon/>}>Добавить специальность</Button>
-                    <Button className={classes.ActionButton} endIcon={<SendIcon/>}>Сохранить</Button>
+                    <Button onClick={handleAddSpeciality} className={classes.AddButton} endIcon={<AddIcon/>}>Добавить специальность</Button>
+                    <Button className={classes.SaveButton} endIcon={<SendIcon/>}>Сохранить</Button>
                 </div>
                 : null
             }

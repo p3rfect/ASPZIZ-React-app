@@ -1,10 +1,10 @@
 .Configuration{
     margin-top: 100px;
     background-color: white;
-    width: 70%;
+    width: 60%;
     height: 200px;
-    padding-top: 20px;
-    margin-left: 15%;
+    padding-top: 10px;
+    margin-left: 20%;
     border-radius: 10px;
     box-shadow: 10px 10px 20px 10px rgba(0, 0, 0, .05);
     display: flex;
@@ -14,7 +14,7 @@
 
 .ConfigurationName{
     margin-left: 30%;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
     font-family: ff-meta-correspondence-web-p, sans-serif;
     font-style: normal;
     font-weight: 400;
@@ -22,16 +22,16 @@
 
 .SelectorWrap{
     display: flex;
-    margin-left: 15%;
+    margin-left: 5%;
     width: 100%;
 }
 
 .ConfigurationFormControl{
-    width: 20%;
-    margin-left: 5%;
+    width: 27%;
+    margin-left: 4%;
 }
 
-.ConfigurationFormControl:first-child{
+.ConfigurationFormControl:first-of-type{
     margin-left: 0;
 }
 
@@ -75,22 +75,30 @@
     height: 100%;
 }
 
-.ActionButton{
+.AddButton{
     margin-top: 20px;
     font-size: 17px;
     height: 50px;
     width: 15%;
     border-radius: 20px;
     text-transform: none;
+    background-color: white;
+    box-shadow: 10px 10px 20px 10px rgba(0, 0, 0, .05);
+}
+
+.SaveButton{
+    margin-top: 40px;
+    font-size: 27px;
+    height: 60px;
+    width: 20%;
+    border-radius: 20px;
+    text-transform: none;
     background-color: #1976d2;
     color: white;
+    margin-bottom: 50px;
 }
 
-.ActionButton:first-of-type{
-    margin-top: 40px
-}
-
-.ActionButton:hover{
+.SaveButton:hover{
     color: #1976d2;
     background-color: white;
 }
