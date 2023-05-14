@@ -1,0 +1,12 @@
+.h2{
+    text-decoration:underline;
+}
+.h1{
+    font-style:italic;
+}
+.Title{
+    margin-top: 100px;
+    margin-left: 0;
+    font-family: "Roboto","Helvetica","Arial",sans-serif;
+    font-weight: 400;
+}
