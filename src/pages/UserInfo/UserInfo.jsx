@@ -16,9 +16,6 @@ import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Tooltip from '@mui/material/Tooltip';
 
-const handleClick = async () => {
-    console.log(await test('Nikita'))
-}
 const pol = [
     { pl: 'Мужской'},
     { pl: 'Женский'},
@@ -946,7 +943,6 @@ export default function SimpleAccordion() {
                     </AccordionDetails>
                 </Accordion>
                 <Button className={classes.UserInfo} variant="outlined" endIcon={<SendIcon/>}>Сохранить</Button>
-                <Button onClick={handleClick} style={{marginTop: "100px"}}>Asdasdasda</Button>
             </div>
         </React.Fragment>
     );

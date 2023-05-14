@@ -50,7 +50,20 @@ export const getUserExams = async (email) => {
                     schoolPoints: String(response.data.PhysicsMark)}
         return exams
     } catch (e) {
-        console.log(e)
         throw new Error(e.response.data.errorText)
+    }
+}
+
+export const updateUserSpecialities = async (financingFormPeriod, specialityCodes, email) => {
+    try{
+        // console.log(specialityCodes)
+        const formData = new FormData()
+        formData.append("email", email)
+        formData.append("FinancingFormPeriod", financingFormPeriod)
+        formData.append("SpecialtiesCodes", specialityCodes)
+        await $api.post('/user/specialties/update', formData)
+    } catch (e) {
+        console.log(e);
+        throw new Error(e.response.data.errorText);
     }
 }

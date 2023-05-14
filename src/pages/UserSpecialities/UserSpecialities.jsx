@@ -14,17 +14,10 @@ import {getAllSpecialities} from "../../services/UniService";
 import DeleteIcon from '@mui/icons-material/Delete'
 import AddIcon from '@mui/icons-material/Add';
 import SendIcon from '@mui/icons-material/Send';
+import {updateUserSpecialities} from "../../services/UserService";
 
 const UserSpecialities = () => {
     // const [isPhysicsUser, setIsPhysicsUser] = useState(true)
-    useEffect(() => {
-        const fetchAllSpecialities = async () =>
-        {
-            dispatch(setSpecialtiesList({list: await getAllSpecialities()}))
-        }
-        fetchAllSpecialities()
-    }, [])
-
     let specialitiesList = useSelector((state) => state.specialities.specialitiesList)
 
     // useEffect(() => {
@@ -74,6 +67,14 @@ const UserSpecialities = () => {
         {faculty: '', name: '', id: 0}
     ])
     const [key, setKey] = useState(1)
+    useEffect(() => {
+        setUserSpecialities([...[{faculty: '', name: '', id: 0}]])
+        const fetchAllSpecialities = async () =>
+        {
+            dispatch(setSpecialtiesList({list: await getAllSpecialities(payment + ',' + form + ',' + time)}))
+        }
+        fetchAllSpecialities()
+    }, [form, time, payment])
 
     const handleFormStateChange = (e) => {
         setForm(e)
@@ -85,6 +86,7 @@ const UserSpecialities = () => {
 
     const [showUnknownAlert, setShowUnknownAlert] = useState(false)
     const [showRedirectAlert, setShowRedirectAlert] = useState(false)
+    const [showSuccessAlert, setShowSuccessAlert] = useState(false)
 
     const handleCloseRedirectAlert = () => {
         setShowRedirectAlert(false)
@@ -105,6 +107,17 @@ const UserSpecialities = () => {
         setUserSpecialities([...userSpecialities])
     }
 
+    const handleSubmit = async () => {
+        try{
+            await updateUserSpecialities(payment + ',' + form + ',' + time, userSpecialities.map(({name}) =>
+                name.split('(')[1].split(')')[0]
+            ))
+            setShowSuccessAlert(true)
+        } catch (e) {
+            setShowUnknownAlert(true)
+        }
+    }
+
     return (
         <div>
             <Header page="applic"/>
@@ -112,6 +125,7 @@ const UserSpecialities = () => {
             <UnknownError showAlert={showUnknownAlert} setShowAlert={setShowUnknownAlert}></UnknownError>
             <MyAlert showAlert={showRedirectAlert} setShowAlert={setShowRedirectAlert} title={'Ошибка'}
                     text={'Сначала внесите информацию об экзаменах!'} propHandleCloseAlert={handleCloseRedirectAlert}/>
+            <MyAlert showAlert={showSuccessAlert} setShowAlert={setShowSuccessAlert} title={'Успех'} text={'Успешно сохранено'}></MyAlert>
             <div className={classes.Configuration}>
                 <Typography variant="h3" className={classes.ConfigurationName}>Выбор типа заявления</Typography>
                 <div className={classes.SelectorWrap}>
@@ -198,7 +212,7 @@ const UserSpecialities = () => {
                         </div>
                     ))}
                     <Button onClick={handleAddSpeciality} className={classes.AddButton} endIcon={<AddIcon/>}>Добавить специальность</Button>
-                    <Button className={classes.SaveButton} endIcon={<SendIcon/>}>Сохранить</Button>
+                    <Button className={classes.SaveButton} onClick={handleSubmit} endIcon={<SendIcon/>}>Сохранить</Button>
                 </div>
                 : null
             }
