@@ -117,7 +117,7 @@ const validationSchema = yup.object({
     InstitutionType: yup.string().matches(/^[А-Яа-яA-Za-z ]+$/, 'Поле может содержать только буквы и пробелы'),
     Document: yup.string().matches(/^[А-Яа-яA-Za-z ]+$/, 'Поле может содержать только буквы и пробелы'),
     Language: yup.string().matches(/^[А-Яа-яA-Za-z ]+$/, 'Поле может содержать только буквы и пробелы'),
-    AverageScore: yup.string().matches(/^[0-9.]+$/, 'Должно быть числом от 0 до 10').test('range-check', 'Должно быть числом от 0 до 10', (value) => (Number(value) >= 0 && Number(value) <= 10)),
+    AverageScore: yup.string().matches(/^[0-9.]+$/, 'Должно быть числом от 0 до 10').test('range-check', 'Должно быть числом от 0 до 10', (value) => (value === '' || (Number(value) >= 0 && Number(value) <= 10))),
     PostalCode: yup.string().matches(/^[0-9.]+$/, 'Может содержать только цифры'),
     HouseNumber: yup.string().matches(/^[0-9.]+$/, 'Может содержать только цифры'),
     Country: yup.string().matches(/^[А-Яа-яA-Za-z ]+$/, 'Поле может содержать только буквы и пробелы'),

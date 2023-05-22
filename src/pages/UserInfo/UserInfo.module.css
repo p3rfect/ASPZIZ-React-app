@@ -1,6 +1,6 @@
 .FieldsContainer{
     display: grid;
-    grid-template-columns: 45% 45%;
+    grid-template-columns: 47.5% 47.5%;
     grid-template-areas:
     "a b"
     "c d"
@@ -9,7 +9,7 @@
     align-items: start;
     margin-left: 5%;
     margin-right: 5%;
-    grid-column-gap: 10%;
+    grid-column-gap: 5%;
 }
 
 .FirstLevelContainer{
