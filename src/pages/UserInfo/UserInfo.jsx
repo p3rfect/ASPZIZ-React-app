@@ -112,7 +112,7 @@ const validationSchema = yup.object({
     Lastnamelat: yup.string().required('Это обязательное поле').matches(/^[A-Za-z ]+$/, 'Поле должно содержать только латинские буквы верхнего и нижнего регистра'),
     Firstnamelat: yup.string().required('Это обязательное поле').matches(/^[A-Za-z ]+$/, 'Поле должно содержать только латинские буквы верхнего и нижнего регистра'),
     Series: yup.string().length(2, 'Длина должна быть равна 2').matches(/^[A-Z]+$/, 'Поле должно содержать только латинские буквы верхнего регистра'),
-    Number: yup.string().length(6, 'Длина должна быть равна 2').matches(/^[0-9]+$/, 'Поле должно состоять только из цифер'),
+    Number: yup.string().length(6, 'Длина должна быть равна 6').matches(/^[0-9]+$/, 'Поле должно состоять только из цифер'),
     DocumentNumber: yup.string().length(6, 'Длина должна быть равна 2').matches(/^[0-9]+$/, 'Поле должно состоять только из цифер'),
     InstitutionType: yup.string().matches(/^[А-Яа-яA-Za-z ]+$/, 'Поле может содержать только буквы и пробелы'),
     Document: yup.string().matches(/^[А-Яа-яA-Za-z ]+$/, 'Поле может содержать только буквы и пробелы'),
@@ -127,6 +127,7 @@ const validationSchema = yup.object({
     LocalityName: yup.string().matches(/^[А-Яа-яA-Za-z ]+$/, 'Поле может содержать только буквы и пробелы'),
     StreetType: yup.string().matches(/^[А-Яа-яA-Za-z ]+$/, 'Поле может содержать только буквы и пробелы'),
     Street: yup.string().matches(/^[А-Яа-яA-Za-z ]+$/, 'Поле может содержать только буквы и пробелы'),
+    IdentyNumber: yup.string().matches(/^[0-9.]+$/, 'Может содержать только цифры')
 })
 
 const UserInfo = () => {
@@ -196,106 +197,110 @@ const UserInfo = () => {
                    <MyInput label="Имя" value={formik.values.Firstname} handleChange={formik.handleChange}
                             id="Firstname" error={formik.errors.Firstname}/>
                    <MyInput label="Имя латиницей" value={formik.values.Firstnamelat} handleChange={formik.handleChange}
-                            id="Firstnamelat"/>
+                            id="Firstnamelat" error={formik.errors.Firstnamelat}/>
                    <MyInput label="Фамилия" value={formik.values.Lastname} handleChange={formik.handleChange}
-                            id="Lastname"/>
+                            id="Lastname" error={formik.errors.Lastname}/>
                    <MyInput label="Фамилия латиницей" value={formik.values.Lastnamelat} handleChange={formik.handleChange}
-                            id="Lastnamelat"/>
+                            id="Lastnamelat" error={formik.errors.Lastnamelat}/>
                    <MyInput label="Отчество" value={formik.values.Surname} handleChange={formik.handleChange}
-                            id="Surname"/>
+                            id="Surname" error={formik.errors.Surname}/>
                    <MyDatePicker label="Дата рождения" value={formik.values.Birthday} handleChange={formik.handleChange}
-                                 id="Birthday"/>
+                                 id="Birthday" error={formik.errors.Birthday}/>
                    <MyRadioGroup options={gender} label="Пол" value={formik.values.Gender} handleChange={formik.handleChange}
-                                 id="Gender"/>
+                                 id="Gender" error={formik.errors.Gender}/>
                    <MyRadioGroup options={family} label="Семейное положение" value={formik.values.Family}
-                                 handleChange={formik.handleChange} id="Family"/>
+                                 handleChange={formik.handleChange} id="Family" error={formik.errors.Family}/>
                    <MyInput label="Дом. телефон" value={formik.values.PhoneNumber} handleChange={formik.handleChange}
-                            id="PhoneNumber"/>
+                            id="PhoneNumber" error={formik.errors.PhoneNumber}/>
                </div>
                <div className={classes.FirstLevelContainer} style={{gridArea: "b"}}>
                    <MySelect label="Тип документа" options={doc} value={formik.values.DocumentType}
-                             handleChange={formik.handleChange} id="DocumentType"/>
+                             handleChange={formik.handleChange} id="DocumentType" error={formik.errors.DocumentType}/>
                    <MyInput label="Другой тип документа" disabled={formik.values.DocumentType !== 'Иной (указать какой)'}
-                            value={formik.values.UserDocumentType} handleChange={formik.handleChange} id="UserDocumentType"/>
+                            value={formik.values.UserDocumentType} handleChange={formik.handleChange} id="UserDocumentType"
+                            error={formik.errors.UserDocumentType}/>
                    <MyInput label="Идентификационный номер" value={formik.values.IdentyNumber}
-                            handleChange={formik.handleChange} id="IdentyNumber"/>
-                   <MyInput label="Серия" value={formik.values.Series} handleChange={formik.handleChange} id="Series"/>
-                   <MyInput label="Номер" value={formik.values.Number} handleChange={formik.handleChange} id="Number"/>
+                            handleChange={formik.handleChange} id="IdentyNumber" error={formik.errors.IdentyNumber}/>
+                   <MyInput label="Серия" value={formik.values.Series} handleChange={formik.handleChange} id="Series"
+                            error={formik.errors.Series}/>
+                   <MyInput label="Номер" value={formik.values.Number} handleChange={formik.handleChange} id="Number"
+                            error={formik.errors.Number}/>
                    <MyDatePicker label="Дата выдачи" value={formik.values.DateOfIssue}
-                                 handleChange={formik.handleChange} id="DateOfIssue"/>
+                                 handleChange={formik.handleChange} id="DateOfIssue" error={formik.errors.DateOfIssue}/>
                    <MyDatePicker label="Срок действия" value={formik.values.Validity}
-                                 handleChange={formik.handleChange} id="Validity"/>
+                                 handleChange={formik.handleChange} id="Validity" error={formik.errors.Validity}/>
                    <MyInput label="Кем выдан" value={formik.values.IssuedBy}
-                            handleChange={formik.handleChange} id="IssuedBy"/>
+                            handleChange={formik.handleChange} id="IssuedBy" error={formik.errors.IssuedBy}/>
                </div>
                <div className={classes.FirstLevelContainer} style={{gridArea: "c"}}>
                    <MySelect label="Уровень образования" options={level} value={formik.values.Education}
-                             handleChange={formik.handleChange} id="Education"/>
+                             handleChange={formik.handleChange} id="Education" error={formik.errors.Education}/>
                    <MyInput label="Тип учреждения образования" value={formik.values.InstitutionType}
-                             handleChange={formik.handleChange} id="InstituionType"/>
-                   <MyInput label="Документ" value={formik.values.Document} handleChange={formik.handleChange} id="Document"/>
+                             handleChange={formik.handleChange} id="InstituionType" error={formik.errors.InstitutionType}/>
+                   <MyInput label="Документ" value={formik.values.Document} handleChange={formik.handleChange} id="Document"
+                            error={formik.errors.Document}/>
                    <MyInput label="Номер учебного заведения или аббревиатура" value={formik.values.Institution}
-                             handleChange={formik.handleChange} id="Institution"/>
+                             handleChange={formik.handleChange} id="Institution" error={formik.errors.Institution}/>
                    <MyInput label="Номер документа" value={formik.values.DocumentNumber}
-                            handleChange={formik.handleChange} id="DocumentNumber"/>
+                            handleChange={formik.handleChange} id="DocumentNumber" error={formik.errors.DocumentNumber}/>
                    <MyDatePicker label="Дата окончания" value={formik.values.GraduationDate}
-                                 handleChange={formik.handleChange} id="GraduationDate"/>
+                                 handleChange={formik.handleChange} id="GraduationDate" error={formik.errors.GraduationDate}/>
                    <MyInput label="Иностранный язык" value={formik.values.Language}
-                            handleChange={formik.handleChange} id="Language"/>
+                            handleChange={formik.handleChange} id="Language" error={formik.errors.Language}/>
                    <MyInput label="Средний балл документа об образовании" value={formik.values.AverageScore}
-                            handleChange={formik.handleChange} id="AverageScore"/>
+                            handleChange={formik.handleChange} id="AverageScore" error={formik.errors.AverageScore}/>
                    <MyInput label="Льготы при зачислении" value={formik.values.Benefits}
-                            handleChange={formik.handleChange} id="Benefits"/>
+                            handleChange={formik.handleChange} id="Benefits" error={formik.errors.Benefits}/>
                </div>
                <div className={classes.FirstLevelContainer} style={{gridArea: "d"}}>
                    <MyInput label="Индекс" value={formik.values.PostalCode} handleChange={formik.handleChange}
-                            id="PostalCode"/>
+                            id="PostalCode" error={formik.errors.PostalCode}/>
                    <MyInput label="Страна" value={formik.values.Country} handleChange={formik.handleChange}
-                            id="Country"/>
+                            id="Country" error={formik.errors.Country}/>
                    <MyInput label="Область" value={formik.values.Region} handleChange={formik.handleChange}
-                            id="Region"/>
+                            id="Region" error={formik.errors.Region}/>
                    <MyInput label="Район" value={formik.values.District} handleChange={formik.handleChange}
-                            id="District"/>
+                            id="District" error={formik.errors.District}/>
                    <MyInput label="Тип населенного пункта" value={formik.values.LocalityType}
-                            handleChange={formik.handleChange} id="LocalityType"/>
+                            handleChange={formik.handleChange} id="LocalityType" error={formik.errors.LocalityType}/>
                    <MyInput label="Название населенного пункта" value={formik.values.LocalityName}
-                            handleChange={formik.handleChange} id="LocalityName"/>
+                            handleChange={formik.handleChange} id="LocalityName" error={formik.errors.LocalityName}/>
                    <MyInput label="Тип улицы" value={formik.values.StreetType}
-                            handleChange={formik.handleChange} id="StreetType"/>
+                            handleChange={formik.handleChange} id="StreetType" error={formik.errors.StreetType}/>
                    <MyInput label="Название улицы" value={formik.values.Street}
-                            handleChange={formik.handleChange} id="Street"/>
+                            handleChange={formik.handleChange} id="Street" error={formik.errors.Street}/>
                    <MyInput label="Номер дома" value={formik.values.HouseNumber}
-                            handleChange={formik.handleChange} id="HouseNumber"/>
+                            handleChange={formik.handleChange} id="HouseNumber" error={formik.errors.HouseNumber}/>
                    <MyInput label="Номер корпуса" value={formik.values.HousingNumber}
-                            handleChange={formik.handleChange} id="HousingNumber"/>
+                            handleChange={formik.handleChange} id="HousingNumber" error={formik.errors.HousingNumber}/>
                    <MyInput label="Номер квартиры" value={formik.values.FlatNumber}
-                            handleChange={formik.handleChange} id="FlatNumber"/>
+                            handleChange={formik.handleChange} id="FlatNumber" error={formik.errors.FlatNumber}/>
                </div>
                <div className={classes.FirstLevelContainer} style={{gridArea: "g"}}>
                    <Typography variant="h4">Мать</Typography>
                    <MySelect label="Тип родства" options={mother} value={formik.values.MotherType}
-                             handleChange={formik.handleChange} id="MotherType"/>
+                             handleChange={formik.handleChange} id="MotherType" error={formik.errors.MotherType}/>
                    <MyInput label="Фамилия" value={formik.values.MotherLastname}
-                            handleChange={formik.handleChange} id="MotherLastname"/>
+                            handleChange={formik.handleChange} id="MotherLastname" error={formik.errors.MotherLastname}/>
                    <MyInput label="Имя" value={formik.values.MotherFirstname}
-                            handleChange={formik.handleChange} id="MotherFirstname"/>
+                            handleChange={formik.handleChange} id="MotherFirstname" error={formik.errors.MotherFirstname}/>
                    <MyInput label="Отчество" value={formik.values.MotherSurname}
-                            handleChange={formik.handleChange} id="MotherSurname"/>
+                            handleChange={formik.handleChange} id="MotherSurname" error={formik.errors.MotherSurname}/>
                    <MyInput label="Адрес" value={formik.values.MotherAddress}
-                            handleChange={formik.handleChange} id="MotherAddress"/>
+                            handleChange={formik.handleChange} id="MotherAddress" error={formik.errors.MotherAddress}/>
                </div>
                <div className={classes.FirstLevelContainer} style={{gridArea: "h"}}>
                    <Typography variant="h4">Отец</Typography>
                    <MySelect label="Тип родства" options={father} value={formik.values.FatherType}
-                             handleChange={formik.handleChange} id="FatherType"/>
+                             handleChange={formik.handleChange} id="FatherType" error={formik.errors.FatherType}/>
                    <MyInput label="Фамилия" value={formik.values.FatherLastname}
-                            handleChange={formik.handleChange} id="FatherLastname"/>
+                            handleChange={formik.handleChange} id="FatherLastname" error={formik.errors.FatherLastname}/>
                    <MyInput label="Имя" value={formik.values.FatherFirstname}
-                            handleChange={formik.handleChange} id="FatherFirstname"/>
+                            handleChange={formik.handleChange} id="FatherFirstname" error={formik.errors.FatherFirstname}/>
                    <MyInput label="Отчество" value={formik.values.FatherSurname}
-                            handleChange={formik.handleChange} id="FatherSurname"/>
+                            handleChange={formik.handleChange} id="FatherSurname" error={formik.errors.FatherSurname}/>
                    <MyInput label="Адрес" value={formik.values.FatherAddress}
-                            handleChange={formik.handleChange} id="FatherAddress"/>
+                            handleChange={formik.handleChange} id="FatherAddress" error={formik.errors.FatherAddress}/>
                </div>
                <Button onClick={formik.handleSubmit} className={classes.SaveButton} endIcon={<SendIcon/>}>Сохранить</Button>
            </div>
