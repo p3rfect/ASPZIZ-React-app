@@ -10,7 +10,7 @@ import UnknownError from "../../components/UI/UnknownError/UnknownError";
 import {useSelector} from "react-redux";
 
 const UserExams = () => {
-    const examsTypes = ['ЦТ', 'ЕГЭ', 'Олимпиада']
+    const examsTypes = ['ЦТ', 'ЦЭ', 'Внутренний экзамен', 'Без экзамена', 'Из аттестата', 'ЕГЭ', 'Олимпиада']
     const examsNames = ['Физика', 'Математика', 'Русский язык', 'Белорусский язык', 'Английский язык']
     const email = useSelector((state) => state.user.email)
     const [exams, setExams] = useState([

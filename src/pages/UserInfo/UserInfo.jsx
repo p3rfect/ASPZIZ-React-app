@@ -15,935 +15,274 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Tooltip from '@mui/material/Tooltip';
+import * as yup from 'yup'
+import MyInput from "../../components/UI/input/MyInput";
+import MyDatePicker from "../../components/UI/MyDatePicker/MyDatePicker";
+import MyRadioGroup from "../../components/UI/MyRadioGroup/MyRadioGroup";
+import MySelect from "../../components/UI/MySelect/MySelect";
+import {useFormik} from "formik";
 
-const pol = [
-    { pl: 'Мужской'},
-    { pl: 'Женский'},
+const gender = [
+    'Мужской',
+    'Женский'
 ];
 const family = [
-    { fm: 'Холост/ не замужем'},
-    { fm: ' Женат/замужем'},
+    'Холост/ не замужем',
+    'Женат/замужем'
 ];
 const doc = [
-    { title: 'Паспорт гражданина РБ'},
-    { title: 'Вид на жительство в РБ'},
-    { title: 'Удостоверение беженца'},
-    { title: 'Паспорт гражданина РФ'},
-    { title: 'Паспорт гражданина Республики Казахстан'},
-    { title: 'Паспорт гражданина Республики Таджикистан'},
-    { title: 'Паспорт гражданина Кыргызской Республики'},
-    { title: 'ID-карта гражданина РБ'},
+    'Паспорт гражданина РБ',
+    'Вид на жительство в РБ',
+    'Удостоверение беженца',
+    'Паспорт гражданина РФ',
+    'Паспорт гражданина Республики Казахстан',
+    'Паспорт гражданина Республики Таджикистан',
+    'Паспорт гражданина Кыргызской Республики',
+    'ID-карта гражданина РБ',
+    'Иной (указать какой)'
 ];
 const level = [
-    { ad: 'Общее среднее образование'},
-    { ad: 'Профессионально-техническое'},
-    { ad: 'Среднее специальное'},
-    { ad: 'Незаконченнное высшее'},
-    { ad: 'Высшее'},
-];
-const srobr = [
-    { so: '2-36 01 07 Гидропневмосистемы мобильных и технологических машин (по направлениям)'},
-    { so: '2-36 01 32 Технологическая подготовка и наладка станков и манипуляторов с программным управлением (по направлениям)'},
-    { so: '2-36 01 53 Tехническая эксплуатация оборудования'},
-    { so: '2-36 01 56 Mexaтроника'},
-    { so: '2-36 03 31 Монтаж и эксплуатация электрооборудования (по направлениям)'},
-    { so: '2-36 04 31 Электронно-оптическое аппаратостроение'},
-    { so: '2-36 04 32 Электроника механических транспортных средств'},
-    { so: '2-36 11 01 Подъемно-транспортные, строительные, дорожные машины и оборудование'},
-    { so: '2-37 01 02 Автомобилестроение (по направлениям)'},
-    { so: '2-37 01 05 Городской электрический транспорт'},
-    { so: '2-37 01 06 Техническая эксплуатация автомобилей (по направлениям)'},
-    { so: '-37 01 51 Автосервис'},
-    { so: '2-37 02 31 Автоматика и телемеханика на железнодорожном транспорте'},
-    { so: '2-37 02 32 Технологическая связь на железнодорожном транспорте'},
-    { so: '2-37 02 35 Техническая эксплуатация и ремонт подвижного состава железнодорожного транспорта (по направлениям)'},
-    { so: '2-37 04 02 Техническая эксплуатация авиационного оборудования (по направлениям)'},
-    { so: '2-38 01 31 Производство и техническая эксплуатация приборов и аппаратов'},
-    { so: '2-39 02 31 Техническая эксплуатация радиоэлектронных средств'},
-    { so: '2-39 02 32 Проектирование и производство радиоэлектронных средств'},
-    { so: '2-39 03 02 Программируемые мобильные системы'},
-    { so: '2-40 01 01 Программное обеспечение информационных технологий'},
-    { so: '2-40 01 31 Тестирование программного обеспечения'},
-    { so: '2-53 01 31 Техническое обслуживание технологического оборудования и средств робототехники в автоматизированном производстве (по направлениям)'},
-    { so: '2-94 01 51 Монтаж и эксплуатация охранно-пожарной сигнализации'},
-    { so: '2-53 01 04 Автоматизация и управление теплоэнергетическими процессами 2-53 01 05 Автоматизированные электроприводы'},
-    { so: '2-53 01 01 Автоматизация технологических процессов и производств'},
-    { so: '2-45 01 33 Сети телекоммуникаций'},
-    { so: '2-45 01 33 02 Программное обеспечение сетей телекоммуникаций'},
-    { so: '2-45 01 32 Системы радиосвязи, радиовещания и телевидения'},
-    { so: '2-45 01 31 Многоканальные системы телекоммуникаций'},
-    { so: '2-43 01 04 Тепловые электрические станции'},
-    { so: '2-40 02 01 Вычислительные машины, системы и сети'},
-    { so: '2-40 02 02 Электронные вычислительные средства'},
-    { so: '2-40 02 51 Техническое обслуживание и ремонт вычислительной техники 2-41 01 02 Микро- и наноэлектронные технологии и системы'},
-    { so: '2-41 01 31 Микроэлектроника'},
-    { so: '2-43 01 01 Электрические станции'},
-    { so: '2-43 01 03 Электроснабжение (по отраслям)'},
+    'Общее среднее образование',
+    'Профессионально-техническое',
+    'Среднее специальное',
+    'Незаконченнное высшее',
+    'Высшее'
 ];
 const language = [
-    { l: 'Английский язык'},
-    { l: 'Немецикй язык'},
-    { l: 'Инспанский язык'},
-    { l: 'Французский язык'},
+    'Английский язык',
+    'Немецикй язык',
+    'Инспанский язык',
+    'Французский язык'
 ];
-const strana = [
-    { str: 'Республика Беларусь'},
-    { str: 'Кыргызская Республика'},
-    { str: 'Литовская Республика'},
-    { str: 'Республика Казахстан'},
-    { str: 'Республика Таджикистан'},
-    { str: 'Российская Федерация'},
+const country = [
+    'Республика Беларусь',
+    'Кыргызская Республика',
+    'Литовская Республика',
+    'Республика Казахстан',
+    'Республика Таджикистан',
+    'Российская Федерация',
 ];
-const typeyl = [
-    { yl: 'бульвар'},
-    { yl: 'военный городок'},
-    { yl: 'военная часть'},
-    { yl: 'въезд'},
-    { yl: 'квартал'},
-    { yl: 'микрорайон'},
-    { yl: 'набережная'},
-    { yl: 'парк'},
-    { yl: 'переулок'},
-    { yl: 'площадь'},
-    { yl: 'посёлок'},
-    { yl: 'проезд'},
-    { yl: 'проспект'},
-    { yl: 'станция'},
-    { yl: 'террритория'},
-    { yl: 'тракт'},
-    { yl: 'тупик'},
-    { yl: 'улица'},
-    { yl: 'урочище'},
-    { yl: 'шоссе'},
+const streetType = [
+    'бульвар',
+    'военный городок',
+    'военная часть',
+    'въезд',
+    'квартал',
+    'микрорайон',
+    'набережная',
+    'парк',
+    'переулок',
+    'площадь',
+    'посёлок',
+    'проезд',
+    'проспект',
+    'станция',
+    'террритория',
+    'тракт',
+    'тупик',
+    'улица',
+    'урочище',
+    'шоссе'
 ];
-const nasp = [
-    { np: 'агрогородок'},
-    { np: 'город'},
-    { np: 'городской посёлок'},
-    { np: 'деревня'},
-    { np: 'курортный посёлок'},
-    { np: 'посёлок'},
-    { np: 'посёлок городского типа'},
-    { np: 'рабочий посёлок'},
-    { np: 'село'},
-    { np: 'сельский населённый пункт'},
-    { np: 'хутор'},
+const cityType = [
+    'агрогородок',
+    'город',
+    'городской посёлок',
+    'деревня',
+    'курортный посёлок',
+    'посёлок',
+    'посёлок городского типа',
+    'рабочий посёлок',
+    'село',
+    'сельский населённый пункт',
+    'хутор',
 ];
-const mama = [
-    { ma: 'Мать'},
-    { ma: 'Мачеха'},
-    { ma: 'Попечительница'},
+const mother = [
+    'Мать',
+    'Мачеха',
+    'Попечительница',
 ];
-const dad = [
-    { pa: 'Отец'},
-    { pa: 'Отчим'},
-    { pa: 'Попечитель'},
+const father = [
+    'Отец',
+    'Отчим',
+    'Попечитель',
 ];
-export default function SimpleAccordion() {
-    return (
-        <React.Fragment>
-            <Header page="info"/>
-            <Typography variant="h2" className={classes.Title}>Ввод личной информации</Typography>
-            <div>
-                <Accordion>
-                    <AccordionSummary
-                        expandIcon={<ExpandMoreIcon />}
-                        aria-controls="panel1a-content"
-                        id="panel1a-header" >
-                        <Typography>1.ФИО</Typography>
-                    </AccordionSummary>
-                    <AccordionDetails>
-                        <Typography>
-                            < Grid item xs={12} sm={6}>
-                                <h1> Фамилия:</h1>
-                                <Tooltip title="Ваша фамилия (на русском или белорусском языке), как она указана в Вашем паспорте (документе, удостоверяющем личность).">
-                                <TextField
-                                    required
-                                    id="firstNamek"
-                                    name="firstNamek"
-                                    label="Введите Вашу фамилию кирилицей"
-                                    fullWidth
-                                    variant="standard"
-                                />
-                                </Tooltip>
-                            </Grid>
-                            <Grid item xs={12} sm={6}>
-                                <h1> Фамилия:</h1>
-                                <Tooltip title="Ваша фамилия латиницей, как она указана в Вашем паспорте (документе, удостоверяющем личность).">
-                                <TextField
-                                    required
-                                    id="firstNamel"
-                                    name="firstNamel"
-                                    label="Введите Вашу фамилию латиницей"
-                                    fullWidth
-                                    autoComplete="given-name"
-                                    variant="standard"
-                                />
-                                </Tooltip>
-                            </Grid>
-                            <Grid item xs={12} sm={6}>
-                                <h1> Имя:</h1>
-                                <Tooltip title="Ваше имя (на русском или белорусском языке), как оно указано в Вашем паспорте (документе, удостоверяющем личность).">
-                                <TextField
-                                    required
-                                    id="lastNamek"
-                                    name="lastNamek"
-                                    label="Введите Ваше имя кирилицей"
-                                    fullWidth
-                                    variant="standard"
-                                />
-                                </Tooltip>
-                            </Grid>
-                            <Grid item xs={12} sm={6}>
-                                <h1> Имя:</h1>
-                                <Tooltip title="Ваше имя латиницей, как оно указано в Вашем паспорте (документе, удостоверяющем личность).">
-                                <TextField
-                                    required
-                                    id="lastNamel"
-                                    name="lastNamel"
-                                    label="Введите Ваше имя клатиницей"
-                                    fullWidth
-                                    autoComplete="family-name"
-                                    variant="standard"
-                                />
-                                </Tooltip>
-                            </Grid>
-                            <Grid item xs={12} sm={6}>
-                                <h1> Отчество:</h1>
-                                <Tooltip title="Ваше отчество (на русском или белорусском языке), как оно указано в Вашем паспорте (документе, удостоверяющем личность).">
-                                <TextField
-                                    required
-                                    id="Otchl"
-                                    name="Otchl"
-                                    label="Введите Ваше отчество кирилицей"
-                                    fullWidth
-                                    variant="standard"
-                                />
-                                </Tooltip>
-                            </Grid>
-                            <Grid item xs={12} sm={6}>
-                                <h1> Отчество:</h1>
-                                <Tooltip title="Ваше отчество латиницей, как оно указано в Вашем паспорте (документе, удостоверяющем личность).">
-                                <TextField
-                                    required
-                                    id="Otchk"
-                                    name="Otchk"
-                                    label="Введите Ваше Отчество клатиницей"
-                                    fullWidth
-                                    autoComplete="family-name"
-                                    variant="standard"
-                                />
-                                </Tooltip>
-                            </Grid>
-                            <Grid item xs={12} sm={6}>
-                                <h1> Дата рождения:</h1>
-                                <Tooltip title="Например, 05.04.2005.">
-                                <TextField
-                                    required
-                                    id="HB"
-                                    name="HB"
-                                    label="дд.мм.гггг"
-                                    fullWidth
-                                    variant="standard"
-                                />
-                                </Tooltip>
-                            </Grid>
-                            <Grid item xs={12} sm={6}>
-                                <h1> Место рождения:</h1>
-                                <Tooltip title="Место рождения, как оно указано в Вашем паспорте (документе, удостоверяющем личность).">
-                                <TextField
-                                    required
-                                    id="city"
-                                    name="city"
-                                    label="Введите Ваше место рождения"
-                                    fullWidth
-                                    autoComplete="shipping address-level2"
-                                    variant="standard"
-                                />
-                                </Tooltip>
-                            </Grid>
-                            <Grid item xs={12} sm={6}>
-                                <h1> Пол:</h1>
-                                <Tooltip title="Выберите из предложеных вариантов.">
-                                <Stack spacing={2} sx={{ width: 300 }}>
-                                    <Autocomplete
-                                        id="pol"
-                                        freeSolo
-                                        options={pol.map((option) => option.pl)}
-                                        renderInput={(params) => <TextField {...params} label="Пол" />}
-                                    />
-                                </Stack>
-                                </Tooltip>
-                            </Grid>
-                            <Grid item xs={12} sm={6}>
-                                <h1> Семейное положение:</h1>
-                                <Tooltip title="Выберите из предложеных вариантов.">
-                                <Stack spacing={2} sx={{ width: 300 }}>
-                                    <Autocomplete
-                                        id="family"
-                                        freeSolo
-                                        options={family.map((option) => option.fm)}
-                                        renderInput={(params) => <TextField {...params} label="Семейное положение" />}
-                                    />
-                                </Stack>
-                                </Tooltip>
-                            </Grid>
-                        </Typography>
-                    </AccordionDetails>
-                </Accordion>
-                <Accordion>
-                    <AccordionSummary
-                        expandIcon={<ExpandMoreIcon />}
-                        aria-controls="panel2a-content"
-                        id="panel2a-header"
-                    >
-                        <Typography>2.Документ, удостоверяющий личность</Typography>
-                    </AccordionSummary>
-                    <AccordionDetails>
-                        <Typography>
-                            <Grid item xs={12} sm={6}>
-                                <h1> Тип документа:</h1>
-                                <Tooltip title="Выберите из предложеных вариантов.">
-                                <Stack spacing={2} sx={{ width: 300 }}>
-                                    <Autocomplete
-                                        id="tipydoc"
-                                        freeSolo
-                                        options={doc.map((option) => option.title)}
-                                        renderInput={(params) => <TextField {...params} label="Тип документа" />}
-                                    />
-                                </Stack>
-                                </Tooltip>
-                            </Grid>
-                            <Grid item xs={12} sm={6}>
-                                <h1> Идентификационнный номер:</h1>
-                                <Tooltip title="Указан на последней странице Вашего документа, поле 'Identification No'. Например, 1234567Т890ТТ0.">
-                                <TextField
-                                    required
-                                    id="namber"
-                                    name="namber"
-                                    label="Identification NO"
-                                    fullWidth
-                                    variant="standard"
-                                />
-                                </Tooltip>
-                            </Grid>
-                            <Grid item xs={12} sm={6}>
-                                <h1> Серия:</h1>
-                                <Tooltip title="Указана на последней странице Вашего документа, первые две буквы поля 'Passport No'. Например,AA.">
-                                <TextField
-                                    required
-                                    id="Seria"
-                                    name="Seria"
-                                    label="Первые две буквы Pasport NO"
-                                    fullWidth
-                                    variant="standard"
-                                />
-                                </Tooltip>
-                            </Grid>
-                            <Grid item xs={12} sm={6}>
-                                <h1> Номер:</h1>
-                                <Tooltip title="Указан на последней странице Вашего документа, цифры в поле 'Passport No'. Например,1234567.">
-                                <TextField
-                                    required
-                                    id="NSeria"
-                                    name="NSeria"
-                                    label=" Цифры Pasport NO"
-                                    fullWidth
-                                    variant="standard"
-                                />
-                                </Tooltip>
-                            </Grid>
-                            <Grid item xs={12} sm={6}>
-                                <h1> Кем выдан</h1>
-                                <Tooltip title="Указана на предпоследнем развороте документа(стр.31 паспорта), поле 'Орган, выдавший паспорт'. Например, Борисовский РОВД Минской области.">
-                                <TextField
-                                    required
-                                    id="vudpasport"
-                                    name="vudpasport"
-                                    label=" стр.31 паспорта"
-                                    fullWidth
-                                    variant="standard"
-                                />
-                                </Tooltip>
-                            </Grid>
-                            <Grid item xs={12} sm={6}>
-                                <h1> Дата выдачи:</h1>
-                                <Tooltip title=" Например, 03.01.2017.">
-                                <TextField
-                                    required
-                                    id="namber"
-                                    name="namber"
-                                    label="дд.мм.гггг"
-                                    fullWidth
-                                    variant="standard"
-                                />
-                                </Tooltip>
-                            </Grid>
-                            <Grid item xs={12} sm={6}>
-                                <h1> Срок действия:</h1>
-                                <Tooltip title=" Например, 03.01.2030.">
-                                <TextField
-                                    required
-                                    id="namber"
-                                    name="namber"
-                                    label="дд.мм.гггг"
-                                    fullWidth
-                                    variant="standard"
-                                />
-                                </Tooltip>
-                            </Grid>
-                        </Typography>
-                    </AccordionDetails>
-                </Accordion>
-                <Accordion>
-                    <AccordionSummary
-                        expandIcon={<ExpandMoreIcon />}
-                        aria-controls="panel3a-content"
-                        id="panel3a-header"
-                    >
-                        <Typography>3.Образование</Typography>
-                    </AccordionSummary>
-                    <AccordionDetails>
-                        <Typography>
-                            <Grid item xs={12} sm={4}>
-                                <h1> Уровень:</h1>
-                                <Tooltip title="Выберите из предложеных вариантов.">
-                                <Stack spacing={2} sx={{ width: 300 }}>
-                                    <Autocomplete
-                                        id="level"
-                                        freeSolo
-                                        options={level.map((option) => option.ad)}
-                                        renderInput={(params) => <TextField {...params} label="Семейное положение" />}
-                                    />
-                                </Stack>
-                                </Tooltip>
-                            </Grid>
-                            <Grid item xs={12} sm={4}>
-                                <h1> Учреждение:</h1>
-                                <TextField
-                                    required
-                                    id="place"
-                                    name="place"
-                                    label="Введите учреждение Вашего образования"
-                                    fullWidth
-                                    variant="standard"
-                                />
-                            </Grid>
-                            <Grid item xs={12} sm={4}>
-                                <h1>Документ:</h1>
-                                <TextField
-                                    required
-                                    id="doc"
-                                    name="doc"
-                                    fullWidth
-                                    variant="standard"
-                                />
-                            </Grid>
-                            <Grid item xs={12} sm={4}>
-                                <h1> Номер учебного заведения или абривиатура:</h1>
-                                <Tooltip title="Например, ГУО 'Средняя школа №59, г.Минск'.">
-                                <TextField
-                                    required
-                                    id="places"
-                                    name="places"
-                                    fullWidth
-                                    variant="standard"
-                                />
-                                </Tooltip>
-                            </Grid>
-                            <Grid item xs={12} sm={4}>
-                                <h1> Специальность в дипломе о среднем специальном образовании:</h1>
-                                <Tooltip title="Выберите из предложеных вариантов.">
-                                <Stack spacing={2} sx={{ width: 300 }}>
-                                    <Autocomplete
-                                        id="srobr"
-                                        freeSolo
-                                        options={srobr.map((option) => option.so)}
-                                        renderInput={(params) => <TextField {...params} label="Специальность в дипломе о среднем специальном образовании:" />}
-                                    />
-                                </Stack>
-                                </Tooltip>
-                            </Grid>
-                            <Grid item xs={12} sm={4}>
-                                <h1> Средний бал документа об образовании:</h1>
-                                <TextField
-                                    required
-                                    id="srbal"
-                                    name="srbal"
-                                    fullWidth
-                                    variant="standard"
-                                />
-                            </Grid>
-                            <Grid item xs={12} sm={4}>
-                                <h1> Номер документа:</h1>
-                                <Tooltip title="Указан в поле'№' документа на последней странице. Например, 1234567.">
-                                <TextField
-                                    required
-                                    id="nd"
-                                    name="nd"
-                                    fullWidth
-                                    variant="standard"
-                                />
-                                </Tooltip>
-                            </Grid>
-                            <Grid item xs={12} sm={4}>
-                                <h1> Дата окончания:</h1>
-                                <Tooltip title="Например, 31.01.2010.">
-                                    <TextField
-                                        required
-                                        id="datafinish"
-                                        name="datafinish"
-                                        fullWidth
-                                        variant="standard"
-                                    />
-                                </Tooltip>
-                            </Grid>
-                            <Grid item xs={12} sm={4}>
-                                <h1> Иностранный язык:</h1>
-                                <Tooltip title="Выберите из предложеных вариантов.">
-                                <Stack spacing={2} sx={{ width: 300 }}>
-                                    <Autocomplete
-                                        id="language"
-                                        freeSolo
-                                        options={language.map((option) => option.l)}
-                                        renderInput={(params) => <TextField {...params} label="Иностранный язык" />}
-                                    />
-                                </Stack>
-                                </Tooltip>
-                            </Grid>
-                            <Grid item xs={12} sm={4}>
-                                <FormControlLabel
-                                    control={<Checkbox color="secondary" name="finish" value="yes"/>}
-                                    label="Окончил(а) подготовительные курсы БГУИР?"
-                                />
-                            </Grid>
-                        </Typography>
-                    </AccordionDetails>
-                </Accordion>
-                <Accordion>
-                    <Accordion>
-                        <AccordionSummary
-                            expandIcon={<ExpandMoreIcon />}
-                            aria-controls="panel4a-content"
-                            id="panel4a-header"
-                        >
-                            <Typography>4.Адрес</Typography>
-                        </AccordionSummary>
-                        < AccordionDetails>
-                            <Typography>
-                                <Grid item xs={12} sm={3}>
-                                    <h1> Индекс:</h1>
-                                    <Tooltip title="Например, 210000.">
-                                    <TextField
-                                        required
-                                        id="index"
-                                        name="index"
-                                        fullWidth
-                                        variant="standard"
-                                    />
-                                    </Tooltip>
-                                </Grid>
-                                <Grid item xs={12} sm={4}>
-                                    <h1> Страна:</h1>
-                                    <Tooltip title="Выберите из предложеных вариантов.">
-                                    <Stack spacing={2} sx={{ width: 300 }}>
-                                        <Autocomplete
-                                            id="strana"
-                                            freeSolo
-                                            options={strana.map((option) => option.str)}
-                                            renderInput={(params) => <TextField {...params} label="Страна" />}
-                                        />
-                                    </Stack>
-                                    </Tooltip>
-                                </Grid>
-                                <Grid item xs={12} sm={4}>
-                                    <h1> Область:</h1>
-                                    <Tooltip title="Например, Минская.">
-                                    <TextField
-                                        required
-                                        id="obl"
-                                        name="obl"
-                                        fullWidth
-                                        variant="standard"
-                                    />
-                                    </Tooltip>
-                                </Grid>
-                                <Grid item xs={12} sm={4}>
-                                    <h1> Район:</h1>
-                                    <Tooltip title="Если необходимо, укажите район.">
-                                    <TextField
-                                        required
-                                        id="rauon"
-                                        name="rauon"
-                                        fullWidth
-                                        variant="standard"
-                                    />
-                                    </Tooltip>
-                                </Grid>
-                                <Grid item xs={12} sm={4}>
-                                    <h1> Тип населённого пункта:</h1>
-                                    <Tooltip title="Выберите из предложеных вариантов.">
-                                    <Stack spacing={2} sx={{ width: 300 }}>
-                                        <Autocomplete
-                                            id="nasp"
-                                            freeSolo
-                                            options={nasp.map((option) => option.np)}
-                                            renderInput={(params) => <TextField {...params} label="Тип населённого пункта" />}
-                                        />
-                                    </Stack>
-                                    </Tooltip>
-                                </Grid>
-                                <Grid item xs={12} sm={4}>
-                                    <h1> Название населённого пункта:</h1>
-                                    <Tooltip title="Например, Минск.">
-                                    <TextField
-                                        required
-                                        id="namenp"
-                                        name="namenp"
-                                        fullWidth
-                                        variant="standard"
-                                    />
-                                    </Tooltip>
-                                </Grid>
-                                <Grid item xs={12} sm={4}>
-                                    <h1> Тип улицы:</h1>
-                                    <Tooltip title="Выберите из предложеных вариантов.">
-                                    <Stack spacing={2} sx={{ width: 300 }}>
-                                        <Autocomplete
-                                            id="typeyl"
-                                            freeSolo
-                                            options={typeyl.map((option) => option.yl)}
-                                            renderInput={(params) => <TextField {...params} label="Тип улицы:" />}
-                                        />
-                                    </Stack>
-                                    </Tooltip>
-                                </Grid>
-                                <Grid item xs={12} sm={4}>
-                                    <h1> Название улицы:</h1>
-                                    <Tooltip title="Например, Ленинская.">
-                                    <TextField
-                                        required
-                                        id="yl"
-                                        name="yl"
-                                        fullWidth
-                                        variant="standard"
-                                    />
-                                    </Tooltip>
-                                </Grid>
-                                <Grid item xs={12} sm={4}>
-                                    <h1> Номер дома:</h1>
-                                    <Tooltip title="Например, 19.">
-                                    <TextField
-                                        required
-                                        id="nomerdoma"
-                                        name="nomerdoma"
-                                        fullWidth
-                                        variant="standard"
-                                    />
-                                    </Tooltip>
-                                </Grid>
-                                <Grid item xs={12} sm={4}>
-                                    <h1> Номер корпуса:</h1>
-                                    <Tooltip title="Например, А или 2.">
-                                    <TextField
-                                        required
-                                        id="korpys"
-                                        name="korpys"
-                                        fullWidth
-                                        variant="standard"
-                                    />
-                                    </Tooltip>
-                                </Grid>
-                                <Grid item xs={12} sm={4}>
-                                    <h1> Номер квартиры:</h1>
-                                    <Tooltip title="Например, 12.">
-                                    <TextField
-                                        required
-                                        id="kv"
-                                        name="kv"
-                                        fullWidth
-                                        variant="standard"
-                                    />
-                                    </Tooltip>
-                                </Grid>
-                                <Grid item xs={12} sm={4}>
-                                    <FormControlLabel
-                                        control={<Checkbox color="secondary" name="obshaga" value="yes"/>}
-                                        label="Нуждаюсь в общежитии на время учёбы"
-                                    />
-                                </Grid>
-                            </Typography>
-                        </AccordionDetails>
-                    </Accordion>
-                </Accordion>
-                <Accordion>
-                    <AccordionSummary
-                        expandIcon={<ExpandMoreIcon />}
-                        aria-controls="panel5a-content"
-                        id="panel5a-header"
-                    >
-                        <Typography>5.Телефон и email</Typography>
-                    </AccordionSummary>
-                    < AccordionDetails>
-                        <Typography>
-                            <Grid item xs={12} sm={3}>
-                                <h1> Дом.телефон:</h1>
-                                <Tooltip title="Например, 123-54-67.">
-                                <TextField
-                                    required
-                                    id="domtel"
-                                    name="domtel"
-                                    fullWidth
-                                    variant="standard"
-                                />
-                                </Tooltip>
-                            </Grid><Grid item xs={12} sm={3}>
-                            <h1> Код города:</h1>
-                            <Tooltip title="Например, 017.">
-                            <TextField
-                                required
-                                id="kodgoroda"
-                                name="kodgoroda"
-                                fullWidth
-                                variant="standard"
-                            />
-                            </Tooltip>
-                        </Grid>
-                            <Grid item xs={12} sm={3}>
-                            <h1> Моб.телефон:</h1>
-                                <Tooltip title="Например, +375(29) 123 45 67.">
-                            <TextField
-                                required
-                                id="mob"
-                                name="mob"
-                                fullWidth
-                                variant="standard"
-                            />
-                                </Tooltip>
-                        </Grid>
-                        </Typography>
-                    </AccordionDetails>
-                </Accordion>
-                <Accordion>
-                    <AccordionSummary
-                        expandIcon={<ExpandMoreIcon />}
-                        aria-controls="panel6a-content"
-                        id="pane6a-header"
-                    >
-                        <Typography>6.Льготы при зачислении</Typography>
-                    </AccordionSummary>
-                    < AccordionDetails>
-                        <Typography>
-                            <Grid item xs={12}>
-                                <Tooltip title="ГЛАВА 4. Правила приёма. Например, победитель республиканской олимпиады по физике.">
-                                <TextField
-                                    required
-                                    id="ligot"
-                                    name="ligot"
-                                    fullWidth
-                                />
-                                </Tooltip>
-                            </Grid>
-                        </Typography>
-                    </AccordionDetails>
-                </Accordion>
-                <Accordion>
-                    <AccordionSummary
-                        expandIcon={<ExpandMoreIcon />}
-                        aria-controls="panel7a-content"
-                        id="panel7a-header"
-                    >
-                        <Typography>7.Трудовая деятельность</Typography>
-                    </AccordionSummary>
-                    < AccordionDetails>
-                        <Typography>
-                            <Grid item xs={12}>
-                                <h1> Место работы и должность:</h1>
-                                <Tooltip title="Например, ЗАО 'Компания', инженер-технолог.">
-                                <TextField
-                                    required
-                                    id="rabdolgnost"
-                                    name="rabdolgnost"
-                                    fullWidth
-                                />
-                                </Tooltip>
-                            </Grid>
-                            <Grid item xs={12} sm={6}>
-                                <h1> Стаж(общий):</h1>
-                                <TextField
-                                    rrequired
-                                    id="stag"
-                                    name="stag"
-                                    label="гг.мм"
-                                    fullWidth
-                                    variant="standard"
-                                />
-                            </Grid><Grid item xs={12} sm={6}>
-                            <h1> В том числе по профилю избранной специальности:</h1>
-                            <TextField
-                                required
-                                id="documentstgprof"
-                                name="documentstgprof"
-                                label="гг.мм"
-                                fullWidth
-                                variant="standard"
-                            />
-                        </Grid>
-                        </Typography>
-                    </AccordionDetails>
-                </Accordion>
-                <Accordion>
-                    <AccordionSummary
-                        expandIcon={<ExpandMoreIcon />}
-                        aria-controls="panel8a-content"
-                        id="panel8a-header"
-                    >
-                        <Typography>8.Родители</Typography>
-                    </AccordionSummary>
-                    < AccordionDetails>
-                        <Typography>
-                            <Grid item xs={12} sm={6}>
-                                <h1>Отец</h1>
-                                <Grid item xs={12} >
-                                    <h1> Тип родства:</h1>
-                                    <Tooltip title="Выберите из предложенных вариантов.">
-                                    <Stack spacing={2} sx={{ width: 300 }}>
-                                        <Autocomplete
-                                            id="dad"
-                                            freeSolo
-                                            options={dad.map((option) => option.pa)}
-                                            renderInput={(params) => <TextField {...params} label="Тип родства" />}
-                                        />
-                                    </Stack>
-                                    </Tooltip>
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <h1> Фамилия:</h1>
-                                    <Tooltip title="Например, Иванов.">
-                                    <TextField
-                                        required
-                                        id="firstNamep"
-                                        name="firstNamep"
-                                        fullWidth
-                                        variant="standard"
-                                    />
-                                    </Tooltip>
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <h1> Имя:</h1>
-                                    <Tooltip title="Например, Иван.">
-                                    <TextField
-                                        required
-                                        id="lastNamep"
-                                        name="lastNamep"
-                                        fullWidth
-                                        variant="standard"
-                                    />
-                                    </Tooltip>
-                                </Grid>
-                                <Grid item xs={12} sm={6}>
-                                    <h1> Отчество:</h1>
-                                    <Tooltip title="Например, Петрович.">
-                                    <TextField
-                                        required
-                                        id="Otchp"
-                                        name="Otchp"
-                                        fullWidth
-                                        variant="standard"
-                                    />
-                                    </Tooltip>
-                                </Grid>
-                                <Grid item xs={12} >
-                                    <h1> Адрес:</h1>
-                                    <Grid item xs={12} >
-                                        <FormControlLabel
-                                            control={<Checkbox color="secondary" name="adrp" value="yes"/>}
-                                            label="такой же, как и абитуриета"
-                                        />
-                                    </Grid>
-                                    <Tooltip title="Например, 210000, Республика Беларусь, г.Минск, ул.3-я Строителей, д.25, кв.12.">
-                                    <TextField
-                                        required
-                                        id="adrp"
-                                        name="adrp"
-                                        fullWidth
-                                    />
-                                    </Tooltip>
-                                </Grid>
 
-                            </Grid>
-                            <h1>Мать</h1>
-                            <Grid item xs={12} sm={6}>
-                            <h1> Тип родства:</h1>
-                            <Stack spacing={2} sx={{ width: 300 }}>
-                                <Tooltip title="Выберите из предложенных вариантов.">
-                                <Autocomplete
-                                    id="mama"
-                                    freeSolo
-                                    options={mama.map((option) => option.ma)}
-                                    renderInput={(params) => <TextField {...params} label="Тип родства" />}
-                                />
-                                </Tooltip>
-                            </Stack>
-                        </Grid>
-                        <Grid item xs={12} sm={6}>
-                                <h1> Фамилия:</h1>
-                            <Tooltip title="Например, Иванова.">
-                                <TextField
-                                    required
-                                    id="firstNamem"
-                                    name="firstNamem"
-                                    fullWidth
-                                    variant="standard"
-                                />
-                            </Tooltip>
-                            </Grid>
-                            <Grid item xs={12} sm={6}>
-                                <h1> Имя:</h1>
-                                <Tooltip title="Например, Мария.">
-                                <TextField
-                                    required
-                                    id="lastNamem"
-                                    name="lastNamem"
-                                    fullWidth
-                                    variant="standard"
-                                />
-                                </Tooltip>
-                            </Grid>
-                            <Grid item xs={12} sm={6}>
-                                <h1> Отчество:</h1>
-                                <Tooltip title="Например, Олеговна.">
-                                <TextField
-                                    required
-                                    id="Otchm"
-                                    name="Otchm"
-                                    fullWidth
-                                    variant="standard"
-                                />
-                                </Tooltip>
-                            </Grid>
-                            <Grid item xs={12} sm={6}>
-                                <h1> Адрес:</h1>
-                                <Grid item xs={12} sm={6}>
-                                    <FormControlLabel
-                                        control={<Checkbox color="secondary" name="adrm" value="yes"/>}
-                                        label="такой же, как и абитуриета"
-                                    />
-                                </Grid>
-                                <Tooltip title="Например, 210000, Республика Беларусь, г.Минск, ул.3-я Строителей, д.25, кв.12.">
-                                <TextField
-                                    required
-                                    id="adrm"
-                                    name="adrm"
-                                    fullWidth
-                                />
-                                </Tooltip>
-                            </Grid>
-                        </Typography>
-                    </AccordionDetails>
-                </Accordion>
-                <Button className={classes.UserInfo} variant="outlined" endIcon={<SendIcon/>}>Сохранить</Button>
-            </div>
-        </React.Fragment>
-    );
+const UserInfo = () => {
+    const formik = useFormik({
+        initialValues: {
+            Lastname: '',
+            Lastnamelat: '',
+            Firstname: '',
+            Firstnamelat: '',
+            Surname: '',
+            Birthday: '',
+            Gender: '',
+            Family: '',
+            DocumentType: '',
+            UserDocumentType: '',
+            IdentyNumber: '',
+            Series: '',
+            Number: '',
+            DateOfIssue: '',
+            Validity: '',
+            IssuedBy: '',
+            Education: '',
+            InstitutionType: '',
+            Document: '',
+            Institution: '',
+            DocumentNumber: '',
+            GraduationDate: '',
+            Language: '',
+            AverageScore: '',
+            PostalCode: '',
+            Country: '',
+            Region: '',
+            District: '',
+            LocalityType: '',
+            LocalityName: '',
+            StreetType: '',
+            Street: '',
+            HouseNumber: '',
+            HousingNumber: '',
+            FlatNumber: '',
+            PhoneNumber: '',
+            Benefits: '',
+            FatherType: '',
+            FatherLastname: '',
+            FatherFirstname: '',
+            FatherSurname: '',
+            FatherAddress: '',
+            MotherType: '',
+            MotherLastname: '',
+            MotherFirstname: '',
+            MotherSurname: '',
+            MotherAddress: ''
+        },
+        validateOnChange: true,
+        validate: (values) => {
+            const errors = {}
+            console.log(values)
+            return errors
+        },
+        onSubmit: (values) => {
+            console.log(values)
+        },
+    })
+
+    return (
+       <div>
+           <Header/>
+           <div className={classes.FieldsContainer}>
+               <div className={classes.FirstLevelContainer} style={{gridArea: "a"}}>
+                   <MyInput label="Имя" value={formik.values.Firstname} handleChange={formik.handleChange}
+                            id="Firstname"/>
+                   <MyInput label="Имя латиницей" value={formik.values.Firstnamelat} handleChange={formik.handleChange}
+                            id="Firstnamelat"/>
+                   <MyInput label="Фамилия" value={formik.values.Lastname} handleChange={formik.handleChange}
+                            id="Lastname"/>
+                   <MyInput label="Фамилия латиницей" value={formik.values.Lastnamelat} handleChange={formik.handleChange}
+                            id="Lastnamelat"/>
+                   <MyInput label="Отчество" value={formik.values.Surname} handleChange={formik.handleChange}
+                            id="Surname"/>
+                   <MyDatePicker label="Дата рождения" value={formik.values.Birthday} handleChange={formik.handleChange}
+                                 id="Birthday"/>
+                   <MyRadioGroup options={gender} label="Пол" value={formik.values.Gender} handleChange={formik.handleChange}
+                                 id="Gender"/>
+                   <MyRadioGroup options={family} label="Семейное положение" value={formik.values.Family}
+                                 handleChange={formik.handleChange} id="Family"/>
+                   <MyInput label="Дом. телефон" value={formik.values.PhoneNumber} handleChange={formik.handleChange}
+                            id="PhoneNumber"/>
+               </div>
+               <div className={classes.FirstLevelContainer} style={{gridArea: "b"}}>
+                   <MySelect label="Тип документа" options={doc} value={formik.values.DocumentType}
+                             handleChange={formik.handleChange} id="DocumentType"/>
+                   <MyInput label="Другой тип документа" disabled={formik.values.DocumentType !== 'Иной (указать какой)'}
+                            value={formik.values.UserDocumentType} handleChange={formik.handleChange} id="UserDocumentType"/>
+                   <MyInput label="Идентификационный номер" value={formik.values.IdentyNumber}
+                            handleChange={formik.handleChange} id="IdentyNumber"/>
+                   <MyInput label="Серия" value={formik.values.Series} handleChange={formik.handleChange} id="Series"/>
+                   <MyInput label="Номер" value={formik.values.Number} handleChange={formik.handleChange} id="Number"/>
+                   <MyDatePicker label="Дата выдачи" value={formik.values.DateOfIssue}
+                                 handleChange={formik.handleChange} id="DateOfIssue"/>
+                   <MyDatePicker label="Срок действия" value={formik.values.Validity}
+                                 handleChange={formik.handleChange} id="Validity"/>
+                   <MyInput label="Кем выдан" value={formik.values.IssuedBy}
+                            handleChange={formik.handleChange} id="IssuedBy"/>
+               </div>
+               <div className={classes.FirstLevelContainer} style={{gridArea: "c"}}>
+                   <MySelect label="Уровень образования" options={level} value={formik.values.Education}
+                             handleChange={formik.handleChange} id="Education"/>
+                   <MyInput label="Тип учреждения образования" value={formik.values.InstitutionType}
+                             handleChange={formik.handleChange} id="InstituionType"/>
+                   <MyInput label="Документ" value={formik.values.Document} handleChange={formik.handleChange} id="Document"/>
+                   <MyInput label="Номер учебного заведения или аббревиатура" value={formik.values.Institution}
+                             handleChange={formik.handleChange} id="Institution"/>
+                   <MyInput label="Номер документа" value={formik.values.DocumentNumber}
+                            handleChange={formik.handleChange} id="DocumentNumber"/>
+                   <MyDatePicker label="Дата окончания" value={formik.values.GraduationDate}
+                                 handleChange={formik.handleChange} id="GraduationDate"/>
+                   <MyInput label="Иностранный язык" value={formik.values.Language}
+                            handleChange={formik.handleChange} id="Language"/>
+                   <MyInput label="Средний балл документа об образовании" value={formik.values.AverageScore}
+                            handleChange={formik.handleChange} id="AverageScore"/>
+                   <MyInput label="Льготы при зачислении" value={formik.values.Benefits}
+                            handleChange={formik.handleChange} id="Benefits"/>
+               </div>
+               <div className={classes.FirstLevelContainer} style={{gridArea: "d"}}>
+                   <MyInput label="Индекс" value={formik.values.PostalCode} handleChange={formik.handleChange}
+                            id="PostalCode"/>
+                   <MyInput label="Страна" value={formik.values.Country} handleChange={formik.handleChange}
+                            id="Country"/>
+                   <MyInput label="Область" value={formik.values.Region} handleChange={formik.handleChange}
+                            id="Region"/>
+                   <MyInput label="Район" value={formik.values.District} handleChange={formik.handleChange}
+                            id="District"/>
+                   <MyInput label="Тип населенного пункта" value={formik.values.LocalityType}
+                            handleChange={formik.handleChange} id="LocalityType"/>
+                   <MyInput label="Название населенного пункта" value={formik.values.LocalityName}
+                            handleChange={formik.handleChange} id="LocalityName"/>
+                   <MyInput label="Тип улицы" value={formik.values.StreetType}
+                            handleChange={formik.handleChange} id="StreetType"/>
+                   <MyInput label="Название улицы" value={formik.values.Street}
+                            handleChange={formik.handleChange} id="Street"/>
+                   <MyInput label="Номер дома" value={formik.values.HouseNumber}
+                            handleChange={formik.handleChange} id="HouseNumber"/>
+                   <MyInput label="Номер корпуса" value={formik.values.HousingNumber}
+                            handleChange={formik.handleChange} id="HousingNumber"/>
+                   <MyInput label="Номер квартиры" value={formik.values.FlatNumber}
+                            handleChange={formik.handleChange} id="FlatNumber"/>
+               </div>
+               <div className={classes.FirstLevelContainer} style={{gridArea: "g"}}>
+                   <Typography variant="h4">Мать</Typography>
+                   <MySelect label="Тип родства" options={mother} value={formik.values.MotherType}
+                             handleChange={formik.handleChange} id="MotherType"/>
+                   <MyInput label="Фамилия" value={formik.values.MotherLastname}
+                            handleChange={formik.handleChange} id="MotherLastname"/>
+                   <MyInput label="Имя" value={formik.values.MotherFirstname}
+                            handleChange={formik.handleChange} id="MotherFirstname"/>
+                   <MyInput label="Отчество" value={formik.values.MotherSurname}
+                            handleChange={formik.handleChange} id="MotherSurname"/>
+                   <MyInput label="Адрес" value={formik.values.MotherAddress}
+                            handleChange={formik.handleChange} id="MotherAddress"/>
+               </div>
+               <div className={classes.FirstLevelContainer} style={{gridArea: "h"}}>
+                   <Typography variant="h4">Отец</Typography>
+                   <MySelect label="Тип родства" options={father} value={formik.values.FatherType}
+                             handleChange={formik.handleChange} id="FatherType"/>
+                   <MyInput label="Фамилия" value={formik.values.FatherLastname}
+                            handleChange={formik.handleChange} id="FatherLastname"/>
+                   <MyInput label="Имя" value={formik.values.FatherFirstname}
+                            handleChange={formik.handleChange} id="FatherFirstname"/>
+                   <MyInput label="Отчество" value={formik.values.FatherSurname}
+                            handleChange={formik.handleChange} id="FatherSurname"/>
+                   <MyInput label="Адрес" value={formik.values.FatherAddress}
+                            handleChange={formik.handleChange} id="FatherAddress"/>
+               </div>
+               <Button onClick={formik.handleSubmit} className={classes.SaveButton} endIcon={<SendIcon/>}>Сохранить</Button>
+           </div>
+       </div>
+    )
 }
+
+export default UserInfo

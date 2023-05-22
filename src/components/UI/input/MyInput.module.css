@@ -1,36 +1,8 @@
-.MyInpt{
-    /*padding: 5px 10px;*/
-    border-radius: 7px;
-    border: 2px solid lightgray;
-    width: 80%;
-    height: 30px;
-    font-size: 15px;
-    /*position: sticky;*/
-    /*position: static;*/
-    /*align-content: center;*/
+.MyInput{
+    width: 100%;
 }
 
-.PasswordControl{
-    float: right;
-    position: absolute;
-    margin-left: -35px;
-    margin-top: 6px;
-    cursor: pointer;
-    width: 25px;
-    height: 25px;
-    background: url(./view.svg) 0 0 no-repeat;
-}
-
-.PasswordControl.view{
-    background: url(./no-view.svg) 0 0 no-repeat;
-}
-
-.InputContainer{
-    padding-top: 30px;
-}
-
-h3{
-    font-size: 20px;
-    padding-bottom: 10px;
-    margin: 0;
+.Container{
+    width: 70%;
+    margin-top: 20px;
 }
