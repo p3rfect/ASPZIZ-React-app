@@ -1,21 +1,9 @@
 import * as React from 'react';
 import Header from '../../components/UI/Header/Header'
-import Grid from '@mui/material/Grid';
-import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import Button from "@mui/material/Button";
 import classes from "../UserInfo/UserInfo.module.css";
 import SendIcon from "@mui/icons-material/Send";
-import Stack from '@mui/material/Stack';
-import Autocomplete from '@mui/material/Autocomplete';
-import Accordion from '@mui/material/Accordion';
-import AccordionSummary from '@mui/material/AccordionSummary';
-import AccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import Tooltip from '@mui/material/Tooltip';
-import * as yup from 'yup'
 import MyInput from "../../components/UI/input/MyInput";
 import MyDatePicker from "../../components/UI/MyDatePicker/MyDatePicker";
 import MyRadioGroup from "../../components/UI/MyRadioGroup/MyRadioGroup";
@@ -48,55 +36,55 @@ const level = [
     'Незаконченнное высшее',
     'Высшее'
 ];
-const language = [
-    'Английский язык',
-    'Немецикй язык',
-    'Инспанский язык',
-    'Французский язык'
-];
-const country = [
-    'Республика Беларусь',
-    'Кыргызская Республика',
-    'Литовская Республика',
-    'Республика Казахстан',
-    'Республика Таджикистан',
-    'Российская Федерация',
-];
-const streetType = [
-    'бульвар',
-    'военный городок',
-    'военная часть',
-    'въезд',
-    'квартал',
-    'микрорайон',
-    'набережная',
-    'парк',
-    'переулок',
-    'площадь',
-    'посёлок',
-    'проезд',
-    'проспект',
-    'станция',
-    'террритория',
-    'тракт',
-    'тупик',
-    'улица',
-    'урочище',
-    'шоссе'
-];
-const cityType = [
-    'агрогородок',
-    'город',
-    'городской посёлок',
-    'деревня',
-    'курортный посёлок',
-    'посёлок',
-    'посёлок городского типа',
-    'рабочий посёлок',
-    'село',
-    'сельский населённый пункт',
-    'хутор',
-];
+// const language = [
+//     'Английский язык',
+//     'Немецикй язык',
+//     'Инспанский язык',
+//     'Французский язык'
+// ];
+// const streetType = [
+//     'бульвар',
+//     'военный городок',
+//     'военная часть',
+//     'въезд',
+//     'квартал',
+//     'микрорайон',
+//     'набережная',
+//     'парк',
+//     'переулок',
+//     'площадь',
+//     'посёлок',
+//     'проезд',
+//     'проспект',
+//     'станция',
+//     'террритория',
+//     'тракт',
+//     'тупик',
+//     'улица',
+//     'урочище',
+//     'шоссе'
+// ];
+// const country = [
+//     'Республика Беларусь',
+//     'Кыргызская Республика',
+//     'Литовская Республика',
+//     'Республика Казахстан',
+//     'Республика Таджикистан',
+//     'Российская Федерация',
+// ];
+// const cityType = [
+//     'агрогородок',
+//     'город',
+//     'городской посёлок',
+//     'деревня',
+//     'курортный посёлок',
+//     'посёлок',
+//     'посёлок городского типа',
+//     'рабочий посёлок',
+//     'село',
+//     'сельский населённый пункт',
+//     'хутор',
+// ];
 const mother = [
     'Мать',
     'Мачеха',
