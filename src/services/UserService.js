@@ -67,3 +67,17 @@ export const updateUserSpecialities = async (financingFormPeriod, specialityCode
         throw new Error(e.response.data.errorText);
     }
 }
+
+export const updateUserInfo = async (userInfo, email) => {
+    try{
+        const formData = new FormData()
+        userInfo.AverageScore = Number(userInfo.AverageScore)
+        userInfo.IsMale = (userInfo.Gender === 'Мужской')
+        userInfo.IsSingle = (userInfo.Family === 'Холост/ не замужем')
+        formData.append("email", email)
+        formData.append("userinfo", JSON.stringify(userInfo))
+        await $api.post('/user/info/update', formData)
+    } catch (e){
+        console.log(e)
+    }
+}

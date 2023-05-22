@@ -9,6 +9,9 @@ import MyDatePicker from "../../components/UI/MyDatePicker/MyDatePicker";
 import MyRadioGroup from "../../components/UI/MyRadioGroup/MyRadioGroup";
 import MySelect from "../../components/UI/MySelect/MySelect";
 import {useFormik} from "formik";
+import {useSelector} from "react-redux";
+import {updateUserInfo} from "../../services/UserService";
+import * as yup from "yup";
 
 const gender = [
     'Мужской',
@@ -96,7 +99,38 @@ const father = [
     'Попечитель',
 ];
 
+const validationSchema = yup.object({
+    Lastname: yup.string().required('Это обязательное поле').matches(/^[А-Яа-яA-Za-z ]+$/, 'Поле должно содержать только буквы верхнего и нижнего регистра'),
+    MotherLastname: yup.string().matches(/^[А-Яа-яA-Za-z ]+$/, 'Поле должно содержать только буквы верхнего и нижнего регистра'),
+    FatherLastname: yup.string().matches(/^[А-Яа-яA-Za-z ]+$/, 'Поле должно содержать только буквы верхнего и нижнего регистра'),
+    Surname: yup.string().matches(/^[А-Яа-яA-Za-z ]+$/, 'Поле должно содержать только буквы верхнего и нижнего регистра'),
+    MotherSurname: yup.string().matches(/^[А-Яа-яA-Za-z ]+$/, 'Поле должно содержать только буквы верхнего и нижнего регистра'),
+    FatherSurname: yup.string().matches(/^[А-Яа-яA-Za-z ]+$/, 'Поле должно содержать только буквы верхнего и нижнего регистра'),
+    Firstname: yup.string().required('Это обязательное поле').matches(/^[А-Яа-яA-Za-z ]+$/, 'Поле должно содержать только буквы верхнего и нижнего регистра'),
+    MotherFirstname: yup.string().matches(/^[А-Яа-яA-Za-z ]+$/, 'Поле должно содержать только буквы верхнего и нижнего регистра'),
+    FatherFirstname: yup.string().matches(/^[А-Яа-яA-Za-z ]+$/, 'Поле должно содержать только буквы верхнего и нижнего регистра'),
+    Lastnamelat: yup.string().required('Это обязательное поле').matches(/^[A-Za-z ]+$/, 'Поле должно содержать только латинские буквы верхнего и нижнего регистра'),
+    Firstnamelat: yup.string().required('Это обязательное поле').matches(/^[A-Za-z ]+$/, 'Поле должно содержать только латинские буквы верхнего и нижнего регистра'),
+    Series: yup.string().length(2, 'Длина должна быть равна 2').matches(/^[A-Z]+$/, 'Поле должно содержать только латинские буквы верхнего регистра'),
+    Number: yup.string().length(6, 'Длина должна быть равна 2').matches(/^[0-9]+$/, 'Поле должно состоять только из цифер'),
+    DocumentNumber: yup.string().length(6, 'Длина должна быть равна 2').matches(/^[0-9]+$/, 'Поле должно состоять только из цифер'),
+    InstitutionType: yup.string().matches(/^[А-Яа-яA-Za-z ]+$/, 'Поле может содержать только буквы и пробелы'),
+    Document: yup.string().matches(/^[А-Яа-яA-Za-z ]+$/, 'Поле может содержать только буквы и пробелы'),
+    Language: yup.string().matches(/^[А-Яа-яA-Za-z ]+$/, 'Поле может содержать только буквы и пробелы'),
+    AverageScore: yup.string().matches(/^[0-9.]+$/, 'Должно быть числом от 0 до 10').test('range-check', 'Должно быть числом от 0 до 10', (value) => (Number(value) >= 0 && Number(value) <= 10)),
+    PostalCode: yup.string().matches(/^[0-9.]+$/, 'Может содержать только цифры'),
+    HouseNumber: yup.string().matches(/^[0-9.]+$/, 'Может содержать только цифры'),
+    Country: yup.string().matches(/^[А-Яа-яA-Za-z ]+$/, 'Поле может содержать только буквы и пробелы'),
+    Region: yup.string().matches(/^[А-Яа-яA-Za-z ]+$/, 'Поле может содержать только буквы и пробелы'),
+    District: yup.string().matches(/^[А-Яа-яA-Za-z ]+$/, 'Поле может содержать только буквы и пробелы'),
+    LocalityType: yup.string().matches(/^[А-Яа-яA-Za-z ]+$/, 'Поле может содержать только буквы и пробелы'),
+    LocalityName: yup.string().matches(/^[А-Яа-яA-Za-z ]+$/, 'Поле может содержать только буквы и пробелы'),
+    StreetType: yup.string().matches(/^[А-Яа-яA-Za-z ]+$/, 'Поле может содержать только буквы и пробелы'),
+    Street: yup.string().matches(/^[А-Яа-яA-Za-z ]+$/, 'Поле может содержать только буквы и пробелы'),
+})
+
 const UserInfo = () => {
+    const email = useSelector((state) => state.user.email)
     const formik = useFormik({
         initialValues: {
             Lastname: '',
@@ -147,14 +181,10 @@ const UserInfo = () => {
             MotherSurname: '',
             MotherAddress: ''
         },
+        validationSchema: validationSchema,
         validateOnChange: true,
-        validate: (values) => {
-            const errors = {}
-            console.log(values)
-            return errors
-        },
         onSubmit: (values) => {
-            console.log(values)
+            updateUserInfo(values, email)
         },
     })
 
@@ -164,7 +194,7 @@ const UserInfo = () => {
            <div className={classes.FieldsContainer}>
                <div className={classes.FirstLevelContainer} style={{gridArea: "a"}}>
                    <MyInput label="Имя" value={formik.values.Firstname} handleChange={formik.handleChange}
-                            id="Firstname"/>
+                            id="Firstname" error={formik.errors.Firstname}/>
                    <MyInput label="Имя латиницей" value={formik.values.Firstnamelat} handleChange={formik.handleChange}
                             id="Firstnamelat"/>
                    <MyInput label="Фамилия" value={formik.values.Lastname} handleChange={formik.handleChange}
