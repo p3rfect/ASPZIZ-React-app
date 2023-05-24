@@ -133,7 +133,7 @@ const UserSpecialities = () => {
             let bad = false
             userSpecialities.forEach((spec1) => {
                 userSpecialities.forEach((spec2) => {
-                    if (spec1.faculty === spec2.faculty && spec1.name === spec2.name) bad = true
+                    if (spec1.faculty === spec2.faculty && spec1.name === spec2.name && spec1.id !== spec2.id) bad = true
                 })
             })
             if (bad){
