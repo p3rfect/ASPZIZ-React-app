@@ -130,6 +130,16 @@ const UserSpecialities = () => {
 
     const handleSubmit = async () => {
         try{
+            let bad = false
+            userSpecialities.forEach((spec1) => {
+                userSpecialities.forEach((spec2) => {
+                    if (spec1.faculty === spec2.faculty && spec1.name === spec2.name) bad = true
+                })
+            })
+            if (bad){
+                setShowDoubledAlert(true)
+                return
+            }
             await updateUserSpecialities(payment + ',' + form + ',' + time, userSpecialities.map(({name}) =>
                 name.split('(')[1].split(')')[0]
             ), email)
@@ -139,6 +149,8 @@ const UserSpecialities = () => {
         }
     }
 
+    const [showDoubledAlert, setShowDoubledAlert] = useState(false)
+
     return (
         <div>
             <Header page="applic"/>
@@ -147,6 +159,8 @@ const UserSpecialities = () => {
             <MyAlert showAlert={showRedirectAlert} setShowAlert={setShowRedirectAlert} title={'Ошибка'}
                     text={'Сначала внесите информацию об экзаменах!'} propHandleCloseAlert={handleCloseRedirectAlert}/>
             <MyAlert showAlert={showSuccessAlert} setShowAlert={setShowSuccessAlert} title={'Успех'} text={'Успешно сохранено'}></MyAlert>
+            <MyAlert showAlert={showDoubledAlert} setShowAlert={setShowDoubledAlert} title={'Ошибка в заполнении'}
+                     text={'Вы выбрали две одинаковые специальности, не делайте так, пожалуйста!'}></MyAlert>
             <div className={classes.Configuration}>
                 <Typography variant="h3" className={classes.ConfigurationName}>Выбор типа заявления</Typography>
                 <div className={classes.SelectorWrap}>
