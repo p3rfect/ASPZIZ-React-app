@@ -1,0 +1,105 @@
+.FieldsContainer{
+    display: grid;
+    grid-template-columns: 47.5% 47.5%;
+    grid-template-areas:
+    "a b"
+    "c d"
+    "g h"
+    "e e";
+    align-items: start;
+    margin-left: 5%;
+    margin-right: 5%;
+    grid-column-gap: 5%;
+}
+
+.FirstLevelContainer{
+    margin-top: 100px;
+    background-color: white;
+    box-shadow: 10px 10px 20px 10px rgba(0, 0, 0, .05);
+    /*margin-left: 10%;*/
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 20px;
+    padding-bottom: 40px;
+    flex: 1;
+    border-radius: 20px;
+}
+
+.SaveButton{
+    margin-top: 60px;
+    font-size: 27px;
+    height: 60px;
+    width: 20%;
+    border-radius: 20px;
+    text-transform: none;
+    background-color: #1976d2;
+    color: white;
+    margin-bottom: 50px;
+    grid-area: e;
+    margin-left: 40%;
+}
+
+.SaveButton:hover{
+    color: #1976d2;
+    background-color: white;
+}
+
+.Container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    align-content: center;
+}
+
+.ExamsContainer{
+    margin-top: 30px;
+    width: 70%;
+}
+
+.Exam{
+    width: 100%;
+    height: 150px;
+    margin-top: 20px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 10px 10px 20px 10px rgba(0, 0, 0, .1);
+    display: flex;
+    align-content: center;
+    align-items: center;
+    padding-left: 5%;
+    padding-top: 20px;
+}
+
+.Field{
+    width: 21.75%;
+    margin-left: 3%;
+}
+
+.Field:first-of-type{
+    margin-left: 0;
+}
+
+.Title{
+    margin-top: 100px;
+    margin-left: 0;
+    font-family: "Roboto","Helvetica","Arial",sans-serif;
+    font-weight: 400;
+}
+
+.SubmitButton{
+    margin-top: 70px;
+    font-size: 25px;
+    height: 70px;
+    width: 15%;
+    border-radius: 20px;
+    text-transform: none;
+    background-color: #1976d2;
+    color: white;
+    /*border-color: black;*/
+}
+
+.SubmitButton:hover{
+    color: #1976d2;
+    background-color: white;
+}

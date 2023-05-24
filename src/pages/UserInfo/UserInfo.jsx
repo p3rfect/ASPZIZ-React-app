@@ -112,8 +112,8 @@ const validationSchema = yup.object({
     Firstname: yup.string().required('Это обязательное поле').matches(/^[А-Яа-яA-Za-z ]+$/, 'Поле должно содержать только буквы верхнего и нижнего регистра'),
     MotherFirstname: yup.string().matches(/^[А-Яа-яA-Za-z ]+$/, 'Поле должно содержать только буквы верхнего и нижнего регистра'),
     FatherFirstname: yup.string().matches(/^[А-Яа-яA-Za-z ]+$/, 'Поле должно содержать только буквы верхнего и нижнего регистра'),
-    Lastnamelat: yup.string().required('Это обязательное поле').matches(/^[A-Za-z ]+$/, 'Поле должно содержать только латинские буквы верхнего и нижнего регистра'),
-    Firstnamelat: yup.string().required('Это обязательное поле').matches(/^[A-Za-z ]+$/, 'Поле должно содержать только латинские буквы верхнего и нижнего регистра'),
+    LastnameLat: yup.string().required('Это обязательное поле').matches(/^[A-Za-z ]+$/, 'Поле должно содержать только латинские буквы верхнего и нижнего регистра'),
+    FirstnameLat: yup.string().required('Это обязательное поле').matches(/^[A-Za-z ]+$/, 'Поле должно содержать только латинские буквы верхнего и нижнего регистра'),
     Series: yup.string().length(2, 'Длина должна быть равна 2').matches(/^[A-Z]+$/, 'Поле должно содержать только латинские буквы верхнего регистра'),
     Number: yup.string().length(6, 'Длина должна быть равна 6').matches(/^[0-9]+$/, 'Поле должно состоять только из цифер'),
     DocumentNumber: yup.string().length(6, 'Длина должна быть равна 2').matches(/^[0-9]+$/, 'Поле должно состоять только из цифер'),
@@ -139,9 +139,9 @@ const UserInfo = () => {
     const formik = useFormik({
         initialValues: {
             Lastname: '',
-            Lastnamelat: '',
+            LastnameLat: '',
             Firstname: '',
-            Firstnamelat: '',
+            FirstnameLat: '',
             Surname: '',
             Birthday: '',
             Gender: '',
@@ -226,14 +226,14 @@ const UserInfo = () => {
                         <div className={classes.FirstLevelContainer} style={{gridArea: "a"}}>
                             <MyInput label="Имя" value={formik.values.Firstname} handleChange={formik.handleChange}
                                      id="Firstname" error={formik.errors.Firstname}/>
-                            <MyInput label="Имя латиницей" value={formik.values.Firstnamelat}
+                            <MyInput label="Имя латиницей" value={formik.values.FirstnameLat}
                                      handleChange={formik.handleChange}
-                                     id="Firstnamelat" error={formik.errors.Firstnamelat}/>
+                                     id="FirstnameLat" error={formik.errors.FirstnameLat}/>
                             <MyInput label="Фамилия" value={formik.values.Lastname} handleChange={formik.handleChange}
                                      id="Lastname" error={formik.errors.Lastname}/>
-                            <MyInput label="Фамилия латиницей" value={formik.values.Lastnamelat}
+                            <MyInput label="Фамилия латиницей" value={formik.values.LastnameLat}
                                      handleChange={formik.handleChange}
-                                     id="Lastnamelat" error={formik.errors.Lastnamelat}/>
+                                     id="LastnameLat" error={formik.errors.LastnameLat}/>
                             <MyInput label="Отчество" value={formik.values.Surname} handleChange={formik.handleChange}
                                      id="Surname" error={formik.errors.Surname}/>
                             <MyDatePicker label="Дата рождения" value={formik.values.Birthday}
