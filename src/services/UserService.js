@@ -81,3 +81,15 @@ export const updateUserInfo = async (userInfo, email) => {
         console.log(e)
     }
 }
+
+export const getUserInfo = async (email) => {
+    try{
+        const response = await $api.get(`/user/info/get?email=${email}`)
+        const userInfo = response.data
+        userInfo.Gender = (userInfo.IsMale ? 'Мужской' : 'Женский')
+        userInfo.Family = (userInfo.IsSingle ? 'Холост/ не замужем' : 'Женат/замужем')
+        return userInfo
+    } catch (e) {
+        throw new Error(e)
+    }
+}

@@ -10,8 +10,9 @@ import MyRadioGroup from "../../components/UI/MyRadioGroup/MyRadioGroup";
 import MySelect from "../../components/UI/MySelect/MySelect";
 import {useFormik} from "formik";
 import {useSelector} from "react-redux";
-import {updateUserInfo} from "../../services/UserService";
+import {getUserInfo, updateUserInfo} from "../../services/UserService";
 import * as yup from "yup";
+import {useEffect} from "react";
 
 const gender = [
     'Мужской',
@@ -127,7 +128,8 @@ const validationSchema = yup.object({
     LocalityName: yup.string().matches(/^[А-Яа-яA-Za-z ]+$/, 'Поле может содержать только буквы и пробелы'),
     StreetType: yup.string().matches(/^[А-Яа-яA-Za-z ]+$/, 'Поле может содержать только буквы и пробелы'),
     Street: yup.string().matches(/^[А-Яа-яA-Za-z ]+$/, 'Поле может содержать только буквы и пробелы'),
-    IdentyNumber: yup.string().matches(/^[0-9.]+$/, 'Может содержать только цифры')
+    IdentyNumber: yup.string().matches(/^[0-9.]+$/, 'Может содержать только цифры'),
+    PhoneNumber: yup.string().matches(/^[0-9+]+$/, 'Введите корректный номер')
 })
 
 const UserInfo = () => {
@@ -189,6 +191,14 @@ const UserInfo = () => {
         },
     })
 
+    useEffect(() => {
+        const fetchInfo = async () => {
+            formik.values = await getUserInfo(email)
+        }
+
+        fetchInfo()
+    }, [])
+
     return (
        <div>
            <Header/>
@@ -210,7 +220,7 @@ const UserInfo = () => {
                                  id="Gender" error={formik.errors.Gender}/>
                    <MyRadioGroup options={family} label="Семейное положение" value={formik.values.Family}
                                  handleChange={formik.handleChange} id="Family" error={formik.errors.Family}/>
-                   <MyInput label="Дом. телефон" value={formik.values.PhoneNumber} handleChange={formik.handleChange}
+                   <MyInput label="Моб. телефон" value={formik.values.PhoneNumber} handleChange={formik.handleChange}
                             id="PhoneNumber" error={formik.errors.PhoneNumber}/>
                </div>
                <div className={classes.FirstLevelContainer} style={{gridArea: "b"}}>
