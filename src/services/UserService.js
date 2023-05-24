@@ -88,7 +88,13 @@ export const getUserInfo = async (email) => {
         const userInfo = response.data
         userInfo.Gender = (userInfo.IsMale ? 'Мужской' : 'Женский')
         userInfo.Family = (userInfo.IsSingle ? 'Холост/ не замужем' : 'Женат/замужем')
-        return userInfo
+        const result = {}
+        Object.entries(userInfo).forEach(([key, value]) => {
+            let newKey = key.charAt(0).toUpperCase() + key.slice(1)
+            result[newKey] = value
+        })
+        console.log(result)
+        return result
     } catch (e) {
         throw new Error(e)
     }

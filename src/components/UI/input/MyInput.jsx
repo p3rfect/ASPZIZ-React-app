@@ -4,7 +4,7 @@ import TextField from "@mui/material/TextField";
 import {Popover} from "@mui/material";
 import {Typography} from "@mui/material";
 
-const MyInput = ({id, label, disabled, handleChange, helperText, error}) => {
+const MyInput = ({id, value, label, disabled, handleChange, helperText, error}) => {
     const [anchorEl, setAnchorEl] = useState(null);
 
     const handlePopoverOpen = (event) => {
@@ -24,11 +24,13 @@ const MyInput = ({id, label, disabled, handleChange, helperText, error}) => {
                 disabled={disabled}
                 onBlur={e => handleChange(e)}
                 helperText={error ? error : ''}
+                defaultValue={value}
                 error={error !== undefined && error !== ''}
                 className={classes.MyInput}
                 onMouseEnter={handlePopoverOpen}
                 onMouseLeave={handlePopoverClose}
                 id={id}
+                name={id}
             />
             {helperText ?
                 <Popover
