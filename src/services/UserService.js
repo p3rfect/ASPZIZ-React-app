@@ -23,7 +23,7 @@ export const postUserExams = async (exams, email) => {
             }
         })
         const formData1 = new FormData()
-        formData1.append('exams', JSON.stringify(formData))
+        formData1.append('userexams', JSON.stringify(formData))
         formData1.append('email', email)
         await $api.post('/user/exams/update', formData1)
     } catch (e) {
