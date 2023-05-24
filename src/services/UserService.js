@@ -66,9 +66,9 @@ export const updateUserSpecialities = async (financingFormPeriod, specialityCode
     try{
         // console.log(specialityCodes)
         const formData = new FormData()
+        const obj = {FinancingFormPeriod: financingFormPeriod, SpecialtiesCodes: specialityCodes}
         formData.append("email", email)
-        formData.append("FinancingFormPeriod", financingFormPeriod)
-        formData.append("SpecialtiesCodes", specialityCodes)
+        formData.append("userspecialties", JSON.stringify(obj))
         await $api.post('/user/specialties/update', formData)
     } catch (e) {
         console.log(e);

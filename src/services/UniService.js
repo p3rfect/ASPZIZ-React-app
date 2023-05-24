@@ -1,23 +1,24 @@
 import $api from '../http/index'
 
-export const getAllSpecialities = async (financingFormPeriod) => {
+export const getAllSpecialities = async (FinancingFormPeriod) => {
     try{
         const response = await $api.get('/allspecialties/get')
         const result = []
-        response.data.forEach(({IsPhysics, SpecialtyCode, SpecialtyFacultyAndName, FinancingFormPeriod}) => {
-            if (financingFormPeriod === FinancingFormPeriod) {
-                const [faculty, name] = SpecialtyFacultyAndName.split(';')
+        response.data.forEach(({isPhysics, specialtyCode, specialtyFacultyAndName, financingFormPeriod}) => {
+            if (financingFormPeriod.includes(FinancingFormPeriod)) {
+                const [faculty, name] = specialtyFacultyAndName.split(';')
                 const index = result.find((obj) => obj.faculty === faculty)
                 if (index === undefined) {
                     result.push({
                         faculty: faculty,
-                        specialities: [{code: SpecialtyCode, isPhysics: IsPhysics, name: name}]
+                        specialities: [{code: specialtyCode, isPhysics: isPhysics, name: name}]
                     })
                 } else {
-                    index.specialities.push({code: SpecialtyCode, isPhysics: IsPhysics, name: name})
+                    index.specialities.push({code: specialtyCode, isPhysics: isPhysics, name: name})
                 }
             }
         })
+        console.log(result)
         return result
     } catch (e) {
         throw new Error(e.response.data.errorText)
