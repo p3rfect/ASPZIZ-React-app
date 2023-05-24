@@ -79,6 +79,7 @@ export const updateUserInfo = async (userInfo, email) => {
         await $api.post('/user/info/update', formData)
     } catch (e){
         console.log(e)
+        throw new Error(e)
     }
 }
 

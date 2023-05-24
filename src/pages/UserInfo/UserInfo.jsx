@@ -13,6 +13,8 @@ import {useSelector} from "react-redux";
 import {getUserInfo, updateUserInfo} from "../../services/UserService";
 import * as yup from "yup";
 import {useEffect, useState} from "react";
+import MyAlert from "../../components/UI/MyAlert/MyAlert";
+import UnknownError from "../../components/UI/UnknownError/UnknownError";
 
 const gender = [
     'Мужской',
@@ -186,26 +188,40 @@ const UserInfo = () => {
         },
         validationSchema: validationSchema,
         validateOnChange: true,
-        onSubmit: (values) => {
-            updateUserInfo(values, email)
+        onSubmit: async (values) => {
+            try {
+                await updateUserInfo(values, email)
+                setShowSuccessAlert(true)
+            } catch (e) {
+                setShowUnknownAlert(true)
+            }
         },
     })
 
     const [isLoading, setIsLoading] = useState(true)
     useEffect(() => {
         const fetchInfo = async () => {
-            await setIsLoading(true)
-            formik.setValues(await getUserInfo(email))
-            await setIsLoading(false)
+            try {
+                await setIsLoading(true)
+                formik.setValues(await getUserInfo(email))
+                await setIsLoading(false)
+            } catch (e) {
+                setIsLoading(false)
+            }
         }
 
         fetchInfo()
     }, [])
 
+    const [showSuccessAlert, setShowSuccessAlert] = useState(false)
+    const [showUnknownAlert, setShowUnknownAlert] = useState(false)
+
     return (
         isLoading ? null :
                 <div>
                     <Header/>
+                    <MyAlert title="Успех" text="Успешно сохранено" showAlert={showSuccessAlert} setShowAlert={setShowSuccessAlert} />
+                    <UnknownError setShowAlert={setShowUnknownAlert} showAlert={showUnknownAlert} />
                     <div className={classes.FieldsContainer}>
                         <div className={classes.FirstLevelContainer} style={{gridArea: "a"}}>
                             <MyInput label="Имя" value={formik.values.Firstname} handleChange={formik.handleChange}
