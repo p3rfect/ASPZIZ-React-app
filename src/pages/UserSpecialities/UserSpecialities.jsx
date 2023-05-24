@@ -18,7 +18,6 @@ import {getUserExams, getUserSpecialities, updateUserSpecialities} from "../../s
 
 const UserSpecialities = () => {
     const [isPhysicsUser, setIsPhysicsUser] = useState(true)
-    let specialitiesList = useSelector((state) => state.specialities.specialitiesList)
 
     useEffect(() => {
         const checkUserExams = async () => {
@@ -38,25 +37,7 @@ const UserSpecialities = () => {
         checkUserExams()
     }, [])
 
-    useEffect(() => {
-        specialitiesList = specialitiesList.map(({faculty, specialities}) => (
-            {faculty: faculty, specialities: specialities.filter(({isPhysics}) => isPhysics === isPhysicsUser)}
-        ))
-    }, [isPhysicsUser])
-
     const dispatch = useDispatch()
-    const facultyElements = specialitiesList.map(({faculty}, index) =>
-        <MenuItem key={`faculty-item-${index}`} value={faculty}>{faculty}</MenuItem>
-    )
-
-    const specialitiesNamesElements = specialitiesList.map(({faculty, specialities}, fIndex) =>
-        ({faculty: faculty,
-            specialities: specialities
-                .map(({code, name}, sIndex) => (
-                    <MenuItem key={`faculty-${fIndex}-speciality-${sIndex}`} value={`(${code}) ${name}`}>{`(${code}) ${name}`}</MenuItem>
-                ))
-        })
-    )
 
     const email = useSelector((state) => state.user.email)
     const [form, setForm] = useState('')
@@ -67,43 +48,56 @@ const UserSpecialities = () => {
         {faculty: '', name: '', id: 0}
     ])
     const [key, setKey] = useState(1)
-    useEffect(() => {
-        setUserSpecialities([...[{faculty: '', name: '', id: 0}]])
+    const handleAllFormChange = () => {
+        if (form === '' || time === '' || payment === '') return
         const fetchAllSpecialities = async () =>
         {
+            await setUserSpecialities([...[{faculty: '', name: '', id: 0}]])
             dispatch(setSpecialtiesList({list: await getAllSpecialities(payment + ',' + form + ',' + time)}))
         }
         fetchAllSpecialities()
-    }, [form, time, payment])
+    }
+
+    let specialitiesList = useSelector((state) => state.specialities.specialitiesList)
+    useEffect(() => {
+        specialitiesList = specialitiesList.map(({faculty, specialities}) => (
+            {faculty: faculty, specialities: specialities.filter(({isPhysics}) => isPhysics === isPhysicsUser)}
+        ))
+    }, [isPhysicsUser])
+    const specialitiesNamesElements = specialitiesList.map(({faculty, specialities}, fIndex) =>
+        ({faculty: faculty,
+            specialities: specialities
+                .map(({code, name}, sIndex) => (
+                    <MenuItem key={`faculty-${fIndex}-speciality-${sIndex}`} value={`(${code}) ${name}`}>{`(${code}) ${name}`}</MenuItem>
+                ))
+        })
+    )
+    const facultyElements = specialitiesList.map(({faculty}, index) =>
+        <MenuItem key={`faculty-item-${index}`} value={faculty}>{faculty}</MenuItem>
+    )
 
     useEffect(() => {
         const fetchUserSpecialities = async () => {
             const response = await getUserSpecialities(email)
+            await setPayment(response.data.financingFormPeriod.split(',')[0])
+            await setForm(response.data.financingFormPeriod.split(',')[1])
+            await setTime(response.data.financingFormPeriod.split(',')[2])
             let key = 0;
-            setUserSpecialities(response.data.specialtiesCodes.map((code) => {
+            await console.log(2)
+            await setUserSpecialities(response.data.specialtiesCodes.map((code) => {
                 let res
-                specialitiesList.foreach((fac, specList) => {
-                    specList.forEach((spec) => {
-                        if (spec.code === code) res = {faculty: fac, name: spec.name, id: key++}
+                specialitiesList.forEach(({faculty, specialities}) => {
+                    specialities.forEach((spec) => {
+                        if (spec.code === code){
+                            res = {faculty: faculty, name: '(' + code + ') ' + spec.name, id: key++}
+                        }
                     })
                 })
                 return res
             }))
-            if (userSpecialities === []) setUserSpecialities([{faculty: '', name: '', id: 0}])
-            setPayment(response.data.financingFormPeriod.split(',')[0])
-            setForm(response.data.financingFormPeriod.split(',')[1])
-            setTime(response.data.financingFormPeriod.split(',')[2])
         }
         fetchUserSpecialities()
     }, [])
-
-    const handleFormStateChange = (e) => {
-        setForm(e)
-        if (e === 'Дистанционная') {
-            setTime('Полное')
-            setPayment('Платная')
-        }
-    }
 
     const [showUnknownAlert, setShowUnknownAlert] = useState(false)
     const [showRedirectAlert, setShowRedirectAlert] = useState(false)
@@ -150,13 +144,30 @@ const UserSpecialities = () => {
     }
 
     const [showDoubledAlert, setShowDoubledAlert] = useState(false)
+    const handleFormStateChange = (e) => {
+        setForm(e)
+        if (e === 'Дистанционная') {
+            setTime('Полное')
+            setPayment('Платная')
+        }
+        handleAllFormChange()
+    }
+
+    const handePaymentChange = (e) => {
+        setPayment(e)
+        handleAllFormChange()
+    }
+
+    const handleTimeChange = (e) => {
+        setTime(e)
+        handleAllFormChange()
+    }
 
     return (
         <div>
-            <Header page="applic"/>
-            {/*    next element should be with marginTop: "100px" because of the positioning of the header element*/}
-            <UnknownError showAlert={showUnknownAlert} setShowAlert={setShowUnknownAlert}></UnknownError>
-            <MyAlert showAlert={showRedirectAlert} setShowAlert={setShowRedirectAlert} title={'Ошибка'}
+             <Header page="applic"/>
+             <UnknownError showAlert={showUnknownAlert} setShowAlert={setShowUnknownAlert}></UnknownError>
+             <MyAlert showAlert={showRedirectAlert} setShowAlert={setShowRedirectAlert} title={'Ошибка'}
                     text={'Сначала внесите информацию об экзаменах!'} propHandleCloseAlert={handleCloseRedirectAlert}/>
             <MyAlert showAlert={showSuccessAlert} setShowAlert={setShowSuccessAlert} title={'Успех'} text={'Успешно сохранено'}></MyAlert>
             <MyAlert showAlert={showDoubledAlert} setShowAlert={setShowDoubledAlert} title={'Ошибка в заполнении'}
@@ -184,7 +195,7 @@ const UserSpecialities = () => {
                             labelId="time-select-label"
                             id="time-select"
                             value={time}
-                            onChange={e => setTime(e.target.value)}
+                            onChange={e => handleTimeChange(e.target.value)}
                             label="Время обучения"
                         >
                             <MenuItem value={'Полное'}>Полное</MenuItem>
@@ -197,7 +208,7 @@ const UserSpecialities = () => {
                             labelId="payment-select-label"
                             id="payment-select"
                             value={payment}
-                            onChange={e => setPayment(e.target.value)}
+                            onChange={e => handePaymentChange(e.target.value)}
                             label="Форма оплаты"
                         >
                             <MenuItem value={'Бюджетная'}>Бюджетная</MenuItem>

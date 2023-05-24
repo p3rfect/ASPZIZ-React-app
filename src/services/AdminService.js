@@ -10,7 +10,7 @@ export const getAdminUser = async (email) => {
 
 export const Enroll = async () => {
     try {
-        $api.get('admin/enroll')
+        await $api.get('admin/enroll')
     } catch (e) {
         throw new Error(e)
     }

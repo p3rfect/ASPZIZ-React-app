@@ -5,7 +5,7 @@ export const getAllSpecialities = async (FinancingFormPeriod) => {
         const response = await $api.get('/allspecialties/get')
         const result = []
         response.data.forEach(({isPhysics, specialtyCode, specialtyFacultyAndName, financingFormPeriod}) => {
-            if (financingFormPeriod.includes(FinancingFormPeriod)) {
+            if (financingFormPeriod.includes(FinancingFormPeriod) || FinancingFormPeriod === ',,') {
                 const [faculty, name] = specialtyFacultyAndName.split(';')
                 const index = result.find((obj) => obj.faculty === faculty)
                 if (index === undefined) {
@@ -18,7 +18,6 @@ export const getAllSpecialities = async (FinancingFormPeriod) => {
                 }
             }
         })
-        console.log(result)
         return result
     } catch (e) {
         throw new Error(e.response.data.errorText)
