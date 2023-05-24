@@ -73,10 +73,14 @@ const UserSpecialities = () => {
         {
             dispatch(setSpecialtiesList({list: await getAllSpecialities(payment + ',' + form + ',' + time)}))
         }
+        fetchAllSpecialities()
+    }, [form, time, payment])
+
+    useEffect(() => {
         const fetchUserSpecialities = async () => {
             const response = await getUserSpecialities(email)
             let key = 0;
-            setUserSpecialities(response.data.SpecialtiesCodes.map((code) => {
+            setUserSpecialities(response.data.specialtiesCodes.map((code) => {
                 let res
                 specialitiesList.foreach((fac, specList) => {
                     specList.forEach((spec) => {
@@ -85,13 +89,13 @@ const UserSpecialities = () => {
                 })
                 return res
             }))
-            setPayment(response.data.FinancingFormPeriod.split(',')[0])
-            setForm(response.data.FinancingFormPeriod.split(',')[1])
-            setTime(response.data.FinancingFormPeriod.split(',')[2])
+            if (userSpecialities === []) setUserSpecialities([{faculty: '', name: '', id: 0}])
+            setPayment(response.data.financingFormPeriod.split(',')[0])
+            setForm(response.data.financingFormPeriod.split(',')[1])
+            setTime(response.data.financingFormPeriod.split(',')[2])
         }
-        fetchAllSpecialities()
         fetchUserSpecialities()
-    }, [form, time, payment])
+    }, [])
 
     const handleFormStateChange = (e) => {
         setForm(e)
