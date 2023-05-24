@@ -116,7 +116,7 @@ const validationSchema = yup.object({
     FirstnameLat: yup.string().required('Это обязательное поле').matches(/^[A-Za-z ]+$/, 'Поле должно содержать только латинские буквы верхнего и нижнего регистра'),
     Series: yup.string().length(2, 'Длина должна быть равна 2').matches(/^[A-Z]+$/, 'Поле должно содержать только латинские буквы верхнего регистра'),
     Number: yup.string().length(6, 'Длина должна быть равна 6').matches(/^[0-9]+$/, 'Поле должно состоять только из цифер'),
-    DocumentNumber: yup.string().length(6, 'Длина должна быть равна 2').matches(/^[0-9]+$/, 'Поле должно состоять только из цифер'),
+    DocumentNumber: yup.string().length(6, 'Длина должна быть равна 6').matches(/^[0-9]+$/, 'Поле должно состоять только из цифер'),
     InstitutionType: yup.string().matches(/^[А-Яа-яA-Za-z ]+$/, 'Поле может содержать только буквы и пробелы'),
     Document: yup.string().matches(/^[А-Яа-яA-Za-z ]+$/, 'Поле может содержать только буквы и пробелы'),
     Language: yup.string().matches(/^[А-Яа-яA-Za-z ]+$/, 'Поле может содержать только буквы и пробелы'),
