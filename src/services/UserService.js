@@ -54,6 +54,14 @@ export const getUserExams = async (email) => {
     }
 }
 
+export const getUserSpecialities = async (email) => {
+    try{
+        return await $api.get(`/user/specialties/get?email=${email}`)
+    } catch (e) {
+        throw new Error(e)
+    }
+}
+
 export const updateUserSpecialities = async (financingFormPeriod, specialityCodes, email) => {
     try{
         // console.log(specialityCodes)

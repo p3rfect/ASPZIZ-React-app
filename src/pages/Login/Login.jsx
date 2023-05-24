@@ -35,7 +35,9 @@ function Login() {
         try{
             const response = await LoginRequest(email, password)
             dispatch(setUser({email: email, role: response.data.role}))
-            route("/info")
+            if (response.data.role === 'user') route("/info")
+            else if (response.data.role === 'admin') route("/admin")
+            else route("/trustee")
         } catch(e){
             if (e.message === "Invalid user name or password"){
                 setShowNotFoundError(true)

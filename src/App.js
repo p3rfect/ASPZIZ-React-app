@@ -11,6 +11,8 @@ import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 import UserExams from "./pages/UserExams/UserExams";
 import UserSpecialities from "./pages/UserSpecialities/UserSpecialities";
+import Admin from "./pages/Admin/Admin";
+import Trustee from "./pages/Trustee/Trustee";
 
 function App() {
   return (
@@ -22,7 +24,8 @@ function App() {
             <Route path="/exams" element={<UserExams/>}/>
             <Route path="/applic" element={<UserSpecialities/>}/>
             <Route path="/submitting" element={<Submitting/>}/>
-            <Route path="/error" element={<NotFound/>}/>
+            <Route path="/admin" element={<Admin/>}/>
+            <Route path="/trustee" element={<Trustee/>}/>
             <Route path="*" element={<NotFound/>}/>
         </Routes>
       </HashRouter>

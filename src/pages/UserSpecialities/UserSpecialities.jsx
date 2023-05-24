@@ -14,35 +14,35 @@ import {getAllSpecialities} from "../../services/UniService";
 import DeleteIcon from '@mui/icons-material/Delete'
 import AddIcon from '@mui/icons-material/Add';
 import SendIcon from '@mui/icons-material/Send';
-import {updateUserSpecialities} from "../../services/UserService";
+import {getUserExams, getUserSpecialities, updateUserSpecialities} from "../../services/UserService";
 
 const UserSpecialities = () => {
-    // const [isPhysicsUser, setIsPhysicsUser] = useState(true)
+    const [isPhysicsUser, setIsPhysicsUser] = useState(true)
     let specialitiesList = useSelector((state) => state.specialities.specialitiesList)
 
-    // useEffect(() => {
-    //     const checkUserExams = async () => {
-    //         try {
-    //             const result = await getUserExams(email)
-    //             if (result[0].name === ''){
-    //                 setShowRedirectAlert(true)
-    //             }
-    //             else if (result.filter(exam => exam.name === 'Физика').length > 0){
-    //                 setIsPhysicsUser(true)
-    //             }
-    //         } catch (e) {
-    //             console.log(e)
-    //             setShowUnknownAlert(true)
-    //         }
-    //     }
-    //     checkUserExams()
-    // }, [])
+    useEffect(() => {
+        const checkUserExams = async () => {
+            try {
+                const result = await getUserExams(email)
+                if (result[0].name === ''){
+                    setShowRedirectAlert(true)
+                }
+                else if (result.filter(exam => exam.name === 'Физика').length > 0){
+                    setIsPhysicsUser(true)
+                }
+            } catch (e) {
+                console.log(e)
+                setShowUnknownAlert(true)
+            }
+        }
+        checkUserExams()
+    }, [])
 
-    // useEffect(() => {
-    //     specialitiesList = specialitiesList.map(({faculty, specialities}) => (
-    //         {faculty: faculty, specialities: specialities.filter(({isPhysics}) => isPhysics === isPhysicsUser)}
-    //     ))
-    // }, [isPhysicsUser])
+    useEffect(() => {
+        specialitiesList = specialitiesList.map(({faculty, specialities}) => (
+            {faculty: faculty, specialities: specialities.filter(({isPhysics}) => isPhysics === isPhysicsUser)}
+        ))
+    }, [isPhysicsUser])
 
     const dispatch = useDispatch()
     const facultyElements = specialitiesList.map(({faculty}, index) =>
@@ -58,7 +58,7 @@ const UserSpecialities = () => {
         })
     )
 
-    // const email = useSelector((state) => state.user.email)
+    const email = useSelector((state) => state.user.email)
     const [form, setForm] = useState('')
     const [time, setTime] = useState('')
     const [payment, setPayment] = useState('')
@@ -73,7 +73,24 @@ const UserSpecialities = () => {
         {
             dispatch(setSpecialtiesList({list: await getAllSpecialities(payment + ',' + form + ',' + time)}))
         }
+        const fetchUserSpecialities = async () => {
+            const response = await getUserSpecialities(email)
+            let key = 0;
+            setUserSpecialities(response.data.SpecialtiesCodes.map((code) => {
+                let res
+                specialitiesList.foreach((fac, specList) => {
+                    specList.forEach((spec) => {
+                        if (spec.code === code) res = {faculty: fac, name: spec.name, id: key++}
+                    })
+                })
+                return res
+            }))
+            setPayment(response.data.FinancingFormPeriod.split(',')[0])
+            setForm(response.data.FinancingFormPeriod.split(',')[1])
+            setTime(response.data.FinancingFormPeriod.split(',')[2])
+        }
         fetchAllSpecialities()
+        fetchUserSpecialities()
     }, [form, time, payment])
 
     const handleFormStateChange = (e) => {
@@ -111,7 +128,7 @@ const UserSpecialities = () => {
         try{
             await updateUserSpecialities(payment + ',' + form + ',' + time, userSpecialities.map(({name}) =>
                 name.split('(')[1].split(')')[0]
-            ))
+            ), email)
             setShowSuccessAlert(true)
         } catch (e) {
             setShowUnknownAlert(true)
