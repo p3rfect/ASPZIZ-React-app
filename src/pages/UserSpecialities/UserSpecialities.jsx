@@ -58,6 +58,10 @@ const UserSpecialities = () => {
         fetchAllSpecialities()
     }
 
+    useEffect(async () => {
+        dispatch(setSpecialtiesList({list: await getAllSpecialities(payment + ',' + form + ',' + time)}))
+    }, [])
+
     let specialitiesList = useSelector((state) => state.specialities.specialitiesList)
     useEffect(() => {
         specialitiesList = specialitiesList.map(({faculty, specialities}) => (

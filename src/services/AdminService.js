@@ -15,3 +15,13 @@ export const Enroll = async () => {
         throw new Error(e)
     }
 }
+
+export const acceptUser = async (email) => {
+    try{
+        const formData = new FormData()
+        formData.append('email', email)
+        await $api.post('/admin/user/accept', formData)
+    } catch (e) {
+        throw new Error(e)
+    }
+}

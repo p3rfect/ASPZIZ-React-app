@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {FormControl, FormHelperText, InputLabel, MenuItem, OutlinedInput, TextField} from "@mui/material";
 import Button from "@mui/material/Button";
-import Header from "../../components/UI/Header/Header";
 import MyAlert from "../../components/UI/MyAlert/MyAlert";
 import UnknownError from "../../components/UI/UnknownError/UnknownError";
 import classes from "./Admin.module.css";
@@ -21,7 +20,7 @@ import {
     updateUserInfo, updateUserSpecialities
 } from "../../services/UserService";
 import * as yup from "yup";
-import {Enroll, getAdminUser} from "../../services/AdminService";
+import {acceptUser, Enroll, getAdminUser} from "../../services/AdminService";
 import Select from "@mui/material/Select";
 import {useNavigate} from "react-router-dom";
 import {setSpecialtiesList} from "../../features/specialties/specialitiesSlice";
@@ -421,6 +420,14 @@ const Admin = () => {
         console.log(formik.values)
     }
 
+    const handleAccept = async () => {
+        try{
+            await acceptUser(emailSearch)
+        } catch (e) {
+            setShowUnknownAlert(true)
+        }
+    }
+
     return (
         <div>
             <FormControl sx={{ m: 1, width: "80%" }} variant="outlined" key="email-form">
@@ -437,7 +444,7 @@ const Admin = () => {
             {!found ? null :
                 isLoading ? null :
                     <div>
-                        <Button>Принять документы</Button>
+                        {role === 'trustee' ? <Button onClick={handleAccept}>Принять документы</Button> : null}
                         <div>
                         <MyAlert title="Успех" text="Успешно сохранено" showAlert={showSuccessAlert} setShowAlert={setShowSuccessAlert} />
                         <UnknownError setShowAlert={setShowUnknownAlert} showAlert={showUnknownAlert} />
@@ -603,7 +610,6 @@ const Admin = () => {
             <MyAlert showAlert={showFillingError} setShowAlert={setShowFillingError} title={'Ошибка'}
                      text={'Некорректные баллы'}/>
             <UnknownError showAlert={showUnknownError} setShowAlert={setShowUnknownError}></UnknownError>
-            <Header page="exams"/>
             {/*    next element should be with marginTop: "60px" because of the positioning of the header element*/}
             <Typography variant="h2" className={classes.Title}>Ввод экзаменов</Typography>
             <div className={classes.ExamsContainer}>
@@ -662,7 +668,6 @@ const Admin = () => {
             <Button className={classes.SubmitButton} variant="outlined" endIcon={<SendIcon/>} onClick={handleSubmit}>Сохранить</Button>
                 </div>
                         <div>
-                            <Header page="applic"/>
                             <UnknownError showAlert={showUnknownAlert} setShowAlert={setShowUnknownAlert}></UnknownError>
                             <MyAlert showAlert={showRedirectAlert} setShowAlert={setShowRedirectAlert} title={'Ошибка'}
                                      text={'Сначала внесите информацию об экзаменах!'} propHandleCloseAlert={handleCloseRedirectAlert}/>
