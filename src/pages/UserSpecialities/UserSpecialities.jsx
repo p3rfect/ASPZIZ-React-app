@@ -58,9 +58,6 @@ const UserSpecialities = () => {
         fetchAllSpecialities()
     }
 
-    useEffect(async () => {
-        dispatch(setSpecialtiesList({list: await getAllSpecialities(payment + ',' + form + ',' + time)}))
-    }, [])
 
     let specialitiesList = useSelector((state) => state.specialities.specialitiesList)
     useEffect(() => {
@@ -82,6 +79,12 @@ const UserSpecialities = () => {
 
     useEffect(() => {
         const fetchUserSpecialities = async () => {
+            const fetchAllSpecialities = async () =>
+            {
+                await setUserSpecialities([...[{faculty: '', name: '', id: 0}]])
+                dispatch(setSpecialtiesList({list: await getAllSpecialities(payment + ',' + form + ',' + time)}))
+            }
+            await fetchAllSpecialities()
             const response = await getUserSpecialities(email)
             await setPayment(response.data.financingFormPeriod.split(',')[0])
             await setForm(response.data.financingFormPeriod.split(',')[1])
