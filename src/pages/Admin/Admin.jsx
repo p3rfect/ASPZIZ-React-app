@@ -14,6 +14,7 @@ import SendIcon from "@mui/icons-material/Send";
 import {useDispatch, useSelector} from "react-redux";
 import {useFormik} from "formik";
 import {
+    getUserExams,
     getUserSpecialities,
 
     postUserExams,
@@ -75,7 +76,7 @@ const validationSchema = yup.object({
     Firstname: yup.string().required('Это обязательное поле').matches(/^[А-Яа-яA-Za-z ]+$/, 'Поле должно содержать только буквы верхнего и нижнего регистра'),
     MotherFirstname: yup.string().matches(/^[А-Яа-яA-Za-z ]+$/, 'Поле должно содержать только буквы верхнего и нижнего регистра'),
     FatherFirstname: yup.string().matches(/^[А-Яа-яA-Za-z ]+$/, 'Поле должно содержать только буквы верхнего и нижнего регистра'),
-    LastnamLat: yup.string().required('Это обязательное поле').matches(/^[A-Za-z ]+$/, 'Поле должно содержать только латинские буквы верхнего и нижнего регистра'),
+    LastnameLat: yup.string().required('Это обязательное поле').matches(/^[A-Za-z ]+$/, 'Поле должно содержать только латинские буквы верхнего и нижнего регистра'),
     FirstnameLat: yup.string().required('Это обязательное поле').matches(/^[A-Za-z ]+$/, 'Поле должно содержать только латинские буквы верхнего и нижнего регистра'),
     Series: yup.string().length(2, 'Длина должна быть равна 2').matches(/^[A-Z]+$/, 'Поле должно содержать только латинские буквы верхнего регистра'),
     Number: yup.string().length(6, 'Длина должна быть равна 6').matches(/^[0-9]+$/, 'Поле должно состоять только из цифер'),
@@ -108,17 +109,26 @@ const Admin = () => {
 
             const result = {}
             console.log(response)
-            Object.entries(response.data.UserInfo).forEach(([key, value]) => {
+            Object.entries(response.data.item1).forEach(([key, value]) => {
                 let newKey = key.charAt(0).toUpperCase() + key.slice(1)
                 result[newKey] = value
             })
             await formik.setValues(result)
             await setIsLoading(false)
-            await setExams([...response.data.Exams])
+
+            const getExams = async () => {
+                try{
+                    setExams([...(await getUserExams(emailSearch))])
+                } catch (e) {
+                    console.log(e)
+                    setShowUnknownError(true)
+                }
+            }
+            getExams()
 
             const checkUserExams = async () => {
                 try {
-                    const result = response.data.Exams
+                    const result = await getUserExams(emailSearch)
                     if (result[0].name === ''){
                         setShowRedirectAlert(true)
                     }
@@ -130,7 +140,28 @@ const Admin = () => {
                     setShowUnknownAlert(true)
                 }
             }
-            await checkUserExams()
+            checkUserExams()
+
+            const fetchUserSpecialities = async () => {
+                const response = await getUserSpecialities(emailSearch)
+                await setPayment(response.data.financingFormPeriod.split(',')[0])
+                await setForm(response.data.financingFormPeriod.split(',')[1])
+                await setTime(response.data.financingFormPeriod.split(',')[2])
+                let nKey = key
+                await setUserSpecialities(response.data.specialtiesCodes.map((code) => {
+                    let res
+                    specialitiesList.forEach(({faculty, specialities}) => {
+                        specialities.forEach((spec) => {
+                            if (spec.code === code){
+                                res = {faculty: faculty, name: '(' + code + ') ' + spec.name, id: nKey++}
+                            }
+                        })
+                    })
+                    return res
+                }))
+                setKey(nKey)
+            }
+            fetchUserSpecialities()
 
             await setFound(true)
         } catch (e) {
@@ -140,27 +171,8 @@ const Admin = () => {
     }
 
     const [isPhysicsUser, setIsPhysicsUser] = useState(true)
-    let specialitiesList = useSelector((state) => state.specialities.specialitiesList)
-
-    useEffect(() => {
-        specialitiesList = specialitiesList.map(({faculty, specialities}) => (
-            {faculty: faculty, specialities: specialities.filter(({isPhysics}) => isPhysics === isPhysicsUser)}
-        ))
-    }, [isPhysicsUser])
 
     const dispatch = useDispatch()
-    const facultyElements = specialitiesList.map(({faculty}, index) =>
-        <MenuItem key={`faculty-item-${index}`} value={faculty}>{faculty}</MenuItem>
-    )
-
-    const specialitiesNamesElements = specialitiesList.map(({faculty, specialities}, fIndex) =>
-        ({faculty: faculty,
-            specialities: specialities
-                .map(({code, name}, sIndex) => (
-                    <MenuItem key={`faculty-${fIndex}-speciality-${sIndex}`} value={`(${code}) ${name}`}>{`(${code}) ${name}`}</MenuItem>
-                ))
-        })
-    )
 
     const [form, setForm] = useState('')
     const [time, setTime] = useState('')
@@ -170,39 +182,33 @@ const Admin = () => {
         {faculty: '', name: '', id: 0}
     ])
     const [key, setKey] = useState(1)
-    useEffect(() => {
-        setUserSpecialities([...[{faculty: '', name: '', id: 0}]])
+    const handleAllFormChange = () => {
+        if (form === '' || time === '' || payment === '') return
         const fetchAllSpecialities = async () =>
         {
+            await setUserSpecialities([...[{faculty: '', name: '', id: 0}]])
             dispatch(setSpecialtiesList({list: await getAllSpecialities(payment + ',' + form + ',' + time)}))
         }
-        const fetchUserSpecialities = async () => {
-            const response = await getUserSpecialities(emailSearch)
-            let key = 0;
-            setUserSpecialities(response.data.SpecialtiesCodes.map((code) => {
-                let res
-                specialitiesList.foreach((fac, specList) => {
-                    specList.forEach((spec) => {
-                        if (spec.code === code) res = {faculty: fac, name: spec.name, id: key++}
-                    })
-                })
-                return res
-            }))
-            setPayment(response.data.FinancingFormPeriod.split(',')[0])
-            setForm(response.data.FinancingFormPeriod.split(',')[1])
-            setTime(response.data.FinancingFormPeriod.split(',')[2])
-        }
         fetchAllSpecialities()
-        fetchUserSpecialities()
-    }, [form, time, payment])
-
-    const handleFormStateChange = (e) => {
-        setForm(e)
-        if (e === 'Дистанционная') {
-            setTime('Полное')
-            setPayment('Платная')
-        }
     }
+
+    let specialitiesList = useSelector((state) => state.specialities.specialitiesList)
+    useEffect(() => {
+        specialitiesList = specialitiesList.map(({faculty, specialities}) => (
+            {faculty: faculty, specialities: specialities.filter(({isPhysics}) => isPhysics === isPhysicsUser)}
+        ))
+    }, [isPhysicsUser])
+    const specialitiesNamesElements = specialitiesList.map(({faculty, specialities}, fIndex) =>
+        ({faculty: faculty,
+            specialities: specialities
+                .map(({code, name}, sIndex) => (
+                    <MenuItem key={`faculty-${fIndex}-speciality-${sIndex}`} value={`(${code}) ${name}`}>{`(${code}) ${name}`}</MenuItem>
+                ))
+        })
+    )
+    const facultyElements = specialitiesList.map(({faculty}, index) =>
+        <MenuItem key={`faculty-item-${index}`} value={faculty}>{faculty}</MenuItem>
+    )
 
     const [showRedirectAlert, setShowRedirectAlert] = useState(false)
 
@@ -227,18 +233,47 @@ const Admin = () => {
 
     const handleSubmitSpecs = async () => {
         try{
+            let bad = false
+            userSpecialities.forEach((spec1) => {
+                userSpecialities.forEach((spec2) => {
+                    if (spec1.faculty === spec2.faculty && spec1.name === spec2.name && spec1.id !== spec2.id) bad = true
+                })
+            })
+            if (bad){
+                setShowDoubledAlert(true)
+                return
+            }
             await updateUserSpecialities(payment + ',' + form + ',' + time, userSpecialities.map(({name}) =>
                 name.split('(')[1].split(')')[0]
-            ), email)
+            ), emailSearch)
             setShowSuccessAlert(true)
         } catch (e) {
             setShowUnknownAlert(true)
         }
     }
 
+    const [showDoubledAlert, setShowDoubledAlert] = useState(false)
+    const handleFormStateChange = (e) => {
+        setForm(e)
+        if (e === 'Дистанционная') {
+            setTime('Полное')
+            setPayment('Платная')
+        }
+        handleAllFormChange()
+    }
+
+    const handePaymentChange = (e) => {
+        setPayment(e)
+        handleAllFormChange()
+    }
+
+    const handleTimeChange = (e) => {
+        setTime(e)
+        handleAllFormChange()
+    }
+
     const examsTypes = ['ЦТ', 'ЦЭ', 'Внутренний экзамен', 'Без экзамена', 'Из аттестата', 'ЕГЭ', 'Олимпиада']
     const examsNames = ['Физика', 'Математика', 'Русский язык', 'Белорусский язык', 'Английский язык']
-    const email = useSelector((state) => state.user.email)
     const [exams, setExams] = useState([
         {id: 1, name: '', type: '', points: '', schoolPoints: ''},
         {id: 2, name: '', type: '', points: '', schoolPoints: ''},
@@ -295,7 +330,7 @@ const Admin = () => {
     const handleSubmit = async () => {
         try {
             if (validateExams()) {
-                await postUserExams(exams, email)
+                await postUserExams(exams, emailSearch)
                 setShowSuccessAlert(true)
             }
         } catch (e) {
@@ -360,10 +395,10 @@ const Admin = () => {
             MotherAddress: ''
         },
         validationSchema: validationSchema,
-        validateOnChange: true,
+        validateOnChange: false,
         onSubmit: async (values) => {
             try {
-                await updateUserInfo(values, email)
+                await updateUserInfo(values, emailSearch)
                 setShowSuccessAlert(true)
             } catch (e) {
                 setShowUnknownAlert(true)
@@ -378,6 +413,12 @@ const Admin = () => {
 
     const handleEnrollment = async () => {
         Enroll()
+    }
+
+    const handleInfoSubmit = () => {
+        console.log(1)
+        formik.handleSubmit()
+        console.log(formik.values)
     }
 
     return (
@@ -546,7 +587,7 @@ const Admin = () => {
                                          handleChange={formik.handleChange} id="FatherAddress"
                                          error={formik.errors.FatherAddress}/>
                             </div>
-                            <Button onClick={formik.handleSubmit} className={classes.SaveButton}
+                            <Button onClick={handleInfoSubmit} className={classes.SaveButton}
                                     endIcon={<SendIcon/>}>Сохранить</Button>
                         </div>
                     </div>
@@ -622,11 +663,12 @@ const Admin = () => {
                 </div>
                         <div>
                             <Header page="applic"/>
-                            {/*    next element should be with marginTop: "100px" because of the positioning of the header element*/}
                             <UnknownError showAlert={showUnknownAlert} setShowAlert={setShowUnknownAlert}></UnknownError>
                             <MyAlert showAlert={showRedirectAlert} setShowAlert={setShowRedirectAlert} title={'Ошибка'}
                                      text={'Сначала внесите информацию об экзаменах!'} propHandleCloseAlert={handleCloseRedirectAlert}/>
                             <MyAlert showAlert={showSuccessAlert} setShowAlert={setShowSuccessAlert} title={'Успех'} text={'Успешно сохранено'}></MyAlert>
+                            <MyAlert showAlert={showDoubledAlert} setShowAlert={setShowDoubledAlert} title={'Ошибка в заполнении'}
+                                     text={'Вы выбрали две одинаковые специальности, не делайте так, пожалуйста!'}></MyAlert>
                             <div className={classes.Configuration}>
                                 <Typography variant="h3" className={classes.ConfigurationName}>Выбор типа заявления</Typography>
                                 <div className={classes.SelectorWrap}>
@@ -650,7 +692,7 @@ const Admin = () => {
                                             labelId="time-select-label"
                                             id="time-select"
                                             value={time}
-                                            onChange={e => setTime(e.target.value)}
+                                            onChange={e => handleTimeChange(e.target.value)}
                                             label="Время обучения"
                                         >
                                             <MenuItem value={'Полное'}>Полное</MenuItem>
@@ -663,7 +705,7 @@ const Admin = () => {
                                             labelId="payment-select-label"
                                             id="payment-select"
                                             value={payment}
-                                            onChange={e => setPayment(e.target.value)}
+                                            onChange={e => handePaymentChange(e.target.value)}
                                             label="Форма оплаты"
                                         >
                                             <MenuItem value={'Бюджетная'}>Бюджетная</MenuItem>

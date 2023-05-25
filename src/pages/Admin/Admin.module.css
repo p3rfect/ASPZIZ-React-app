@@ -103,3 +103,108 @@
     color: #1976d2;
     background-color: white;
 }
+
+.Configuration{
+    margin-top: 100px;
+    background-color: white;
+    width: 60%;
+    height: 200px;
+    padding-top: 10px;
+    margin-left: 20%;
+    border-radius: 10px;
+    box-shadow: 10px 10px 20px 10px rgba(0, 0, 0, .05);
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+
+.ConfigurationName{
+    margin-left: 30%;
+    margin-bottom: 30px;
+    font-family: ff-meta-correspondence-web-p, sans-serif;
+    font-style: normal;
+    font-weight: 400;
+}
+
+.SelectorWrap{
+    display: flex;
+    margin-left: 5%;
+    width: 100%;
+}
+
+.ConfigurationFormControl{
+    width: 27%;
+    margin-left: 4%;
+}
+
+.ConfigurationFormControl:first-of-type{
+    margin-left: 0;
+}
+
+.SpecialitiesWrap{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.SpecialityItem{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-top: 20px;
+    width: 90%;
+    height: 100px;
+    padding: 0 0 0 3%;
+    border-radius: 10px;
+    box-shadow: 10px 10px 20px 10px rgba(0, 0, 0, .05);
+    background-color: white;
+}
+
+.SpecialityItem:first-of-type{
+    margin-top: 40px;
+}
+
+.SpecialityFaculty{
+    width: 30%;
+    margin-right: 5%;
+}
+
+.SpecialityName{
+    width: 40%;
+    /*margin-right: 5%;*/
+}
+
+.SpecialityDeleteButton{
+    margin-left: auto;
+    padding-right: 3%;
+    padding-left: 3%;
+    height: 100%;
+}
+
+.AddButton{
+    margin-top: 20px;
+    font-size: 17px;
+    height: 50px;
+    width: 15%;
+    border-radius: 20px;
+    text-transform: none;
+    background-color: white;
+    box-shadow: 10px 10px 20px 10px rgba(0, 0, 0, .05);
+}
+
+.SaveButton{
+    margin-top: 40px;
+    font-size: 27px;
+    height: 60px;
+    width: 20%;
+    border-radius: 20px;
+    text-transform: none;
+    background-color: #1976d2;
+    color: white;
+    margin-bottom: 50px;
+}
+
+.SaveButton:hover{
+    color: #1976d2;
+    background-color: white;
+}

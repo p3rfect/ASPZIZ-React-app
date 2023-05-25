@@ -82,19 +82,20 @@ const UserSpecialities = () => {
             await setPayment(response.data.financingFormPeriod.split(',')[0])
             await setForm(response.data.financingFormPeriod.split(',')[1])
             await setTime(response.data.financingFormPeriod.split(',')[2])
-            let key = 0;
             await console.log(2)
+            let nKey = key
             await setUserSpecialities(response.data.specialtiesCodes.map((code) => {
                 let res
                 specialitiesList.forEach(({faculty, specialities}) => {
                     specialities.forEach((spec) => {
                         if (spec.code === code){
-                            res = {faculty: faculty, name: '(' + code + ') ' + spec.name, id: key++}
+                            res = {faculty: faculty, name: '(' + code + ') ' + spec.name, id: nKey++}
                         }
                     })
                 })
                 return res
             }))
+            setKey(nKey)
         }
         fetchUserSpecialities()
     }, [])
