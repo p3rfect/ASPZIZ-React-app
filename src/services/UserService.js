@@ -95,8 +95,8 @@ export const getUserInfo = async (email) => {
     try{
         const response = await $api.get(`/user/info/get?email=${email}`)
         const userInfo = response.data
-        userInfo.Gender = (userInfo.IsMale ? 'Мужской' : 'Женский')
-        userInfo.Family = (userInfo.IsSingle ? 'Холост/ не замужем' : 'Женат/замужем')
+        userInfo.Gender = (userInfo.isMale ? 'Мужской' : 'Женский')
+        userInfo.Family = (userInfo.isSingle ? 'Холост/ не замужем' : 'Женат/замужем')
         const result = {}
         Object.entries(userInfo).forEach(([key, value]) => {
             let newKey = key.charAt(0).toUpperCase() + key.slice(1)

@@ -13,7 +13,7 @@ import SendIcon from "@mui/icons-material/Send";
 import {useDispatch, useSelector} from "react-redux";
 import {useFormik} from "formik";
 import {
-    getUserExams,
+    getUserExams, getUserInfo,
     getUserSpecialities,
 
     postUserExams,
@@ -108,7 +108,7 @@ const Admin = () => {
 
             const result = {}
             console.log(response)
-            Object.entries(response.data.item1).forEach(([key, value]) => {
+            Object.entries(await getUserInfo(emailSearch)).forEach(([key, value]) => {
                 let newKey = key.charAt(0).toUpperCase() + key.slice(1)
                 result[newKey] = value
             })
