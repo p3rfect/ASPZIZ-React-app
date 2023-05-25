@@ -142,6 +142,12 @@ const Admin = () => {
             checkUserExams()
 
             const fetchUserSpecialities = async () => {
+                const fetchAllSpecialities = async () =>
+                {
+                    await setUserSpecialities([...[{faculty: '', name: '', id: 0}]])
+                    dispatch(setSpecialtiesList({list: await getAllSpecialities(payment + ',' + form + ',' + time)}))
+                }
+                await fetchAllSpecialities()
                 const response = await getUserSpecialities(emailSearch)
                 await setPayment(response.data.financingFormPeriod.split(',')[0])
                 await setForm(response.data.financingFormPeriod.split(',')[1])
