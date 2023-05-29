@@ -25,3 +25,11 @@ export const acceptUser = async (email) => {
         throw new Error(e)
     }
 }
+
+export const confirmUserEmail = async (email) => {
+    try{
+        await $api.post(`/admin/user/confirm?email=${email}`)
+    } catch (e) {
+        throw new Error(e)
+    }
+}
